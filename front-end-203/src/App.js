@@ -18,6 +18,9 @@ function App() {
           Learn React
         </a>
       </header>
+      <footer>
+        Environment {process.env.REACT_APP_ENV_NAME}
+      </footer>
     </div>
   );
 }
