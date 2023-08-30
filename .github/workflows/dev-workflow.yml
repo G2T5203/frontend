@@ -5,13 +5,12 @@ name: React Dev Workflow
 
 on:
   push:
-    branches: [ dev ]
+    branches: [dev]
   #pull_request:
-    #branches: [ dev ]
+  #branches: [ dev ]
 
 jobs:
   build-and-test:
-
     runs-on: ubuntu-22.04
     defaults:
       run:
@@ -23,23 +22,22 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-    - run: npm ci
-    - run: npm run build --if-present
-    - run: cd build && ls
-    #- run: npm test
-    #deploying steps to somewhere. TO be used next time.
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+          cache-dependency-path: "./front-end-203/package-lock.json"
+      - run: npm ci
+      - run: npm run build --if-present
+      - run: cd build && ls
+      #- run: npm test
+      #deploying steps to somewhere. TO be used next time.
 
-
-    #temp upload files to verify builds
-    - name: Save artifact
-      uses: actions/upload-artifact@v3
-      with:
-        name: github-actions-artifact
-        path: ./front-end-203/build
-    
+      #temp upload files to verify builds
+      - name: Save artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: github-actions-artifact
+          path: ./front-end-203/build
