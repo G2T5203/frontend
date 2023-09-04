@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 function DemoGet() {
     const apiUrl = process.env.REACT_APP_API_BASE_URL;
