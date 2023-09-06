@@ -1,15 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
+// import App from './App';
+// import DemoGet from './demo/DemoGet';
 import reportWebVitals from './reportWebVitals';
-import DemoGet from './demo/DemoGet';
+import FlightSearch from "./flight-search/FlightSearch"
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <DemoGet />
-    <App />
+    {/* <DemoGet />
+    <App /> */}
+    <FlightSearch/>
   </React.StrictMode>
 );
 
