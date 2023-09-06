@@ -11,7 +11,7 @@ function DemoGet() {
     return (
         <div className="DemoGet">
             <button onClick={GetHelloWorld}>DEMO GET</button>
-            <p>{helloWorld}</p>
+            <p>{helloWorld} - from {apiUrl}</p>
             <button onClick={GetAllUsers}>DEMO GET ALL USERS</button>
             <div>
                 {allUsers.length > 0 ? (
@@ -44,7 +44,7 @@ function DemoGet() {
     }
 
     function GetAllUsers() {
-        axios.get(apiUrl + "/users")
+        axios.get(apiUrl + "users")
             .then((response) => {
                 console.log(response.status)
                 console.log(response.data)
