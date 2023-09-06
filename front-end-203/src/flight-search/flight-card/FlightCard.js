@@ -1,1 +1,1 @@
-// Flight card
+// Flight card component
