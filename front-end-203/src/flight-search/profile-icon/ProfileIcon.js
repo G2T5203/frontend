@@ -24,7 +24,7 @@ const ProfileIcon = () => {
     <div className="profile-icon-container">
       <div className={`profile-icon ${isDropdownOpen ? 'open' : ''}`} onClick={toggleDropdown}>
         {/* Your profile icon image or avatar */}
-        <img src="https://t4.ftcdn.net/jpg/03/42/99/71/360_F_342997143_wz7x1yR7KWhmhSKF9OHwuQ2W4W7IUDvH.jpg" alt="Profile" onClick={handleProfileClick}/>
+        <img src="https://www.shareicon.net/data/512x512/2016/05/24/770117_people_512x512.png" alt="Profile" onClick={handleProfileClick}/>
       </div>
 
       {/* Render the dropdown menu when it's open */}
