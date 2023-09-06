@@ -9,12 +9,11 @@ on:
   #pull_request:
   #branches: [ dev ]
 
+permissions: write-all
+
 jobs:
   build-and-test:
     runs-on: ubuntu-22.04
-    permissions:
-      pull-requests: write
-      deployments: write
     defaults:
       run:
         working-directory: ./front-end-203
