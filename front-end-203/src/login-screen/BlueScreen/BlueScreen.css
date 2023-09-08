@@ -1,0 +1,11 @@
+/* BlueScreen.css */
+.blueBackground {
+    background-color: #143965;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  /* Other styles for your feature */
+  
