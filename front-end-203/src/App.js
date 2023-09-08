@@ -1,12 +1,12 @@
-import logo from './logo.svg';
 import './App.css';
 import React from 'react';
-import BlueScreen from './login-screen/BlueScreen/BlueScreen';
+import SignInSide from './login-screen/sign-in-side/SignInSide';
+
 
 function App() {
   return (
     <div className="App">
-      <BlueScreen />
+      <SignInSide />
     </div>
   );
 }

@@ -1,10 +1,14 @@
 import React from 'react';
-import './BlueScreen.css';
+import './BlueScreen.css'; // Import your CSS file if needed
 
 function BlueScreen() {
+    
   return (
     <div className="blueBackground">
-      <h1>Your Blue Screen</h1>
+      <div className="image-container">
+        <img src= "https://wallpapercrafter.com/th800/446330-Vehicles-Aircraft-Phone-Wallpaper.jpg" alt="Plane" className="left-image" />
+      </div>
+      <h1></h1>
       {/* Other content */}
     </div>
   );
