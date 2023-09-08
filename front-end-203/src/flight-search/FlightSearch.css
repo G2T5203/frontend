@@ -1,17 +1,23 @@
-.search-page {
-    position: relative;
+.nav {
+    position: absolute;
+    z-index: 3;
     width: 100%;
 }
 .banner{
-    position: relative;
-    top: 0;
-    left: 0;
+    position: absolute;
     width:100%;
+    z-index: 2;
+    top: auto;
   }
   
-  .flight-search-bar {
+.flight {
     position: relative;
+    bottom: 150px;
     width: 100%;
   }
+.searchbar {
+  position: relative;
+  top: 500px;
+}
   
   

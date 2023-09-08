@@ -7,15 +7,20 @@ import "./FlightSearch.css";
 function FlightSearch() {
   return (
     <div>
-      <NavBar/>
-      <Banner/>
-      <FlightSearchBar/>
-      <SearchBar/>
+      <div className="nav">
+        <NavBar />
+      </div>
+      <div className="banner">
+        <Banner />
+        <div className="flight">
+          <FlightSearchBar />
+        </div>
+      </div>
+      <div className="searchbar">
+        <SearchBar />
+      </div>
+      
     </div>
-   
-
-    
-    
   );
 }
 
