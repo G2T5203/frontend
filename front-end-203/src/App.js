@@ -1,7 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 import React from 'react';
-import BlueScreen from './login-screen/BlueScreen';
+import BlueScreen from './login-screen/BlueScreen/BlueScreen';
 
 function App() {
   return (
