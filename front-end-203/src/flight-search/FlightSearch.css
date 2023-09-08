@@ -1,4 +1,17 @@
-/* FlightSearch.css */
-
+.search-page {
+    position: relative;
+    width: 100%;
+}
+.banner{
+    position: relative;
+    top: 0;
+    left: 0;
+    width:100%;
+  }
+  
+  .flight-search-bar {
+    position: relative;
+    width: 100%;
+  }
   
   

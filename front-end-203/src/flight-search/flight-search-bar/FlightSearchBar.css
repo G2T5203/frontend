@@ -5,6 +5,8 @@
     background: white;
     color: black;
     width: 50%;
+    padding: 20px;
+    
   }
   
   .flight-search-bar .text-field {
