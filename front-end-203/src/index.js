@@ -4,14 +4,14 @@ import './index.css';
 // import App from './App';
 // import DemoGet from './demo/DemoGet';
 import reportWebVitals from './reportWebVitals';
-import FlightSearch from "./flight-search/FlightSearch"
+import ScrollablePage from './scroll/ScrollablePage';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     {/* <DemoGet />
     <App /> */}
-    <FlightSearch/>
+    <ScrollablePage/>
   </React.StrictMode>
 );
 

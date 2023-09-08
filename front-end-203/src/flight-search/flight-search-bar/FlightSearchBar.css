@@ -1,0 +1,22 @@
+/* FlightSearchBarHorizontal.css */
+.flight-search-bar {
+    display: flex;
+    align-items: center;
+    background: white;
+    color: black;
+    width: 50%;
+  }
+  
+  .flight-search-bar .text-field {
+    margin-right: 10px;
+  }
+  
+  .flight-search-bar .toggle-button {
+    margin-right: 10px;
+    background-color: orange;
+  }
+  
+  .flight-search-bar .toggle-button:hover {
+    background-color: darkorange;
+  }
+  
