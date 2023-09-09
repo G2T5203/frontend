@@ -1,0 +1,56 @@
+/* FlightInformation.css */
+
+/* Flight Information Card Container */
+.flight-info-card {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-color: #003c7c; /* Updated background color to blue */
+    padding: 30px;
+    max-width: 700px;
+    margin: 16px;
+    border-radius: 8px;
+  }
+  
+  /* Section Styles */
+  .section {
+    flex: 1;
+    text-align: center;
+    color: white; /* Font color set to white */
+    
+  }
+    .button {
+    color: orange;
+  }
+  
+  /* Dotted Line Styles */
+  .dotted-line {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+  
+  /* Divider Styles (Dotted Line) */
+  .divider {
+    width: 100%;
+    height: 1px;
+    background-color: white; /* Divider color set to white */
+    
+  }
+  
+  /* Plane Logo Styles */
+  .plane-logo {
+    font-size: 24px;
+    position: absolute;
+    bottom: 200%;
+    left: 80%;
+    
+    color: white; /* Font color set to white */
+  }
+  
+  /* White Text Style */
+  .white-text {
+    color: white; /* Font color set to white */
+  }
+  

@@ -64,6 +64,7 @@ const FlightSearchBar = () => {
         onChange={handleArrivalChange}
       />
       <FormControlLabel
+        
         control={
           <Switch
             checked={isRoundTrip}
@@ -71,94 +72,69 @@ const FlightSearchBar = () => {
             color="primary"
           />
         }
-        label={isRoundTrip ? 'Round Trip' : 'One Way'}
+        label={isRoundTrip ? 'Two-Way' : 'One Way'}
       />
+      <Button
+        className="toggle-button"
+        variant="contained"
+        color="primary"
+        startIcon={<CalendarTodayIcon />}
+        onClick={handleCalendarClick}
+      >
+        Departure Date
+      </Button>
       {isRoundTrip ? (
-        <>
-          <Button
-            className="toggle-button"
-            variant="contained"
-            color="primary"
-            startIcon={<CalendarTodayIcon />}
-            onClick={handleCalendarClick}
-          >
-            Departure Date
-          </Button>
-          <Button
-            className="toggle-button"
-            variant="contained"
-            color="primary"
-            startIcon={<CalendarTodayIcon />}
-            onClick={handleCalendarClick}
-          >
-            Return Date
-          </Button>
-          <Popover
-            open={openCalendar}
-            anchorEl={anchorEl}
-            onClose={handleCloseCalendar}
-            anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'center',
-            }}
-            transformOrigin={{
-              vertical: 'top',
-              horizontal: 'center',
-            }}
-          >
-            <Box p={2}>
-              <Typography>Select departure and return dates here.</Typography>
-              <DatePicker
-                label="Departure Date"
-                value={departureDate}
-                onChange={(date) => setDepartureDate(date)}
-                renderInput={(params) => <TextField {...params} variant="outlined" />}
-              />
-              <DatePicker
-                label="Return Date"
-                value={returnDate}
-                onChange={(date) => setReturnDate(date)}
-                renderInput={(params) => <TextField {...params} variant="outlined" />}
-              />
-            </Box>
-          </Popover>
-        </>
+        <Button
+          className="toggle-button"
+          variant="contained"
+          color="primary"
+          startIcon={<CalendarTodayIcon />}
+          onClick={handleCalendarClick}
+        >
+          Return Date
+        </Button>
       ) : (
-        <>
-          <Button
-            className="toggle-button"
-            variant="contained"
-            color="secondary"
-            startIcon={<CalendarTodayIcon />}
-            onClick={handleCalendarClick}
-          >
-            Departure Date
-          </Button>
-          <Popover
-            open={openCalendar}
-            anchorEl={anchorEl}
-            onClose={handleCloseCalendar}
-            anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'center',
-            }}
-            transformOrigin={{
-              vertical: 'top',
-              horizontal: 'center',
-            }}
-          >
-            <Box p={2}>
-            <Typography>Select departure date here.</Typography>
-              <DatePicker
-                label="Departure Date"
-                value={departureDate}
-                onChange={(date) => setDepartureDate(date)}
-                renderInput={(params) => <TextField {...params} variant="outlined" />}
-              />
-            </Box>
-          </Popover>
-        </>
+        <Button
+          className="toggle-button"
+          variant="contained"
+          color="secondary"
+          startIcon={<CalendarTodayIcon />}
+          disabled // Disable the button for one-way trips
+        >
+          Return Date
+        </Button>
       )}
+      <Popover
+        open={openCalendar}
+        anchorEl={anchorEl}
+        onClose={handleCloseCalendar}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'center',
+        }}
+      >
+        <Box p={2}>
+          <Typography>Select departure and return dates here.</Typography>
+          <DatePicker
+            label="Departure Date"
+            value={departureDate}
+            onChange={(date) => setDepartureDate(date)}
+            renderInput={(params) => <TextField {...params} variant="outlined" />}
+          />
+          {isRoundTrip && (
+            <DatePicker
+              label="Return Date"
+              value={returnDate}
+              onChange={(date) => setReturnDate(date)}
+              renderInput={(params) => <TextField {...params} variant="outlined" />}
+            />
+          )}
+        </Box>
+      </Popover>
       <Button
         className="toggle-button"
         variant="contained"
@@ -173,6 +149,7 @@ const FlightSearchBar = () => {
 };
 
 export default FlightSearchBar;
+
 
 
 

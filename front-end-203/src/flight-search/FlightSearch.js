@@ -7,6 +7,7 @@ import "./FlightSearch.css";
 import { Typography } from "@mui/material";
 import FlightInfoCard from "./flight-info-card/FlightInfoCard";
 
+
 const flightInfo = {
   airlineName: 'Example Airlines',
   departureAirport: 'JFK',
