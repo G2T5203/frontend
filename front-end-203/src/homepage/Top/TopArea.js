@@ -1,25 +1,44 @@
 import React from "react";
-import Paper from "@mui/material/Paper";
-import { Box, Container, Typography } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 import HeroImage from "./planeWing.jpg";
+import SearchingBox from "./SearchingBox";
+import Bookingad from "./Bookingad";
 
 const HomeTop = () => {
   return (
-    <Container maxWidth="x1">
-      <Box
-        sx={{
-          backgroundImage: `url(${HeroImage})`,
-          //   backgroundColor: "primary.dark",
-          backgroundRepeat: "no-repeat",
-          backgroundPosition: "center",
-          backgroundSize: "cover",
-          height: "1200",
-          width: "100%",
-        }}
+    <Box
+      sx={{
+        backgroundImage: `url(${HeroImage})`,
+        display: "flex",
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "center",
+        backgroundSize: "100% 100%",
+        height: "25vh",
+        width: "100%",
+        paddingBottom: "300px",
+        paddingX: "0px",
+        alignItems: "center",
+      }}
+    >
+      <Grid
+        container
+        direction="row"
+        justifyContent="space-around"
+        alignItems="center"
+        pt={6}
       >
-        <Typography> Hello world </Typography>
-      </Box>
-    </Container>
+        <Grid item>
+          <item>
+            <SearchingBox />
+          </item>
+        </Grid>
+        <Grid item>
+          <item>
+            <Bookingad />
+          </item>
+        </Grid>
+      </Grid>
+    </Box>
   );
 };
 
