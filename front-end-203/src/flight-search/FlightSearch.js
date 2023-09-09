@@ -4,6 +4,21 @@ import SearchBar from "./search-bar/SearchBar";
 import FlightSearchBar from "./flight-search-bar/FlightSearchBar";
 import Banner from "./banner/Banner";
 import "./FlightSearch.css";
+import { Typography } from "@mui/material";
+import FlightInfoCard from "./flight-info-card/FlightInfoCard";
+
+const flightInfo = {
+  airlineName: 'Example Airlines',
+  departureAirport: 'JFK',
+  departureDate: '2023-09-15',
+  departureTime: '08:00 AM',
+  arrivalAirport: 'LAX',
+  arrivalDate: '2023-09-15',
+  arrivalTime: '11:00 AM',
+  stops: 1,
+  travelTime: '3h 0m',
+  price: 299.99,
+};
 function FlightSearch() {
   return (
     <div>
@@ -12,12 +27,29 @@ function FlightSearch() {
       </div>
       <div className="banner">
         <Banner />
-        <div className="flight">
+        <div className="text">
+        <Typography 
+        variant="h4" // Adjust the variant as needed (e.g., h1, h2, h3, h4, etc.)
+        style={{
+          fontFamily: 'Merriweather, sans-serif', // Use the Merriweather font or replace it with your desired font
+          fontWeight: 'bold', // Adjust the font weight as needed
+          color: "white"
+  
+        }}
+        
+        >
+          Available Flights
+          
+        </Typography>
+
+        </div>
+        <div className="flight-search">
           <FlightSearchBar />
         </div>
       </div>
       <div className="searchbar">
         <SearchBar />
+        <FlightInfoCard {...flightInfo}/>
       </div>
       
     </div>

@@ -2,7 +2,6 @@
 .search-bar {
     display: flex;
     align-items: center;
-    background-color:blue;
     border: 1px solid black;
     border-radius: 4px;
     width: 30%;

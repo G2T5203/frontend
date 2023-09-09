@@ -1,6 +1,6 @@
 .nav {
     position: absolute;
-    z-index: 3;
+    z-index: 4;
     width: 100%;
 }
 .banner{
@@ -8,11 +8,18 @@
     width:100%;
     z-index: 2;
     top: auto;
+    margin-top: 30px;
   }
+.text {
+  position: absolute;
+  z-index: 3;
+  bottom: 200px;
+  margin-left: 20px;
+}
   
-.flight {
+.flight-search {
     position: relative;
-    bottom: 150px;
+    bottom: 110px;
     width: 100%;
   }
 .searchbar {
