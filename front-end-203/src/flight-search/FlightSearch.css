@@ -2,6 +2,7 @@
     position: absolute;
     z-index: 4;
     width: 100%;
+    
 }
 .banner{
     position: absolute;
@@ -25,6 +26,9 @@
 .searchbar {
   position: relative;
   top: 500px;
+}
+.filter {
+  position: relative;
 }
   
   
