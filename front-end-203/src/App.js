@@ -1,13 +1,13 @@
 import './App.css';
 import React from 'react';
-import SignInSide from './login-screen/sign-in-side/SignInSide';
-import SignUpSide from './signup-screen/SignUpSide';
+import SignInSide from './signin-screen/SignInPage';
+import SignUpSide from './signup-screen/SignUpPage';
 
 
 function App() {
   return (
     <div className="App">
-      <SignUpSide />
+      <SignUpPage />
     </div>
   );
 }
