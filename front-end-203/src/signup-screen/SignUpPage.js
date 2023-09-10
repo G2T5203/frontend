@@ -13,7 +13,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 const defaultTheme = createTheme();
 
-export default function SignUp() {
+export default function SignUpPage() {
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
@@ -60,7 +60,7 @@ export default function SignUp() {
                             padding: '2rem',
                         }}
                     >
-                        <Typography variant="h1" sx={{ fontFamily: 'Merriweather', fontSize: '24px', fontWeight: "bold", marginTop: '10px', textAlign: 'left' }}>
+                        <Typography variant="h1" sx={{ fontFamily: 'Merriweather', fontSize: '1.5rem', fontWeight: 'bold', marginTop: 'auto', marginLeft: '0rem', marginRight: 'auto', marginBottom: '0.5rem' }}>
                             Sign up
                         </Typography>
                         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>

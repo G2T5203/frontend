@@ -12,18 +12,41 @@ import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 
-// TODO remove, this demo shouldn't need to reset the theme.
-
 const defaultTheme = createTheme();
 
-export default function SignInSide() {
-  const handleSubmit = (event) => {
+export default function SignInPage() {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    const email = data.get('email');
+    const password = data.get('password');
+
+    if (email && password) {
+      try {
+        const response = await fetch('http://localhost:3001/signin', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email, password }), // Send email and password to the server
+        });
+
+        const responseData = await response.json();
+
+        if (response.status === 200) {
+          // Authentication successful, store the token and handle the user's session
+          // You can store the token in a secure way (e.g., in a cookie or local storage) for future requests
+          console.log('Okay');
+          // Redirect to an authenticated page or perform other actions
+        } else {
+          // Authentication failed, display an error message to the user
+          console.error(responseData.message);
+          // console.error(responseData.message); would log "Invalid email or password in the browser
+        }
+      } catch (error) {
+        console.error('An error occurred:', error);
+      }
+    }
   };
 
   return (
@@ -46,7 +69,7 @@ export default function SignInSide() {
         />
         <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square sx={{ backgroundColor: '#143965' }}>
 
-          <Typography variant="h3" color="white" sx={{ fontFamily: 'Merriweather', fontSize: '100px', fontWeight: 500, marginTop: '60px'}}>
+          <Typography variant="h3" color="white" sx={{ fontFamily: 'Merriweather', fontSize: '100px', fontWeight: 500, marginTop: '60px' }}>
             WingIt.
           </Typography>
           <Box
@@ -58,12 +81,15 @@ export default function SignInSide() {
               alignItems: 'center',
               backgroundColor: 'white',
               borderRadius: '16px',
+              height: '400px',
+              padding: '2rem',
             }}
           >
 
-            <Typography variant="h1" sx={{ fontFamily: 'Merriweather', fontSize: '24px', fontWeight: "bold", marginTop: '10px', textAlign: 'left'}}>
+            <Typography variant="h1" sx={{ fontFamily: 'Merriweather', fontSize: '1.5rem', fontWeight: 'bold', marginTop: 'auto', marginLeft: '0rem', marginRight: 'auto' }}>
               Sign in
             </Typography>
+
             <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
               <TextField
                 margin="normal"
@@ -74,7 +100,7 @@ export default function SignInSide() {
                 name="email"
                 autoComplete="email"
                 autoFocus
-                sx={{ width: 'calc(100% - 100px)', marginBottom: '8px' }}
+              // sx={{ width: 'calc(100% - 100px)', marginBottom: '8px' }}
               />
               <TextField
                 margin="normal"
@@ -85,17 +111,18 @@ export default function SignInSide() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
-                sx={{ width: 'calc(100% - 100px)', marginBottom: '8px' }}
+              // sx={{ width: 'calc(100% - 100px)', marginBottom: '8px' }}
               />
               <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
                 label="Remember me"
+                sx={{ marginBottom: '-1rem' }}
               />
               <Button
                 type="submit"
                 fullWidth
                 variant="contained"
-                sx={{ mt: 3, mb: 2, width: 'calc(100% - 150px)', fontSize: '14px', backgroundColor: '#F58A07'}}
+                sx={{ mt: 3, mb: 2, width: 'calc(100% - 150px)', fontSize: '14px', backgroundColor: '#F58A07' }}
               >
                 Sign In
               </Button>
@@ -106,7 +133,7 @@ export default function SignInSide() {
                   </Link>
                 </Grid>
                 <Grid item>
-                  <Link href="#" variant="body2" style={{ marginRight: '80px' }}>
+                  <Link href="#" variant="body2" style={{ marginRight: '4rem' }}>
                     {"Don't have an account? Sign Up"}
                   </Link>
                 </Grid>
