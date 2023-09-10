@@ -14,17 +14,51 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 const defaultTheme = createTheme();
 
 export default function SignUpPage() {
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
+        const firstName = data.get('firstName');
+        const lastName = data.get('lastName');
+        const email = data.get('email');
+        const password = data.get('password');
+        const allowExtraEmails = data.get('allowExtraEmails');
+      
+        // Log the form data
         console.log({
-            firstName: data.get('firstName'),
-            lastName: data.get('lastName'),
-            email: data.get('email'),
-            password: data.get('password'),
-            allowExtraEmails: data.get('allowExtraEmails'),
+          firstName,
+          lastName,
+          email,
+          password,
+          allowExtraEmails,
         });
-    };
+      
+        if (email && password) {
+          try {
+            const response = await fetch('http://localhost:3001/signup', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ firstName, lastName, email, password, allowExtraEmails }),
+            });
+      
+            const responseData = await response.json();
+      
+            if (response.status === 201) {
+              // Account creation successful, display a success message
+              console.log('Account created successfully');
+              // You can also display a success message to the user
+            } else {
+              // Account creation failed, display an error message
+              console.error(`Error: ${responseData.message}`);
+              // You can display the error message to the user
+            }
+          } catch (error) {
+            console.error('An error occurred:', error);
+          }
+        }
+      };
+      
 
     return (
         <ThemeProvider theme={defaultTheme}>
