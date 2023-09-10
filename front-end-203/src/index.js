@@ -3,11 +3,15 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 import HomeTop from "./homepage/Top/TopArea";
+import HomeMiddle from "./homepage/MiddleAlbum/Album";
+import Footer from "./homepage/Bottom/Footer";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <HomeTop />
+    <HomeTop sx={{ overflow: "scrollable" }} />
+    <HomeMiddle sx={{ overflow: "scrollable" }} />
+    <Footer />
   </React.StrictMode>
 );
 

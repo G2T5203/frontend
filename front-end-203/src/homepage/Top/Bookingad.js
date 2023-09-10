@@ -21,12 +21,13 @@ const BlueRoundedRectangle = () => {
     <ThemeProvider theme={customTheme}>
       <Paper
         sx={{
-          background: "rgba(37, 78, 158, 0.6)", // Blue translucent background
+          background: "rgba(37, 78, 158, .8)", // Blue translucent background
           borderRadius: "16px", // Rounded corners
           padding: "16px", // Padding around content
           paddingX: "20px",
           paddingRight: "70px",
           textAlign: "left", // Center the content
+          mt: 5,
         }}
       >
         <Typography variant="h5" pb={3}>

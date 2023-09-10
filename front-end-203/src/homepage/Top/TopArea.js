@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import HeroImage from "./planeWing.jpg";
 import SearchingBox from "./SearchingBox";
 import Bookingad from "./Bookingad";
@@ -18,6 +18,7 @@ const HomeTop = () => {
         paddingBottom: "300px",
         paddingX: "0px",
         alignItems: "center",
+        paddingTop: 4,
       }}
     >
       <Grid
@@ -27,7 +28,7 @@ const HomeTop = () => {
         alignItems="center"
         pt={6}
       >
-        <Grid item>
+        <Grid item pt={6} mt={6}>
           <item>
             <SearchingBox />
           </item>
