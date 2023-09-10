@@ -55,6 +55,7 @@ const FlightSearchBar = () => {
         variant="outlined"
         value={departureLocation}
         onChange={handleDepartureChange}
+        sx={{fontFamily:'Merriweather Sans'}}
       />
       <TextField
         className="text-field"
@@ -62,8 +63,10 @@ const FlightSearchBar = () => {
         variant="outlined"
         value={arrivalLocation}
         onChange={handleArrivalChange}
+        sx={{fontFamily:'Merriweather Sans'}}
       />
       <FormControlLabel
+        labelPlacement="bottom"
         
         control={
           <Switch
@@ -72,9 +75,9 @@ const FlightSearchBar = () => {
             color="primary"
           />
         }
-        label={isRoundTrip ? 'Two-Way' : 'One Way'}
+        label={isRoundTrip ? 'Two Way' : 'One Way'}
       />
-      <Button
+      <Button sx={{textTransform:'none', fontFamily: 'Merriweather Sans'}}
         className="toggle-button"
         variant="contained"
         color="primary"
@@ -87,9 +90,9 @@ const FlightSearchBar = () => {
         <Button
           className="toggle-button"
           variant="contained"
-          color="primary"
           startIcon={<CalendarTodayIcon />}
           onClick={handleCalendarClick}
+          sx={{textTransform:'none', fontFamily: 'Merriweather Sans'}}
         >
           Return Date
         </Button>
@@ -97,11 +100,12 @@ const FlightSearchBar = () => {
         <Button
           className="toggle-button"
           variant="contained"
-          color="secondary"
           startIcon={<CalendarTodayIcon />}
           disabled // Disable the button for one-way trips
         >
-          Return Date
+          <Typography variant='h7' sx={{textTransform:'none', fontFamily: 'Merriweather Sans'}}>
+            Return Date
+          </Typography>
         </Button>
       )}
       <Popover

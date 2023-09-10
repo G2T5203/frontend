@@ -5,10 +5,10 @@
   background: white;
   color: black;
   padding: 5px;
-  width: 75%;
+  width: 70%;
   border-radius: 10px;
   margin-left: 20px;
-  font-family: 'Merriweather', sans-serif; /* Use Merriweather font for all text */
+  font-family: 'Merriweather Sans'; /* Use Merriweather font for all text */
 }
 
 .flight-search-bar .text-field {
@@ -19,7 +19,7 @@
   background-color: orange;
   margin: 10px; /* Add spacing around toggle buttons */
   padding: 10px;
-  font-family: 'Merriweather', sans-serif; /* Use Merriweather font for buttons */
+  font-family: 'Merriweather Sans'; /* Use Merriweather font for buttons */
 }
 
 .flight-search-bar .toggle-button:hover {

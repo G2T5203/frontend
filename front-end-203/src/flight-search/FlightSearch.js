@@ -9,7 +9,7 @@ import FlightInfoCard from "./flight-info-card/FlightInfoCard";
 
 
 const flightInfo = {
-  airlineName: 'Example Airlines',
+  imageURL: "https://graphic.sg/media/pages/gallery/singapore-airlines-logo-1987/3067018395-1599296800/1987-singapore-airlines-logo-240x.png",
   departureAirport: 'JFK',
   departureDate: '2023-09-15',
   departureTime: '08:00 AM',
