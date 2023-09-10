@@ -56,7 +56,8 @@ export default function SignUp() {
                             flexDirection: 'column',
                             alignItems: 'center',
                             backgroundColor: 'white',
-                            borderRadius: '16px',
+                            borderRadius: '16px', 
+                            padding: '2rem',
                         }}
                     >
                         <Typography variant="h1" sx={{ fontFamily: 'Merriweather', fontSize: '24px', fontWeight: "bold", marginTop: '10px', textAlign: 'left' }}>
