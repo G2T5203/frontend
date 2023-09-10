@@ -22,7 +22,7 @@ const flightInfo = {
   price: 299.99,
 };
 const filterInfo ={
-  airline: ['Singapore Airlines', 'Qatar Airways', 'Air India', 'Emirates']
+  airlines: ['Singapore Airlines', 'Qatar Airways', 'Air India', 'Emirates']
 }
 function FlightSearch() {
   return (
@@ -33,33 +33,33 @@ function FlightSearch() {
       <div className="banner">
         <Banner />
         <div className="text">
-        <Typography 
-        variant="h4" // Adjust the variant as needed (e.g., h1, h2, h3, h4, etc.)
-        style={{
-          fontFamily: 'Merriweather, sans-serif', // Use the Merriweather font or replace it with your desired font
-          fontWeight: 'bold', // Adjust the font weight as needed
-          color: "white"
-  
-        }}
-        
-        >
-          Available Flights
-        </Typography>
-
+          <Typography 
+            variant="h4"
+            style={{
+              fontFamily: 'Merriweather, sans-serif',
+              fontWeight: 'bold',
+              color: 'white'
+            }}
+          >
+            Available Flights
+          </Typography>
         </div>
         <div className="flight-search">
           <FlightSearchBar />
         </div>
       </div>
-      <div className="searchbar">
-        {/* <SearchBar /> */}
-        {/* <FlightInfoCard {...flightInfo}/> */}
-        <FilterTile {...filterInfo}/>
+      {/* Container for FlightInfoCard */}
+      <div className="flight-info-container">
+        <FlightInfoCard {...flightInfo} />
       </div>
-      
-      
+      {/* Container for FilterTile */}
+      <div className="filter-container">
+        <FilterTile airlines={filterInfo.airlines} />
+      </div>
     </div>
   );
 }
 
 export default FlightSearch;
+
+

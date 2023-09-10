@@ -2,6 +2,7 @@
     position: absolute;
     z-index: 4;
     width: 100%;
+    top: 0px;
     
 }
 .banner{
@@ -9,7 +10,7 @@
     width:100%;
     z-index: 2;
     top: auto;
-    margin-top: 30px;
+    margin-top: 10px;
   }
 .text {
   position: absolute;
@@ -23,12 +24,17 @@
     bottom: 110px;
     width: 100%;
   }
-.searchbar {
+
+.flight-info-container {
   position: relative;
   top: 500px;
+  left: 50px;
 }
-.filter {
-  position: relative;
+.filter-container {
+  position: absolute;
+  top: 450px;
+  right: 50px;
+  
 }
   
   

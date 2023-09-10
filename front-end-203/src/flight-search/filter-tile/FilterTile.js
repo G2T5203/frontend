@@ -70,7 +70,7 @@ const FilterTile = ({ airlines }) => {
         gap: '20px', // Increase spacing between elements
       }}
     >
-      <Typography variant="h6">Filter Options</Typography>
+      <Typography variant="h6" sx={{fontFamily: 'Merriweather Sans'}}>Filter</Typography>
 
       <div style={{ width: '100%' }}>
         <Typography variant="subtitle1" sx={{fontFamily: 'Merriweather Sans'}}>Time of Flight:</Typography>
@@ -93,8 +93,8 @@ const FilterTile = ({ airlines }) => {
           }}
         />
         <Box display="flex" justifyContent="space-between">
-          <Typography variant="caption">{flightTime[0]}:00</Typography>
-          <Typography variant="caption">{flightTime[1]}:00</Typography>
+          <Typography variant="caption" sx={{fontFamily: 'Merriweather Sans'}}>{flightTime[0]}:00</Typography>
+          <Typography variant="caption" sx={{fontFamily: 'Merriweather Sans'}}>{flightTime[1]}:00</Typography>
         </Box>
       </div>
 
@@ -183,7 +183,7 @@ const FilterTile = ({ airlines }) => {
               '& .MuiChip-root': {
                 backgroundColor: 'darkorange', // Orange chip background color
                 color: 'white', // White chip text color
-                fontFamily: 'MerriWeather Sans',
+                fontFamily: 'Merriweather Sans',
                 '& .MuiChip-deleteIcon': {
                   color: 'white', // White delete icon color
                 },
