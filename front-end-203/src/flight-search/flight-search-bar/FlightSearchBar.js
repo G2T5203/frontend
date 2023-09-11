@@ -145,6 +145,7 @@ const FlightSearchBar = () => {
         color="primary"
         startIcon={<SearchIcon />}
         onClick={handleSearch}
+        sx={{textTransform: 'none'}}
       >
         Search
       </Button>
