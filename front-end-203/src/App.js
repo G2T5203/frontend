@@ -1,14 +1,26 @@
+import logo from './logo.svg';
 import './App.css';
-import React from 'react';
-import SignInPage from './signin-screen/SignInPage';
-import SignUpPage from './signup-screen/SignUpPage';
-
 
 function App() {
   return (
     <div className="App">
-      <SignInPage />
-      <SignUpPage />
+      <header className="App-header">
+        <img src={logo} className="App-logo" alt="logo" />
+        <p>
+          Edit <code>src/App.js</code> and save to reload.
+        </p>
+        <a
+          className="App-link"
+          href="https://reactjs.org"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Learn React
+        </a>
+      </header>
+      <footer>
+        Environment {process.env.REACT_APP_ENV_NAME}
+      </footer>
     </div>
   );
 }
