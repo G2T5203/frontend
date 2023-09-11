@@ -1,0 +1,8 @@
+/* ScrollablePage.css */
+.scrollable-content {
+    overflow-y: scroll; /* Enable vertical scrollbar */
+    height: 100vh; /* Set a fixed height to fill the entire viewport */
+    padding: 20px; /* Add padding to the content */
+    background-color: #f0f0f0; /* Optional: Background color */
+  }
+  
