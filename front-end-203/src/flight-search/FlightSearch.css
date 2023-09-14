@@ -1,37 +1,40 @@
 .nav {
-    position: absolute;
+    position: fixed;
     z-index: 4;
-    width: 100%;
     top: 0px;
-    
+    left: 0px;
+    width: 100vw;
 }
 .banner{
     position: absolute;
-    width:100%;
     z-index: 2;
-    top: auto;
     margin-top: 10px;
+    top: 0px;
+    left: 0px;
+    
+    overflow: none;
   }
 .text {
   position: absolute;
   z-index: 3;
-  bottom: 200px;
+  bottom: 150px;
   margin-left: 20px;
 }
   
 .flight-search {
-    position: relative;
-    bottom: 110px;
-    width: 100%;
+    position: absolute;
+    bottom: 30px;
   }
 
 .flight-info-container {
-  position: relative;
+  position: absolute;
+  display: inline;
   top: 500px;
-  left: 50px;
+  margin-left: 50px;
 }
 .filter-container {
   position: absolute;
+  display: inline;
   top: 500px;
   right: 50px;
   
