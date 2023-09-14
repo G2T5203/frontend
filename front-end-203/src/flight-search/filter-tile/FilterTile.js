@@ -73,7 +73,7 @@ const FilterTile = ({ airlines }) => {
       <Typography variant="h6" sx={{fontFamily: 'Merriweather Sans'}}>Filter</Typography>
 
       <div style={{ width: '100%' }}>
-        <Typography variant="subtitle1" sx={{fontFamily: 'Merriweather Sans'}}>Time of Flight:</Typography>
+        <Typography variant="subtitle1" sx={{fontFamily: 'Merriweather Sans',}}>Time of Flight:</Typography>
         {/* Flight time slider */}
         <Slider
           value={flightTime}
@@ -83,12 +83,18 @@ const FilterTile = ({ airlines }) => {
           max={24}
           step={1}
           sx={{
-            '& .MuiSlider-rail': {
-              backgroundColor: 'orange', // Orange rail color
+            color: "darkorange",
+            '& .MuiSlider-track': {
+              backgroundColor: 'darkorange', // Orange rail color
             },
             '& .MuiSlider-thumb': {
               backgroundColor: 'white', // White thumb background
               boxShadow: '0px 0px 5px 2px rgba(255,255,255,0.75)', // White shadow
+            },
+            '& .MuiSlider-valueLabel': {
+              color: 'white', // Change to your desired text color
+              backgroundColor: 'darkorange', // Change to your desired background color
+              fontFamily: "Merriweather Sans"
             },
           }}
         />
@@ -109,12 +115,18 @@ const FilterTile = ({ airlines }) => {
           max={1000}
           step={10}
           sx={{
-            '& .MuiSlider-rail': {
+            color: "darkorange",
+            '& .MuiSlider-track': {
               backgroundColor: 'darkorange', // Orange rail color
             },
             '& .MuiSlider-thumb': {
               backgroundColor: 'white', // White thumb background
               boxShadow: '0px 0px 5px 2px rgba(255,255,255,0.75)', // White shadow
+            },
+            '& .MuiSlider-valueLabel': {
+              color: 'white', // Change to your desired text color
+              backgroundColor: 'darkorange', // Change to your desired background color
+              fontFamily: "Merriweather Sans"
             },
           }}
         />
@@ -171,14 +183,26 @@ const FilterTile = ({ airlines }) => {
             }}
             
             sx={{
-              '& input': {
-                borderColor: 'white', // White border
-                '&:hover': {
-                  borderColor: 'white', // White border on hover
-                },
+              "& input": {
+                color: "white", // white input text colour
               },
-              '& .MuiOutlinedInput-notchedOutline': {
-                borderColor: 'white', // White border for input
+              '& .MuiOutlinedInput-root': {
+                '& fieldset': {
+                  borderColor: 'white', // Default border color
+                },
+                '&:hover fieldset': {
+                  borderColor: 'white', // Border color on hover
+                },
+                '&.Mui-focused fieldset': {
+                  borderColor: 'white', // Border color on click/focus
+                },
+                '& .MuiSvgIcon-root': {
+                  color: 'white', // Color of the dropdown icon
+                },
+                '&::selection': {
+                  color: 'white', // Color of the text cursor (selection color)
+                  background: 'transparent', // Background color when text is selected
+                },
               },
               '& .MuiChip-root': {
                 backgroundColor: 'darkorange', // Orange chip background color
