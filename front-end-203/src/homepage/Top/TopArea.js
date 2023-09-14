@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Grid } from "@mui/material";
 import HeroImage from "./planeWing.jpg";
-import SearchingBox from "./SearchingBox";
+import SearchingBox from "./TopIndexContainer";
 import Bookingad from "./Bookingad";
 
 const HomeTop = () => {
