@@ -90,18 +90,18 @@ const FlightInfoCard = ({
         <Button
           variant="contained"
           sx={{
-            backgroundColor: "orange",
+            backgroundColor: "darkorange",
             color: "white",
             padding: "5px",
             "&:hover": {
-              backgroundColor: "darkorange", // Change background color on hover
+              backgroundColor: "orange", // Change background color on hover
             },
           }}
         >
           <Typography
             variant="h6"
             fontSize={15}
-            sx={{ fontFamily: "Merriweather Sans", textTransform: "none" }}
+            sx={{ fontFamily: "Merriweather Sans", textTransform: "none",}}
           >
             Book Now
           </Typography>

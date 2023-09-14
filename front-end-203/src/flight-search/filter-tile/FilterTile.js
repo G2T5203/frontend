@@ -58,7 +58,7 @@ const FilterTile = ({ airlines }) => {
     <div
       style={{
         border: '1px solid white', // White border
-        borderRadius: '5px',
+        borderRadius: '8px',
         padding: '20px',
         width: '250px',
         backgroundColor: '#003c7c', // Background color
@@ -145,6 +145,38 @@ const FilterTile = ({ airlines }) => {
             value={minPrice}
             onChange={handleMinPriceChange}
             variant="outlined"
+            sx={{
+              fontFamily: 'Merriweather Sans',
+              "& input": {
+                color: "white", // white input text colour
+              },
+              '& .MuiOutlinedInput-root': {
+                '& fieldset': {
+                  borderColor: 'white', // Default border color
+                },
+                '&:hover fieldset': {
+                  borderColor: 'white', // Border color on hover
+                },
+                '&.Mui-focused fieldset': {
+                  borderColor: 'white', // Border color on click/focus
+                },
+                '& .MuiSvgIcon-root': {
+                  color: 'white', // Color of the dropdown icon
+                },
+                '&::selection': {
+                  color: 'white', // Color of the text cursor (selection color)
+                  background: 'transparent', // Background color when text is selected
+                },
+              },
+              '& .MuiChip-root': {
+                backgroundColor: 'darkorange', // Orange chip background color
+                color: 'white', // White chip text color
+                fontFamily: 'Merriweather Sans',
+                '& .MuiChip-deleteIcon': {
+                  color: 'white', // White delete icon color
+                },
+              },
+            }}
             InputProps={{
               style: { color: 'white', borderColor: 'white' }, // White text and outline
             }}
@@ -157,7 +189,38 @@ const FilterTile = ({ airlines }) => {
             value={maxPrice}
             onChange={handleMaxPriceChange}
             variant="outlined"
-            sx={{fontFamily: 'Merriweather Sans'}}
+            sx={{
+              fontFamily: 'Merriweather Sans',
+              "& input": {
+                color: "white", // white input text colour
+              },
+              '& .MuiOutlinedInput-root': {
+                '& fieldset': {
+                  borderColor: 'white', // Default border color
+                },
+                '&:hover fieldset': {
+                  borderColor: 'white', // Border color on hover
+                },
+                '&.Mui-focused fieldset': {
+                  borderColor: 'white', // Border color on click/focus
+                },
+                '& .MuiSvgIcon-root': {
+                  color: 'white', // Color of the dropdown icon
+                },
+                '&::selection': {
+                  color: 'white', // Color of the text cursor (selection color)
+                  background: 'transparent', // Background color when text is selected
+                },
+              },
+              '& .MuiChip-root': {
+                backgroundColor: 'darkorange', // Orange chip background color
+                color: 'white', // White chip text color
+                fontFamily: 'Merriweather Sans',
+                '& .MuiChip-deleteIcon': {
+                  color: 'white', // White delete icon color
+                },
+              },
+            }}
             InputProps={{
               style: { color: 'white', borderColor: 'white' }, // White text and outline
             }}
@@ -166,7 +229,8 @@ const FilterTile = ({ airlines }) => {
       </div>
 
       <div style={{ width: '100%' }}>
-        <Typography variant="subtitle1" sx={{fontFamily: 'Merriweather Sans'}}>Airline Selector:</Typography>
+        <Typography variant="subtitle1" 
+        sx={{fontFamily: 'Merriweather Sans'}}>Airline Selector:</Typography>
         <Stack direction="column" spacing={1}>
           {/* Autocomplete combo box for airline selection */}
           <Autocomplete
@@ -231,7 +295,7 @@ const FilterTile = ({ airlines }) => {
           />
         </Stack>
       </div>
-
+       
       {/* Search button */}
       <Button
         variant="contained"
