@@ -25,7 +25,7 @@ const FlightInfoCard = ({
       <div className="section">
         <Avatar
           src={imageURL}
-          sx={{ marginLeft: "50px", width: 70, height: 70 }}
+          sx={{width: 70, height: 70 }}
         ></Avatar>
       </div>
 

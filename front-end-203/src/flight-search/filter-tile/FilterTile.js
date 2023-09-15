@@ -7,12 +7,11 @@ import {
   Button,
   TextField,
   Autocomplete,
-  Chip,
   ToggleButton,
   ToggleButtonGroup
 } from '@mui/material';
 
-const FilterTile = ({ airlines }) => {
+const FilterTile = ({ airlines, onFilterChange }) => {
   // State variables for flight time range, price range, selected airlines, and user input
   const [flightTime, setFlightTime] = useState([0, 24]);
   const [priceRange, setPriceRange] = useState([0, 1000]);
@@ -20,7 +19,7 @@ const FilterTile = ({ airlines }) => {
   const [inputValue, setInputValue] = useState('');
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(1000);
-  const [tripType, setTripType] = useState('');
+  const [tripType, setTripType] = useState(0);
 
   // Handle flight time slider change
   const handleFlightTimeChange = (event, newTime) => {
@@ -51,6 +50,7 @@ const FilterTile = ({ airlines }) => {
   // Handle search button click
   const handleSearch = () => {
     const airlineNames = selectedAirlines.map((airline) => airline);
+
     console.log('Selected Airlines:', airlineNames);
     console.log('Min Price:', minPrice);
     console.log('Max Price:', maxPrice);
@@ -58,6 +58,7 @@ const FilterTile = ({ airlines }) => {
     console.log('Selected Trip Type:', tripType);
   };
 
+  // handle toggle button change
   const handleTripTypeChange = (event, newTripType) => {
     setTripType(newTripType);
   };
@@ -154,7 +155,7 @@ const FilterTile = ({ airlines }) => {
           sx={{ marginRight: '10px', marginLeft: '10px'}}
         >
           <ToggleButton
-            value="direct"
+            value={0}
             aria-label="Direct"
             sx={{
               backgroundColor: 'transparent',
@@ -174,7 +175,7 @@ const FilterTile = ({ airlines }) => {
             Direct
           </ToggleButton>
           <ToggleButton
-            value="1-stop"
+            value={1}
             aria-label="1 Stop"
             sx={{
               backgroundColor: 'transparent',
@@ -194,7 +195,7 @@ const FilterTile = ({ airlines }) => {
             1 Stop
           </ToggleButton>
           <ToggleButton
-            value="2-stop"
+            value={2}
             aria-label="2 Stop"
             sx={{
               backgroundColor: 'transparent',

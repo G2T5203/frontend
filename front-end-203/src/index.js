@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
-import FlightSearchPage from "./flight-search-page/FlightSearchPage";
+import FlightSearchPage from "./search-screen/SearchScreen";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(<React.StrictMode>

@@ -1,12 +1,12 @@
 import React from "react";
+import { useState } from "react";
 import NavBar from "./nav-bar/NavigationBar"; // Import the Navbar component
-import FlightSearchBar from "./flight-search-bar/FlightSearchBar";
 import Banner from "./banner/Banner";
 import "./FlightSearch.css";
 import { Typography } from "@mui/material";
 import FlightInfoCard from "./flight-info-card/FlightInfoCard";
 import FilterTile from "./filter-tile/FilterTile";
-import FlightSearchBar2 from "../flight-search-bar-2/FlightSearchBar2";
+import FlightSearchBar2 from "./flight-search-bar/FlightSearchBar2";
 
 const flightInfoArray = [
   {
@@ -19,11 +19,71 @@ const flightInfoArray = [
     arrivalTime: "11:00 AM",
     stops: 1,
     travelTime: "3h 0m",
-    price: 299.99,
+    price: 799.99,
   },
   {
     imageURL: "https://example.com/airline2-logo.png",
-    departureAirport: "LAX",
+    departureAirport: "JFK",
+    departureDate: "2023-09-16",
+    departureTime: "09:30 AM",
+    arrivalAirport: "ORD",
+    arrivalDate: "2023-09-16",
+    arrivalTime: "12:45 PM",
+    stops: 0,
+    travelTime: "3h 15m",
+    price: 987.45,
+  },
+  {
+    imageURL: "https://example.com/airline3-logo.png",
+    departureAirport: "JFK",
+    departureDate: "2023-09-17",
+    departureTime: "10:15 AM",
+    arrivalAirport: "ATL",
+    arrivalDate: "2023-09-17",
+    arrivalTime: "01:30 PM",
+    stops: 2,
+    travelTime: "3h 15m",
+    price: 165.54,
+  },
+  {
+    imageURL: "https://example.com/airline4-logo.png",
+    departureAirport: "JFK",
+    departureDate: "2023-09-18",
+    departureTime: "11:30 AM",
+    arrivalAirport: "LAX",
+    arrivalDate: "2023-09-18",
+    arrivalTime: "02:15 PM",
+    stops: 0,
+    travelTime: "2h 45m",
+    price: 394.53,
+  },
+  {
+    imageURL: "https://example.com/airline5-logo.png",
+    departureAirport: "JFK",
+    departureDate: "2023-09-19",
+    departureTime: "07:45 AM",
+    arrivalAirport: "LAX",
+    arrivalDate: "2023-09-19",
+    arrivalTime: "10:30 AM",
+    stops: 0,
+    travelTime: "2h 45m",
+    price: 345.12,
+  },
+  {
+    imageURL: "https://example.com/airline1-logo.png",
+    departureAirport: "JFK",
+    departureDate: "2023-09-15",
+    departureTime: "08:00 AM",
+    arrivalAirport: "LAX",
+    arrivalDate: "2023-09-15",
+    arrivalTime: "11:00 AM",
+    stops: 1,
+    travelTime: "3h 0m",
+    price: 526.78,
+  },
+  {
+    imageURL: "https://example.com/airline2-logo.png",
+    departureAirport: "JFK",
     departureDate: "2023-09-16",
     departureTime: "09:30 AM",
     arrivalAirport: "ORD",
@@ -35,10 +95,10 @@ const flightInfoArray = [
   },
   {
     imageURL: "https://example.com/airline3-logo.png",
-    departureAirport: "ATL",
+    departureAirport: "JFK",
     departureDate: "2023-09-17",
     departureTime: "10:15 AM",
-    arrivalAirport: "MIA",
+    arrivalAirport: "ATL",
     arrivalDate: "2023-09-17",
     arrivalTime: "01:30 PM",
     stops: 2,
@@ -47,10 +107,10 @@ const flightInfoArray = [
   },
   {
     imageURL: "https://example.com/airline4-logo.png",
-    departureAirport: "SFO",
+    departureAirport: "JFK",
     departureDate: "2023-09-18",
     departureTime: "11:30 AM",
-    arrivalAirport: "SEA",
+    arrivalAirport: "LAX",
     arrivalDate: "2023-09-18",
     arrivalTime: "02:15 PM",
     stops: 1,
@@ -59,10 +119,10 @@ const flightInfoArray = [
   },
   {
     imageURL: "https://example.com/airline5-logo.png",
-    departureAirport: "ORD",
+    departureAirport: "JFK",
     departureDate: "2023-09-19",
     departureTime: "07:45 AM",
-    arrivalAirport: "MCO",
+    arrivalAirport: "LAX",
     arrivalDate: "2023-09-19",
     arrivalTime: "10:30 AM",
     stops: 0,
@@ -79,14 +139,24 @@ const filterInfo = {
   airlines: ["Singapore Airlines", "Qatar Airways", "Air India", "Emirates"],
 };
 const searchLocations = {
-  locations: [
-    "JFK",
-    "LAX",
-    "ORD",
-    "ATL",
-  ],
+  locations: ["JFK", "LAX", "ORD", "ATL"],
 };
 function FlightSearch() {
+  
+  const [filteredFlights, setFilteredFlights] = useState([]);
+
+  const handleSearch = (departureLocation, arrivalLocation) => {
+    // Filter flights based on the selected departure and arrival locations
+    const filteredFlights = flightInfoArray.filter((flight) => {
+      return (
+        flight.departureAirport === departureLocation &&
+        flight.arrivalAirport === arrivalLocation
+        
+      );
+    });
+
+    setFilteredFlights(filteredFlights);
+  };
   return (
     <div>
       <div className="nav">
@@ -107,13 +177,13 @@ function FlightSearch() {
           </Typography>
         </div>
         <div className="flight-search">
-          <FlightSearchBar2 locations={searchLocations.locations} />
-        </div>
+        <FlightSearchBar2 locations={searchLocations.locations} onSearch={handleSearch} />
       </div>
+      </div>
+      {/* Container for FlightInfoCard */}
       <div className="flight-info-container-scrollable">
-        {/* Map through the flightInfoArray and create FlightInfoCard components */}
-        {flightInfoArray.map((flight, index) => (
-          <div key={index} style={{ marginBottom: "10px" }}>
+        {filteredFlights.map((flight, index) => (
+          <div key={index} style={{ marginBottom: '10px' }}>
             <FlightInfoCard {...flight} />
           </div>
         ))}
