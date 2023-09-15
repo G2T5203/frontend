@@ -6,6 +6,7 @@ import "./FlightSearch.css";
 import { Typography } from "@mui/material";
 import FlightInfoCard from "./flight-info-card/FlightInfoCard";
 import FilterTile from "./filter-tile/FilterTile";
+import FlightSearchBar2 from "../flight-search-bar-2/FlightSearchBar2";
 
 
 const flightInfo = {
@@ -22,6 +23,9 @@ const flightInfo = {
 };
 const filterInfo ={
   airlines: ['Singapore Airlines', 'Qatar Airways', 'Air India', 'Emirates']
+}
+const searchLocations ={
+  locations: ['Singapore Changi', 'Dubai International', 'Mumbai International', 'Heathrow International']
 }
 function FlightSearch() {
   return (
@@ -44,7 +48,7 @@ function FlightSearch() {
           </Typography>
         </div>
         <div className="flight-search">
-          <FlightSearchBar />
+          <FlightSearchBar2 locations={searchLocations.locations}/>
         </div>
       </div>
       {/* Container for FlightInfoCard */}
