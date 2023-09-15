@@ -1,0 +1,157 @@
+import * as React from 'react';
+import Button from '@mui/material/Button';
+import CssBaseline from '@mui/material/CssBaseline';
+import TextField from '@mui/material/TextField';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
+import Link from '@mui/material/Link';
+import Paper from '@mui/material/Paper';
+import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import axios from 'axios';
+import { useState } from 'react';
+
+
+
+const defaultTheme = createTheme();
+
+export default function SignInPage() {
+  const [formData, setFormData] = useState({
+      "password": "1234123",
+      "firstName": "Jared",
+      "lastName": "Hong",
+      "dob": "2007-08-16T16:00:00.000+00:05",
+      "email": "jared.hong.2037@scis.smu.edu.sg",
+      "phone": "6590113790",
+      "salutation": "Mr."
+  
+  });
+
+  
+
+  const { email, password } = formData;
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      // Send a POST request to your backend API endpoint
+      const response = await axios.post('/api/signin', {
+        email,
+        password,
+      });
+
+      if (response.status === 200) {
+        // HTTP status code is 200, which means success
+        // You can consider the sign-in successful here
+        console.log('Sign-in successful');
+      } else {
+        console.log('Sign-in failed: Account does not exist');
+      }
+    } catch (error) {
+      // Handle errors (e.g., show an error message)
+      console.error('Sign-in failed', error);
+    }
+  };
+
+  return (
+    <ThemeProvider theme={defaultTheme}>
+      <Grid container component="main" sx={{ height: '100vh' }}>
+        <CssBaseline />
+        <Grid
+          item
+          xs={false}
+          sm={4}
+          md={7}
+          sx={{
+            backgroundImage: 'url(https://images.inc.com/uploaded_files/image/1920x1080/getty_543224919_124254.jpg)',
+            backgroundRepeat: 'no-repeat',
+            backgroundColor: (t) =>
+              t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+          }}
+        />
+        <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square sx={{ backgroundColor: '#143965' }}>
+
+          <Typography variant="h3" color="white" sx={{ fontFamily: 'Merriweather', fontSize: '100px', fontWeight: 500, marginTop: '60px' }}>
+            WingIt.
+          </Typography>
+          <Box
+            sx={{
+              my: 4,
+              mx: 4,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              backgroundColor: 'white',
+              borderRadius: '16px',
+              height: '400px',
+              padding: '2rem',
+            }}
+          >
+
+            <Typography variant="h1" sx={{ fontFamily: 'Merriweather', fontSize: '1.5rem', fontWeight: 'bold', marginTop: 'auto', marginLeft: '0rem', marginRight: 'auto' }}>
+              Sign in
+            </Typography>
+
+            <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="email"
+                label="Email Address"
+                name="email"
+                autoComplete="email"
+                autoFocus
+              />
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+              
+              />
+              <FormControlLabel
+                control={<Checkbox value="remember" color="primary" />}
+                label="Remember me"
+                sx={{ marginBottom: '-1rem' }}
+              />
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2, width: 'calc(100% - 150px)', fontSize: '14px', backgroundColor: '#F58A07' }}
+              >
+                Sign In
+              </Button>
+              <Grid container>
+                <Grid item xs>
+                  <Link href="#" variant="body2">
+                    Forgot password?
+                  </Link>
+                </Grid>
+                <Grid item>
+                  <Link href="#" variant="body2" style={{ marginRight: '4rem' }}>
+                    {"Don't have an account? Sign Up"}
+                  </Link>
+                </Grid>
+              </Grid>
+            </Box>
+          </Box>
+        </Grid>
+      </Grid>
+    </ThemeProvider>
+  );
+}
