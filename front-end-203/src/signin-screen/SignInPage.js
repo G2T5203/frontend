@@ -10,42 +10,53 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import axios from 'axios';
+import { useState } from 'react';
+
 
 
 const defaultTheme = createTheme();
 
 export default function SignInPage() {
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const email = data.get('email');
-    const password = data.get('password');
+  const [formData, setFormData] = useState({
+      "password": "1234123",
+      "firstName": "Jared",
+      "lastName": "Hong",
+      "dob": "2007-08-16T16:00:00.000+00:05",
+      "email": "jared.hong.2037@scis.smu.edu.sg",
+      "phone": "6590113790",
+      "salutation": "Mr."
+  
+  });
 
-    if (email && password) {
-      try {
-        const response = await fetch('http://localhost:3001/signin', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ email, password }), // Send email and password to the server
-        });
+  
 
-        const responseData = await response.json();
+  const { email, password } = formData;
 
-        if (response.status === 200) {
-          // Authentication successful, store the token and handle the user's session
-          // You can store the token in a secure way (e.g., in a cookie or local storage) for future requests
-          console.log('Okay');
-          // Redirect to an authenticated page or perform other actions
-        } else {
-          // Authentication failed, display an error message to the user
-          console.error(responseData.message);
-          // console.error(responseData.message); would log "Invalid email or password in the browser
-        }
-      } catch (error) {
-        console.error('An error occurred:', error);
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      // Send a POST request to your backend API endpoint
+      const response = await axios.post('/api/signin', {
+        email,
+        password,
+      });
+
+      if (response.status === 200) {
+        // HTTP status code is 200, which means success
+        // You can consider the sign-in successful here
+        console.log('Sign-in successful');
+      } else {
+        console.log('Sign-in failed: Account does not exist');
       }
+    } catch (error) {
+      // Handle errors (e.g., show an error message)
+      console.error('Sign-in failed', error);
     }
   };
 
@@ -100,7 +111,6 @@ export default function SignInPage() {
                 name="email"
                 autoComplete="email"
                 autoFocus
-              // sx={{ width: 'calc(100% - 100px)', marginBottom: '8px' }}
               />
               <TextField
                 margin="normal"
@@ -111,7 +121,7 @@ export default function SignInPage() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
-              // sx={{ width: 'calc(100% - 100px)', marginBottom: '8px' }}
+              
               />
               <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
