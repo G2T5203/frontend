@@ -19,12 +19,12 @@ const FlightSearchBar2 = ( {locations} ) => {
 
   const handleSearch = () => {
     // Implement your search functionality here
-    console.log("Searching...");
-    console.log("Departure Location:", departureLocation);
-    console.log("Arrival Location:", arrivalLocation);
-    console.log("Trip Type:", tripType);
-    console.log("Departure Date:", departureDate);
-    console.log("Return Date:", returnDate);
+    // console.log("Searching...");
+    // console.log("Departure Location:", departureLocation);
+    // console.log("Arrival Location:", arrivalLocation);
+    // console.log("Trip Type:", tripType);
+    // console.log("Departure Date:", departureDate);
+    // console.log("Return Date:", returnDate);
   };
 
   return (

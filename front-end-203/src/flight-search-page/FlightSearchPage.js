@@ -1,15 +1,15 @@
 // ScrollablePage.js
 import React from 'react';
 import FlightSearch from '../flight-search/FlightSearch';
-const ScrollablePage = () => {
+const FlightSearchPage = () => {
   return (
     <div className="scrollable-content">
-      <div style={{ height: '1000px' }}>
+      <div style={{ height: '300px' }}>
         <FlightSearch/>
       </div>
     </div>
   );
 };
 
-export default ScrollablePage;
+export default FlightSearchPage;
 

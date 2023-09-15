@@ -66,7 +66,6 @@ const FilterTile = ({ airlines }) => {
   return (
     <div
       style={{
-        border: '1px solid white', // White border
         borderRadius: '8px',
         padding: '20px',
         width: '250px',

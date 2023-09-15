@@ -26,17 +26,23 @@
     bottom: 30px;
   }
 
-.flight-info-container {
-  position: absolute;
-  display: inline;
-  top: 500px;
-  margin-left: 50px;
-}
-.filter-container {
+.flight-info-container-scrollable {
   position: absolute;
   display: inline;
   top: 400px;
-  right: 50px;
+  margin-left: 50px;
+  max-height: 400px;
+  overflow-y: auto;
+  padding: 20px;
+  
+
+}
+.filter-container {
+  position: absolute;
+  z-index: 6;
+  display: inline;
+  top: 130px;
+  right: 100px;
   
 }
   

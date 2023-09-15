@@ -2,12 +2,12 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
-import ScrollablePage from "./flight-search-page/FlightSearchPage";
+import FlightSearchPage from "./flight-search-page/FlightSearchPage";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(<React.StrictMode>
     
-    <ScrollablePage/>
+    <FlightSearchPage/>
 </React.StrictMode>);
 
 // If you want to start measuring performance in your app, pass a function
