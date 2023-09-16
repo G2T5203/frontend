@@ -9,6 +9,7 @@ import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import Box from "@mui/material/Box"; // Add Box from Material UI
+import axios from 'axios';
 
 const FlightSearchBar2 = ( {locations, onSearch} ) => {
   const [departureLocation, setDepartureLocation] = useState(null);
@@ -20,7 +21,21 @@ const FlightSearchBar2 = ( {locations, onSearch} ) => {
   const handleSearch = () => {
 
     // calback function to parent component
-    onSearch(departureLocation, arrivalLocation);
+    if (onSearch) {
+      onSearch(departureLocation, arrivalLocation);
+    }
+  
+    // Construct the URL with departure and arrival locations
+    const url = `http://localhost:8080/routeListings/fullSearch/${departureLocation}/${arrivalLocation}/2023/12/17`;
+  
+    // Send a GET request to the constructed URL
+    axios.get(url)
+      .then((response) => {
+        console.log("Response from the backend:", response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
 
     // print inputs to console
     console.log("Departure Location:", departureLocation);

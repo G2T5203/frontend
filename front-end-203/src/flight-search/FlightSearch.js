@@ -139,7 +139,7 @@ const filterInfo = {
   airlines: ["Singapore Airlines", "Qatar Airways", "Air India", "Emirates"],
 };
 const searchLocations = {
-  locations: ["JFK", "LAX", "ORD", "ATL"],
+  locations: ["Japan", "Singapore", "ORD", "ATL"],
 };
 function FlightSearch() {
   
