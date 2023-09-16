@@ -6,6 +6,7 @@ import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 import { Paper } from "@mui/material";
 import BookingBox from "./BookingBox";
+import UnderConstruction from "./UnderConstruction";
 
 export default function LabTabs() {
   const [value, setValue] = React.useState("1");
@@ -28,8 +29,12 @@ export default function LabTabs() {
           <TabPanel value="1">
             <BookingBox />
           </TabPanel>
-          <TabPanel value="2">Item Two</TabPanel>
-          <TabPanel value="3">Item Three</TabPanel>
+          <TabPanel value="2">
+            <UnderConstruction />
+          </TabPanel>
+          <TabPanel value="3">
+            <UnderConstruction />
+          </TabPanel>
         </TabContext>
       </Box>
     </Paper>

@@ -24,10 +24,12 @@ const Footer = () => {
         }}
         spacing={3}
       >
-        <Typography variant="h4" sx={{ fontWeight: "bold" }}>
+        <Typography variant="h4" sx={{ fontWeight: "bold", color: "#223662" }}>
           Captivate the moment
         </Typography>
-        <Typography variant="h6">Discover all destinations</Typography>
+        <Typography variant="h6" color={"#223662"}>
+          Discover all destinations
+        </Typography>
       </Stack>
     </Box>
   );
