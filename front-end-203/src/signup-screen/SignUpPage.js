@@ -71,7 +71,7 @@ export default function SignUpPage() {
         console.log("Sign-up successful: HTTP 201");
       } else {
         // Handle other possible responses, e.g., display error messages
-        console.log("Sign-up failed:", response.data.error);
+        console.log("Sign-up failed:", response.status);
       }
     } catch (error) {
       // Handle errors (e.g., show an error message)

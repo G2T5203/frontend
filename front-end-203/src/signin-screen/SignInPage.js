@@ -18,12 +18,12 @@ const defaultTheme = createTheme();
 export default function SignInPage() {
   const apiUrl = process.env.REACT_APP_API_BASE_URL;
   const [formData, setFormData] = useState({
+    username: "",
     password: "",
-    email: "",
     rememberBoolean: false,
   });
 
-  const { email, password } = formData;
+  const { username, password } = formData;
 
   const handleChange = (e) => {
     const { name, type } = e.target;
@@ -138,13 +138,13 @@ export default function SignInPage() {
                 margin="normal"
                 required
                 fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
+                id="username"
+                label="Username"
+                name="username"
+                autoComplete="username"
                 autoFocus
                 onChange={handleChange}
-                value={formData.email}
+                value={formData.username}
               />
               <TextField
                 margin="normal"
