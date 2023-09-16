@@ -16,6 +16,7 @@ import { useState } from "react";
 const defaultTheme = createTheme();
 
 export default function SignInPage() {
+  const apiUrl = process.env.REACT_APP_API_BASE_URL;
   const [formData, setFormData] = useState({
     password: "",
     email: "",
@@ -39,7 +40,7 @@ export default function SignInPage() {
 
     try {
       // Send a POST request to your backend API endpoint
-      const response = await axios.post("/api/signin", {
+      const response = await axios.post(apiUrl + "/signin", {
         email,
         password,
       });
