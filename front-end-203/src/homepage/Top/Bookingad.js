@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  Box,
-  Typography,
-  Paper,
-  createTheme,
-  ThemeProvider,
-} from "@mui/material";
+import { Typography, Paper, createTheme, ThemeProvider } from "@mui/material";
 
 const customTheme = createTheme({
   typography: {

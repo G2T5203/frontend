@@ -1,12 +1,11 @@
 import React from "react";
-import { Box, Typography, Button, Stack } from "@mui/material";
+import { Box, Typography, Stack } from "@mui/material";
 import footerimage from "./footerimage.jpg";
 const Footer = () => {
   return (
     <Box
       sx={{
         backgroundImage: `url(${footerimage})`, // Replace with your image URL
-        backgroundSize: "cover",
         backgroundRepeat: "no-repeat",
         backgroundPosition: "center",
         padding: "20px",
