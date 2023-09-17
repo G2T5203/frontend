@@ -364,9 +364,6 @@ const FilterTile = ({ airlines, onFilterChange }) => {
                 variant="outlined"
               />
             )}
-            getOptionSelected={(option, value) =>
-              option === value || selectedAirlines.includes(option)
-            }
             getOptionLabel={(option) => option}
             renderOption={(props, option, { selected }) => (
               <li {...props}>

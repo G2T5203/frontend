@@ -18,6 +18,7 @@ const FlightInfoCard = ({
   stops,
   travelTime,
   price,
+  flightNumber,
 }) => {
   return (
     <div className="flight-info-card">
@@ -25,8 +26,17 @@ const FlightInfoCard = ({
       <div className="section">
         <Avatar
           src={imageURL}
-          sx={{width: 70, height: 70 }}
+          sx={{width: 70, height: 70 , marginLeft: "25px"}}
         ></Avatar>
+      </div>
+      <div className="section">
+      <Typography
+          variant="body1"
+          fontSize={30}
+          sx={{ fontFamily: "Merriweather Sans"}}
+        >
+          {flightNumber} {/* Display flight number here */}
+        </Typography>
       </div>
 
       {/* Section 2: Departure Information */}

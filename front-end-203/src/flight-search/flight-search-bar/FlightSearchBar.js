@@ -10,7 +10,7 @@ import MyDatePicker from "../date-picker/MyDatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
-const FlightSearchBar2 = ( {locations, onSearch} ) => {
+const FlightSearchBar = ( {locations, onSearch} ) => {
   const [departureLocation, setDepartureLocation] = useState(null);
   const [arrivalLocation, setArrivalLocation] = useState(null);
   const [tripType, setTripType] = useState("one-way");
@@ -181,14 +181,14 @@ const FlightSearchBar2 = ( {locations, onSearch} ) => {
         onChange={handleDepartureDateChange}
       />
 
-      {tripType === "round-trip" && (
-        /* Reusable MyDatePicker for Return Date */
+      
         <MyDatePicker
         label="Return Date"
         value={returnDate}
         onChange={handleReturnDateChange}
+        disabled={tripType !== "round-trip"}
         />
-      )}
+      
 
       </LocalizationProvider>
       
@@ -208,4 +208,4 @@ const FlightSearchBar2 = ( {locations, onSearch} ) => {
   );
 };
 
-export default FlightSearchBar2;
+export default FlightSearchBar;

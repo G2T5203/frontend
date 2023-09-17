@@ -1,6 +1,6 @@
 import React from 'react';
 import FlightSearch from '../flight-search/FlightSearch';
-const FlightSearchPage = () => {
+const SearchScreen = () => {
   return (
     <div className="scrollable-content">
       <div>
@@ -10,5 +10,5 @@ const FlightSearchPage = () => {
   );
 };
 
-export default FlightSearchPage;
+export default SearchScreen;
 

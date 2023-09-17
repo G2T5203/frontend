@@ -2,13 +2,13 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
-import FlightSearchPage from "./search-screen/SearchScreen";
-import BasicDatePicker from "./flight-search/date-picker/MyDatePicker";
+import SearchScreen from "./search-screen/SearchScreen";
+
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(<React.StrictMode>
     
-    <FlightSearchPage/>
+    <SearchScreen/>
 </React.StrictMode>);
 
 // If you want to start measuring performance in your app, pass a function
