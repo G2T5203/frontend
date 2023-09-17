@@ -3,20 +3,27 @@ import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
-import DatePicker from "@mui/lab/DatePicker";
 import Button from "@mui/material/Button";
-import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import Box from "@mui/material/Box"; // Add Box from Material UI
 import axios from 'axios';
+import MyDatePicker from "../date-picker/MyDatePicker";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 const FlightSearchBar2 = ( {locations, onSearch} ) => {
   const [departureLocation, setDepartureLocation] = useState(null);
   const [arrivalLocation, setArrivalLocation] = useState(null);
   const [tripType, setTripType] = useState("one-way");
-  const [departureDate, setDepartureDate] = useState(new Date());
+  const [departureDate, setDepartureDate] = useState(null);
   const [returnDate, setReturnDate] = useState(null);
+
+  const handleDepartureDateChange = (date) => {
+    setDepartureDate(date);
+  };
+
+  const handleReturnDateChange = (date) => {
+    setReturnDate(date);
+  };
 
   const handleSearch = () => {
 
@@ -166,30 +173,25 @@ const FlightSearchBar2 = ( {locations, onSearch} ) => {
         </ToggleButton>
       </ToggleButtonGroup>
 
-      {/* Datepicker sections, this portion is not working*/}
+      {/* Reusable MyDatePicker for Departure Date */}
       <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <DemoContainer components={['DatePicker']}>
-        <DatePicker label="Basic date picker" />
-      </DemoContainer>
-    </LocalizationProvider>
-
-      <DatePicker
+      <MyDatePicker
         label="Departure Date"
         value={departureDate}
-        onChange={(newValue) => setDepartureDate(newValue)}
-        renderInput={(params) => <TextField {...params} />}
-        sx={{ marginRight: "10px", marginLeft: "10px" }}
+        onChange={handleDepartureDateChange}
       />
 
       {tripType === "round-trip" && (
-        <DatePicker
-          label="Return Date"
-          value={returnDate}
-          onChange={(newValue) => setReturnDate(newValue)}
-          renderInput={(params) => <TextField {...params} />}
-          sx={{ marginRight: "10px", marginLeft: "10px" }}
+        /* Reusable MyDatePicker for Return Date */
+        <MyDatePicker
+        label="Return Date"
+        value={returnDate}
+        onChange={handleReturnDateChange}
         />
       )}
+
+      </LocalizationProvider>
+      
         {/*search button*/}
       <Button
         variant="contained"
