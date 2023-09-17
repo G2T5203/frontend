@@ -33,17 +33,6 @@ export default function SignUpPage() {
         hasAgreedToTerms: false,
     });
 
-    const { 
-        firstName, 
-        lastName, 
-        email, 
-        password, 
-        hasAgreedToTerms, 
-        salutation, 
-        dob, 
-        username,
-        phone
-    } = formData;
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -54,9 +43,8 @@ export default function SignUpPage() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!hasAgreedToTerms) {
+        if (!formData.hasAgreedToTerms) {
             console.error('Please agree to the terms before signing up.');
-            // Optionally, you can show a user-friendly error message here.
             return; // This will exit the function without proceeding to the sign-up process.
         }
 
@@ -118,7 +106,6 @@ export default function SignUpPage() {
                                             <MenuItem value={"Miss"}>Ms</MenuItem>
                                             <MenuItem value={"Mdm"}>Mdm</MenuItem>
                                             <MenuItem value={"Master"}>Master</MenuItem>
-                                            {/* You can add more salutations as needed */}
                                         </Select>
                                     </FormControl>
                                 </Grid>
@@ -214,7 +201,7 @@ export default function SignUpPage() {
 
                                 <Grid item xs={12}>
                                     <FormControlLabel
-                                        control={<Checkbox name="hasAgreedToTerms" color="primary" checked={hasAgreedToTerms} onChange={handleChange} />} // Updated name and added checked prop
+                                        control={<Checkbox name="hasAgreedToTerms" color="primary" checked={formData.hasAgreedToTerms} onChange={handleChange} />} // Updated name and added checked prop
                                         label={
                                             <span>
                                                 I agree to all the{' '}
