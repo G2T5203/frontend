@@ -184,7 +184,6 @@ export default function SignInPage() {
                 sx={{
                   mt: 3,
                   mb: 2,
-                  width: "calc(100% - 150px)",
                   fontSize: "14px",
                   backgroundColor: "#F58A07",
                 }}
@@ -201,7 +200,6 @@ export default function SignInPage() {
                   <Link
                     href="#"
                     variant="body2"
-                    style={{ marginRight: "4rem" }}
                   >
                     {"Don't have an account? Sign Up"}
                   </Link>

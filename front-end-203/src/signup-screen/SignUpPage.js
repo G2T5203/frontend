@@ -43,10 +43,10 @@ export default function SignUpPage() {
     e.preventDefault();
 
 
-      if (!formData.hasAgreedToTerms) {
-          console.error('Please agree to the terms before signing up.');
-          return; // This will exit the function without proceeding to the sign-up process.
-      }
+    if (!formData.hasAgreedToTerms) {
+      console.error('Please agree to the terms before signing up.');
+      return; // This will exit the function without proceeding to the sign-up process.
+    }
 
     try {
       // Send a POST request to your backend API endpoint for sign-up
@@ -68,82 +68,43 @@ export default function SignUpPage() {
 
   return (
     <ThemeProvider theme={defaultTheme}>
-      <Grid container component="main" sx={{ height: "100vh" }}>
+      <Grid container component="main" sx={{ height: '100vh' }}>
         <CssBaseline />
-        <Grid
-          item
-          xs={false}
-          sm={4}
-          md={7}
+        <Grid item xs={false} sm={4} md={7}
           sx={{
-            backgroundImage:
-              "url(https://images.inc.com/uploaded_files/image/1920x1080/getty_543224919_124254.jpg)",
-            backgroundRepeat: "no-repeat",
-            backgroundColor: (t) =>
-              t.palette.mode === "light"
-                ? t.palette.grey[50]
-                : t.palette.grey[900],
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
-        />
-        <Grid
-          item
-          xs={12}
-          sm={8}
-          md={5}
-          component={Paper}
-          elevation={6}
-          square
-          sx={{ backgroundColor: "#143965" }}
-        >
-          <Typography
-            variant="h3"
-            color="white"
+            backgroundImage: 'url(https://images.inc.com/uploaded_files/image/1920x1080/getty_543224919_124254.jpg)',
+            backgroundRepeat: 'no-repeat',
+            backgroundColor: (t) => t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+          }} />
+        <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square sx={{ backgroundColor: '#143965' }}>
+          <Typography variant="h3" color="white"
             sx={{
-              fontFamily: "Merriweather",
-              fontSize: "100px",
+              fontFamily: 'Merriweather',
+              fontSize: '100px',
               fontWeight: 500,
-              marginTop: "60px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
+              marginTop: '60px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
             WingIt.
           </Typography>
-          <Box
-            sx={{
-              my: 4,
-              mx: 4,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              backgroundColor: "white",
-              borderRadius: "16px",
-              padding: "2rem",
-            }}
-          >
-            <Typography
-              variant="h1"
-              sx={{
-                fontFamily: "Merriweather",
-                fontSize: "1.5rem",
-                fontWeight: "bold",
-                marginTop: "auto",
-                marginLeft: "0rem",
-                marginRight: "auto",
-                marginBottom: "0.5rem",
-              }}
-            >
+          <Box sx={{
+            my: 4,
+            mx: 4,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            backgroundColor: 'white',
+            borderRadius: '16px',
+            padding: '2rem',
+          }}>
+            <Typography variant="h1" sx={{ fontFamily: 'Merriweather', fontSize: '1.5rem', fontWeight: 'bold', marginTop: 'auto', marginLeft: '0rem', marginRight: 'auto', marginBottom: '0.5rem' }}>
               Sign up
             </Typography>
-            <Box
-              component="form"
-              noValidate
-              onSubmit={handleSubmit}
-              sx={{ mt: 1 }}
-            >
+            <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
               <Grid container spacing={2}>
                 <Grid item xs={6} sm={4} md={3}>
                   <FormControl fullWidth required>
@@ -161,167 +122,118 @@ export default function SignUpPage() {
                       <MenuItem value={"Miss"}>Ms</MenuItem>
                       <MenuItem value={"Mdm"}>Mdm</MenuItem>
                       <MenuItem value={"Master"}>Master</MenuItem>
-                      {/* You can add more salutations as needed */}
                     </Select>
                   </FormControl>
                 </Grid>
-
-    return (
-        <ThemeProvider theme={defaultTheme}>
-            <Grid container component="main" sx={{ height: '100vh' }}>
-                <CssBaseline />
-                <Grid item xs={false} sm={4} md={7}
-                    sx={{
-                        backgroundImage: 'url(https://images.inc.com/uploaded_files/image/1920x1080/getty_543224919_124254.jpg)',
-                        backgroundRepeat: 'no-repeat',
-                        backgroundColor: (t) => t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
-                        backgroundSize: 'cover',
-                        backgroundPosition: 'center',
-                    }} />
-                <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square sx={{ backgroundColor: '#143965' }}>
-                    <Typography variant="h3" color="white"
-                        sx={{ fontFamily: 'Merriweather', fontSize: '100px', fontWeight: 500, marginTop: '60px', display: 'flex', alignItems: 'center', justifyContent: 'center', }}>
-                        WingIt.
-                    </Typography>
-                    <Box sx={{ my: 4, mx: 4, display: 'flex', flexDirection: 'column', alignItems: 'center', backgroundColor: 'white', borderRadius: '16px', padding: '2rem', }}>
-                        <Typography variant="h1" sx={{ fontFamily: 'Merriweather', fontSize: '1.5rem', fontWeight: 'bold', marginTop: 'auto', marginLeft: '0rem', marginRight: 'auto', marginBottom: '0.5rem' }}>
-                            Sign up
-                        </Typography>
-                        <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
-                            <Grid container spacing={2}>
-                                <Grid item xs={6} sm={4} md={3}>
-                                    <FormControl fullWidth required>
-                                        <InputLabel id="salutation-label">Salutation</InputLabel>
-                                        <Select
-                                            labelId="salutation-label"
-                                            id="salutation"
-                                            name="salutation"
-                                            value={formData.salutation}
-                                            onChange={handleChange}
-                                            label="Salutation"
-                                        >
-                                            <MenuItem value={"Mr"}>Mr</MenuItem>
-                                            <MenuItem value={"Mrs"}>Mrs</MenuItem>
-                                            <MenuItem value={"Miss"}>Ms</MenuItem>
-                                            <MenuItem value={"Mdm"}>Mdm</MenuItem>
-                                            <MenuItem value={"Master"}>Master</MenuItem>
-                                        </Select>
-                                    </FormControl>
-                                </Grid>
-
-                                <Grid item xs={12} sm={4.5}>
-                                    <TextField
-                                        autoComplete="given-name"
-                                        name="firstName"
-                                        required
-                                        fullWidth
-                                        id="firstName"
-                                        label="First Name"
-                                        autoFocus
-                                        value={formData.firstName}
-                                        onChange={handleChange}
-                                    />
-                                </Grid>
-                                <Grid item xs={12} sm={4.5}>
-                                    <TextField
-                                        required
-                                        fullWidth
-                                        id="lastName"
-                                        label="Last Name"
-                                        name="lastName"
-                                        autoComplete="family-name"
-                                        value={formData.lastName}
-                                        onChange={handleChange}
-                                    />
-                                </Grid>
-                                <Grid item xs={12} >
-                                    <TextField
-                                        required
-                                        fullWidth
-                                        id="email"
-                                        label="Email Address"
-                                        name="email"
-                                        autoComplete="email"
-                                        value={formData.email}
-                                        onChange={handleChange}
-                                    />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <TextField
-                                        required
-                                        fullWidth
-                                        id="phone"
-                                        label="Phone Number"
-                                        name="phone"
-                                        value={formData.phone}
-                                        onChange={handleChange}
-                                    />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <TextField
-                                        required
-                                        fullWidth
-                                        id="username"
-                                        label="Username"
-                                        name="username"
-                                        value={formData.username}
-                                        onChange={handleChange}
-                                    />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <TextField
-                                        required
-                                        fullWidth
-                                        name="password"
-                                        label="Password"
-                                        type="password"
-                                        id="password"
-                                        autoComplete="new-password"
-                                        value={formData.password}
-                                        onChange={handleChange}
-                                    />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <TextField
-                                        required
-                                        fullWidth
-                                        id="dob"
-                                        label="Date of Birth"
-                                        name="dob"
-                                        type="date"
-                                        value={formData.dob}
-                                        onChange={handleChange}
-                                        InputLabelProps={{
-                                            shrink: true,
-                                        }}
-                                    />
-                                </Grid>
+                <Grid item xs={12} sm={4.5}>
+                  <TextField
+                    autoComplete="given-name"
+                    name="firstName"
+                    required
+                    fullWidth
+                    id="firstName"
+                    label="First Name"
+                    autoFocus
+                    value={formData.firstName}
+                    onChange={handleChange}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={4.5}>
+                  <TextField
+                    required
+                    fullWidth
+                    id="lastName"
+                    label="Last Name"
+                    name="lastName"
+                    autoComplete="family-name"
+                    value={formData.lastName}
+                    onChange={handleChange}
+                  />
+                </Grid>
+                <Grid item xs={12} >
+                  <TextField
+                    required
+                    fullWidth
+                    id="email"
+                    label="Email Address"
+                    name="email"
+                    autoComplete="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    required
+                    fullWidth
+                    id="phone"
+                    label="Phone Number"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleChange}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    required
+                    fullWidth
+                    id="username"
+                    label="Username"
+                    name="username"
+                    value={formData.username}
+                    onChange={handleChange}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    required
+                    fullWidth
+                    name="password"
+                    label="Password"
+                    type="password"
+                    id="password"
+                    autoComplete="new-password"
+                    value={formData.password}
+                    onChange={handleChange}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    required
+                    fullWidth
+                    id="dob"
+                    label="Date of Birth"
+                    name="dob"
+                    type="date"
+                    value={formData.dob}
+                    onChange={handleChange}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                  />
+                </Grid>
 
 
-                                <Grid item xs={12}>
-                                    <FormControlLabel
-                                        control={<Checkbox name="hasAgreedToTerms" color="primary" checked={formData.hasAgreedToTerms} onChange={handleChange} />} // Updated name and added checked prop
-                                        label={
-                                            <span>
-                                                I agree to all the{' '}
-                                                <span style={{ color: 'orange', textDecoration: 'underline' }}>Terms and Privacy Policies</span>
-                                            </span>
-                                        }
-                                    />
-                                </Grid>
-                                <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2, fontSize: '14px', backgroundColor: '#F58A07', }}>
-                                    Sign Up
-                                </Button>
-                                <Grid container justifyContent="flex-end">
-                                    <Grid item>
-                                        <Link href="#" variant="body2">
-                                            Already have an account? Sign in
-                                        </Link>
-                                    </Grid>
-                                </Grid>
-                            </Grid>
-                        </Box>
-                    </Box>
+                <Grid item xs={12}>
+                  <FormControlLabel
+                    control={<Checkbox name="hasAgreedToTerms" color="primary" checked={formData.hasAgreedToTerms} onChange={handleChange} />} // Updated name and added checked prop
+                    label={
+                      <span>
+                        I agree to all the{' '}
+                        <span style={{ color: 'orange', textDecoration: 'underline' }}>Terms and Privacy Policies</span>
+                      </span>
+                    }
+                  />
+                </Grid>
+                <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2, fontSize: '14px', backgroundColor: '#F58A07', }}>
+                  Sign Up
+                </Button>
+                <Grid container justifyContent="flex-end">
+                  <Grid item>
+                    <Link href="#" variant="body2">
+                      Already have an account? Sign in
+                    </Link>
+                  </Grid>
                 </Grid>
               </Grid>
             </Box>
