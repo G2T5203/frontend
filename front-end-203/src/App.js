@@ -1,27 +1,24 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
+import HomePage from "./homepage/HomePage";
+import FlightSearch from "./flight-search/FlightSearch";
+import SignIn from "./signin-screen/SignInPage";
+import SignUp from "./signup-screen/SignUpPage";
+import EditProfile from "./backend-testing/EditProfile";
+import PlaneAdd from "./backend-testing/PlaneAdd";
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-      <footer>
-        Environment {process.env.REACT_APP_ENV_NAME}
-      </footer>
-    </div>
+    <Router>
+      <Routes>
+        <Route exact path="/" element={<HomePage />} />
+        <Route path="/flightsearch" element={<FlightSearch />} />
+        <Route path="/signin" element={<SignIn />} />
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/editprofile" element={<EditProfile />} />
+        <Route path="/planeadd" element={<PlaneAdd />} />
+      </Routes>
+    </Router>
   );
 }
 
