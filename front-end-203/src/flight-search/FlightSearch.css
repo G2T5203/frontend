@@ -29,17 +29,16 @@ body, html {
 
 .flight-search {
   position: absolute;
-  z-index: 3; /* Set a higher z-index to layer on top of the banner */
-  bottom: 1rem; /* Position at the bottom of the banner */
+  z-index: 3;
+  bottom: 1rem;
   left: 0;
-  width: 100%; /* Take up the full width of the banner */
-  padding: 10px; /* Add padding as needed */
-  box-sizing: border-box; /* Include padding in width */
+  /* Remove width property to prevent stretching */
+  padding: 10px;
+  box-sizing: border-box;
 }
 
 .flight-info-container-scrollable {
   position: absolute;
-  top: 26rem;
   left: 7rem;
   max-height: 41rem;
   overflow-y: scroll;
@@ -47,21 +46,22 @@ body, html {
   width: 50rem;
   box-sizing: border-box;
   z-index: 1;
+  margin-top: 2rem;
 }
 
 .filter-container {
   position: absolute;
-  right: 3rem;
-  top: 27rem;
-  z-index: 3; /* Set a higher z-index for stacking order */
-   /* Position it at the top of the viewport */
-   /* Position it at the right side of the viewport */
+  right: 6rem;
+  /* Position below the banner */
+  margin-top: 4rem; /* Adjust this value as needed */
+  z-index: 2;
 
+  /* You can add more styles for the filter container here */
 }
 
 /* Media query for responsive layout */
 @media (max-width: 768px) {
   .filter-container {
-      margin-right: 20px;
+    margin-right: 20px;
   }
 }

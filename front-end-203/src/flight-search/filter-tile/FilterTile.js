@@ -7,8 +7,6 @@ import {
   Button,
   TextField,
   Autocomplete,
-  ToggleButton,
-  ToggleButtonGroup
 } from '@mui/material';
 
 const FilterTile = ({ airlines, onFilterChange }) => {
@@ -19,7 +17,6 @@ const FilterTile = ({ airlines, onFilterChange }) => {
   const [inputValue, setInputValue] = useState('');
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(1000);
-  const [tripType, setTripType] = useState(0);
 
   // Handle flight time slider change
   const handleFlightTimeChange = (event, newTime) => {
@@ -55,13 +52,8 @@ const FilterTile = ({ airlines, onFilterChange }) => {
     console.log('Min Price:', minPrice);
     console.log('Max Price:', maxPrice);
     console.log('Selected Time Period:', flightTime[0] + ':00 - ' + flightTime[1] + ':00');
-    console.log('Selected Trip Type:', tripType);
   };
 
-  // handle toggle button change
-  const handleTripTypeChange = (event, newTripType) => {
-    setTripType(newTripType);
-  };
   
   
   return (
@@ -145,77 +137,6 @@ const FilterTile = ({ airlines, onFilterChange }) => {
         </Box>
       </div>
 
-      {/* Trip selection toggle buttons */}
-      <div>
-        <ToggleButtonGroup
-          value={tripType}
-          exclusive
-          onChange={handleTripTypeChange}
-          aria-label="Trip Type"
-          sx={{ marginRight: '10px', marginLeft: '10px'}}
-        >
-          <ToggleButton
-            value={0}
-            aria-label="Direct"
-            sx={{
-              backgroundColor: 'transparent',
-              color: 'inherit',
-              '&.Mui-selected': {
-                backgroundColor: 'darkorange',
-                color: 'white',
-                '&:hover': {
-                  backgroundColor: 'darkorange',
-                },
-              },
-              borderColor: 'white',
-              textTransform: 'none',
-              fontFamily: 'Merriweather Sans',
-            }}
-          >
-            Direct
-          </ToggleButton>
-          <ToggleButton
-            value={1}
-            aria-label="1 Stop"
-            sx={{
-              backgroundColor: 'transparent',
-              color: 'inherit',
-              '&.Mui-selected': {
-                backgroundColor: 'darkorange',
-                color: 'white',
-                '&:hover': {
-                  backgroundColor: 'darkorange',
-                },
-              },
-              borderColor: 'white',
-              textTransform: 'none',
-              fontFamily: 'Merriweather Sans',
-            }}
-          >
-            1 Stop
-          </ToggleButton>
-          <ToggleButton
-            value={2}
-            aria-label="2 Stop"
-            sx={{
-              backgroundColor: 'transparent',
-              color: 'inherit',
-              '&.Mui-selected': {
-                backgroundColor: 'darkorange',
-                color: 'white',
-                '&:hover': {
-                  backgroundColor: 'darkorange',
-                },
-              },
-              borderColor: 'white',
-              textTransform: 'none',
-              fontFamily: 'Merriweather Sans',
-            }}
-          >
-            2 Stop
-          </ToggleButton>
-        </ToggleButtonGroup>
-      </div>
 
       {/* Min and Max Price Input Boxes */}
       <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
