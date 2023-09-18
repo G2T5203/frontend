@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   Box,
   Typography,
@@ -14,7 +14,7 @@ const FilterTile = ({ airlines, onFilterChange }) => {
   const [flightTime, setFlightTime] = useState([0, 24]);
   const [priceRange, setPriceRange] = useState([0, 1000]);
   const [selectedAirlines, setSelectedAirlines] = useState([]);
-  const [inputValue, setInputValue] = useState('');
+  const [inputValue, setInputValue] = useState("");
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(1000);
 
@@ -71,7 +71,9 @@ const FilterTile = ({ airlines, onFilterChange }) => {
         gap: '20px', // Increase spacing between elements
       }}
     >
-      <Typography variant="h6" sx={{fontFamily: 'Merriweather Sans'}}>Filter</Typography>
+      <Typography variant="h6" sx={{ fontFamily: "Merriweather Sans" }}>
+        Filter
+      </Typography>
 
       <div style={{ width: '100%' }}>
         <Typography variant="subtitle1" sx={{fontFamily: 'Merriweather Sans',}}>Time of Flight:</Typography>
@@ -88,9 +90,9 @@ const FilterTile = ({ airlines, onFilterChange }) => {
             '& .MuiSlider-track': {
               backgroundColor: 'darkorange', // Orange rail color
             },
-            '& .MuiSlider-thumb': {
-              backgroundColor: 'white', // White thumb background
-              boxShadow: '0px 0px 5px 2px rgba(255,255,255,0.75)', // White shadow
+            "& .MuiSlider-thumb": {
+              backgroundColor: "white", // White thumb background
+              boxShadow: "0px 0px 5px 2px rgba(255,255,255,0.75)", // White shadow
             },
             '& .MuiSlider-valueLabel': {
               color: 'white', // Change to your desired text color
@@ -100,13 +102,28 @@ const FilterTile = ({ airlines, onFilterChange }) => {
           }}
         />
         <Box display="flex" justifyContent="space-between">
-          <Typography variant="caption" sx={{fontFamily: 'Merriweather Sans'}}>{flightTime[0]}:00</Typography>
-          <Typography variant="caption" sx={{fontFamily: 'Merriweather Sans'}}>{flightTime[1]}:00</Typography>
+          <Typography
+            variant="caption"
+            sx={{ fontFamily: "Merriweather Sans" }}
+          >
+            {flightTime[0]}:00
+          </Typography>
+          <Typography
+            variant="caption"
+            sx={{ fontFamily: "Merriweather Sans" }}
+          >
+            {flightTime[1]}:00
+          </Typography>
         </Box>
       </div>
 
-      <div style={{ width: '100%' }}>
-        <Typography variant="subtitle1" sx={{fontFamily: 'Merriweather Sans'}}>Price Range:</Typography>
+      <div style={{ width: "100%" }}>
+        <Typography
+          variant="subtitle1"
+          sx={{ fontFamily: "Merriweather Sans" }}
+        >
+          Price Range:
+        </Typography>
         {/* Price range slider */}
         <Slider
           value={priceRange}
@@ -120,9 +137,9 @@ const FilterTile = ({ airlines, onFilterChange }) => {
             '& .MuiSlider-track': {
               backgroundColor: 'darkorange', // Orange rail color
             },
-            '& .MuiSlider-thumb': {
-              backgroundColor: 'white', // White thumb background
-              boxShadow: '0px 0px 5px 2px rgba(255,255,255,0.75)', // White shadow
+            "& .MuiSlider-thumb": {
+              backgroundColor: "white", // White thumb background
+              boxShadow: "0px 0px 5px 2px rgba(255,255,255,0.75)", // White shadow
             },
             '& .MuiSlider-valueLabel': {
               color: 'white', // Change to your desired text color
@@ -132,16 +149,37 @@ const FilterTile = ({ airlines, onFilterChange }) => {
           }}
         />
         <Box display="flex" justifyContent="space-between">
-          <Typography variant="caption" sx={{fontFamily: 'Merriweather Sans'}}>${minPrice}</Typography>
-          <Typography variant="caption" sx={{fontFamily: 'Merriweather Sans'}}>${maxPrice}</Typography>
+          <Typography
+            variant="caption"
+            sx={{ fontFamily: "Merriweather Sans" }}
+          >
+            ${minPrice}
+          </Typography>
+          <Typography
+            variant="caption"
+            sx={{ fontFamily: "Merriweather Sans" }}
+          >
+            ${maxPrice}
+          </Typography>
         </Box>
       </div>
 
 
       {/* Min and Max Price Input Boxes */}
-      <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
-        <div style={{ width: '48%' }}>
-          <Typography variant="subtitle1" sx={{fontFamily: 'Merriweather Sans'}}>Min Price:</Typography>
+      <div
+        style={{
+          width: "100%",
+          display: "flex",
+          justifyContent: "space-between",
+        }}
+      >
+        <div style={{ width: "48%" }}>
+          <Typography
+            variant="subtitle1"
+            sx={{ fontFamily: "Merriweather Sans" }}
+          >
+            Min Price:
+          </Typography>
           <TextField
             type="number"
             value={minPrice}
@@ -180,12 +218,17 @@ const FilterTile = ({ airlines, onFilterChange }) => {
               },
             }}
             InputProps={{
-              style: { color: 'white', borderColor: 'white' }, // White text and outline
+              style: { color: "white", borderColor: "white" }, // White text and outline
             }}
           />
         </div>
-        <div style={{ width: '48%' }}>
-          <Typography variant="subtitle1" sx={{fontFamily: 'Merriweather Sans'}}>Max Price:</Typography>
+        <div style={{ width: "48%" }}>
+          <Typography
+            variant="subtitle1"
+            sx={{ fontFamily: "Merriweather Sans" }}
+          >
+            Max Price:
+          </Typography>
           <TextField
             type="number"
             value={maxPrice}
@@ -224,7 +267,7 @@ const FilterTile = ({ airlines, onFilterChange }) => {
               },
             }}
             InputProps={{
-              style: { color: 'white', borderColor: 'white' }, // White text and outline
+              style: { color: "white", borderColor: "white" }, // White text and outline
             }}
           />
         </div>
@@ -238,7 +281,9 @@ const FilterTile = ({ airlines, onFilterChange }) => {
           <Autocomplete
             multiple
             id="airline-selector"
-            options={airlines.filter((airline) => !selectedAirlines.includes(airline))} // Exclude selected airlines
+            options={airlines.filter(
+              (airline) => !selectedAirlines.includes(airline)
+            )} // Exclude selected airlines
             value={selectedAirlines}
             inputValue={inputValue}
             onInputChange={(_, newInputValue) => {
@@ -247,7 +292,6 @@ const FilterTile = ({ airlines, onFilterChange }) => {
             onChange={(_, newValue) => {
               setSelectedAirlines(newValue);
             }}
-            
             sx={{
               "& input": {
                 color: "white", // white input text colour
@@ -270,26 +314,21 @@ const FilterTile = ({ airlines, onFilterChange }) => {
                   background: 'transparent', // Background color when text is selected
                 },
               },
-              '& .MuiChip-root': {
-                backgroundColor: 'darkorange', // Orange chip background color
-                color: 'white', // White chip text color
-                fontFamily: 'Merriweather Sans',
-                '& .MuiChip-deleteIcon': {
-                  color: 'white', // White delete icon color
+              "& .MuiChip-root": {
+                backgroundColor: "darkorange", // Orange chip background color
+                color: "white", // White chip text color
+                fontFamily: "Merriweather Sans",
+                "& .MuiChip-deleteIcon": {
+                  color: "white", // White delete icon color
                 },
               },
             }}
             renderInput={(params) => (
-              <TextField
-                {...params}
-                variant="outlined"
-              />
+              <TextField {...params} variant="outlined" />
             )}
             getOptionLabel={(option) => option}
             renderOption={(props, option, { selected }) => (
-              <li {...props}>
-                {option}
-              </li>
+              <li {...props}>{option}</li>
             )}
           />
         </Stack>
@@ -298,7 +337,13 @@ const FilterTile = ({ airlines, onFilterChange }) => {
       {/* Search button */}
       <Button
         variant="contained"
-        style={{ marginTop: '20px', backgroundColor: 'darkorange', color: 'white', textTransform: 'none', fontFamily: 'Merriweather Sans'}}
+        style={{
+          marginTop: "20px",
+          backgroundColor: "darkorange",
+          color: "white",
+          textTransform: "none",
+          fontFamily: "Merriweather Sans",
+        }}
         onClick={handleSearch}
       >
         Search
