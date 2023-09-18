@@ -58,7 +58,7 @@ const FlightSearchBar = ( {locations, onSearch} ) => {
       flexDirection="row"
       alignItems="center"
       sx={{
-        backgroundColor: "#003c7c",
+        backgroundColor: "#143965",
         padding: "15px",
         borderRadius: "8px",
         margin: "10px",

@@ -70,7 +70,7 @@ const FilterTile = ({ airlines, onFilterChange }) => {
         borderRadius: '8px',
         padding: '20px',
         width: '250px',
-        backgroundColor: '#003c7c', // Background color
+        backgroundColor: '#143965', // Background color
         color: 'white', // Text color
         fontFamily: 'Merriweather Sans, sans-serif', // Font style
         display: 'flex',
