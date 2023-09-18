@@ -1,51 +1,67 @@
-.nav {
-    position: fixed;
-    z-index: 4;
-    top: 0px;
-    left: 0px;
-    width: 100vw;
+/* Base styles */
+body, html {
+  padding: 0;
+  margin: 0;
 }
-.banner{
-    position: absolute;
-    z-index: 2;
-    margin-top: 10px;
-    top: 0px;
-    left: 0px;
-    
-    overflow: none;
-  }
+
+.nav {
+  position: fixed;
+  z-index: 4;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #fff; /* Set background color if needed */
+}
+
+.banner {
+  position: relative;
+  z-index: 2;
+  margin-top: 2rem;
+  overflow: hidden;
+}
+
 .text {
   position: absolute;
   z-index: 3;
-  bottom: 150px;
-  margin-left: 20px;
+  bottom: 8rem;
+  left: 2rem;
 }
-  
+
 .flight-search {
-    position: absolute;
-    bottom: 30px;
-  }
+  position: absolute;
+  z-index: 3; /* Set a higher z-index to layer on top of the banner */
+  bottom: 1rem; /* Position at the bottom of the banner */
+  left: 0;
+  width: 100%; /* Take up the full width of the banner */
+  padding: 10px; /* Add padding as needed */
+  box-sizing: border-box; /* Include padding in width */
+}
 
 .flight-info-container-scrollable {
   position: absolute;
-  display: inline;
-  top: 370px;
-  margin-left: 50px;
-  max-height: 580px;
+  top: 26rem;
+  left: 7rem;
+  max-height: 41rem;
   overflow-y: scroll;
-  padding: 20px;
-  border-color: black;
+  padding: 2rem;
   width: 50rem;
-  
-
+  box-sizing: border-box;
+  z-index: 1;
 }
+
 .filter-container {
   position: absolute;
-  z-index: 6;
-  display: inline;
-  top: 370px;
-  right: 100px;
-  
+  right: 3rem;
+  top: 27rem;
+  z-index: 3; /* Set a higher z-index for stacking order */
+   /* Position it at the top of the viewport */
+   /* Position it at the right side of the viewport */
+
 }
-  
-  
+
+/* Media query for responsive layout */
+@media (max-width: 768px) {
+  .filter-container {
+      margin-right: 20px;
+  }
+}
