@@ -41,7 +41,7 @@ export default function SignInPage() {
     try {
       // Send a POST request to your backend API endpoint
       const response = await axios.post(apiUrl + "/signin", {
-        email,
+        username,
         password,
       });
 
@@ -87,7 +87,12 @@ export default function SignInPage() {
           component={Paper}
           elevation={6}
           square
-          sx={{ backgroundColor: "#143965" }}
+          sx={{
+            backgroundColor: "#143965",
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center'
+          }}
         >
           <Typography
             variant="h3"
@@ -96,6 +101,7 @@ export default function SignInPage() {
               fontFamily: "Merriweather",
               fontSize: "100px",
               fontWeight: 500,
+              textAlign: 'center',
               marginTop: "60px",
             }}
           >
@@ -178,15 +184,14 @@ export default function SignInPage() {
                 sx={{
                   mt: 3,
                   mb: 2,
-                  width: "calc(100% - 150px)",
                   fontSize: "14px",
                   backgroundColor: "#F58A07",
                 }}
               >
                 Sign In
               </Button>
-              <Grid container>
-                <Grid item xs>
+              <Grid container justifyContent="space-between">
+                <Grid item>
                   <Link href="#" variant="body2">
                     Forgot password?
                   </Link>
@@ -195,7 +200,6 @@ export default function SignInPage() {
                   <Link
                     href="#"
                     variant="body2"
-                    style={{ marginRight: "4rem" }}
                   >
                     {"Don't have an account? Sign Up"}
                   </Link>

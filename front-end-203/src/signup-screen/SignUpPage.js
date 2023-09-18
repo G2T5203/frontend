@@ -33,19 +33,6 @@ export default function SignUpPage() {
     hasAgreedToTerms: false,
   });
 
-  //TODO:CLEAN UP THIS PAGE
-  const {
-    // firstName,
-    // lastName,
-    // email,
-    // password,
-    hasAgreedToTerms,
-    // salutation,
-    // dob,
-    // username,
-    // phone,
-  } = formData;
-
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     const newValue = type === "checkbox" ? checked : value;
@@ -55,9 +42,9 @@ export default function SignUpPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!hasAgreedToTerms) {
-      console.error("Please agree to the terms before signing up.");
-      // Optionally, you can show a user-friendly error message here.
+
+    if (!formData.hasAgreedToTerms) {
+      console.error('Please agree to the terms before signing up.');
       return; // This will exit the function without proceeding to the sign-up process.
     }
 
@@ -81,82 +68,43 @@ export default function SignUpPage() {
 
   return (
     <ThemeProvider theme={defaultTheme}>
-      <Grid container component="main" sx={{ height: "100vh" }}>
+      <Grid container component="main" sx={{ height: '100vh' }}>
         <CssBaseline />
-        <Grid
-          item
-          xs={false}
-          sm={4}
-          md={7}
+        <Grid item xs={false} sm={4} md={7}
           sx={{
-            backgroundImage:
-              "url(https://images.inc.com/uploaded_files/image/1920x1080/getty_543224919_124254.jpg)",
-            backgroundRepeat: "no-repeat",
-            backgroundColor: (t) =>
-              t.palette.mode === "light"
-                ? t.palette.grey[50]
-                : t.palette.grey[900],
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
-        />
-        <Grid
-          item
-          xs={12}
-          sm={8}
-          md={5}
-          component={Paper}
-          elevation={6}
-          square
-          sx={{ backgroundColor: "#143965" }}
-        >
-          <Typography
-            variant="h3"
-            color="white"
+            backgroundImage: 'url(https://images.inc.com/uploaded_files/image/1920x1080/getty_543224919_124254.jpg)',
+            backgroundRepeat: 'no-repeat',
+            backgroundColor: (t) => t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+          }} />
+        <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square sx={{ backgroundColor: '#143965' }}>
+          <Typography variant="h3" color="white"
             sx={{
-              fontFamily: "Merriweather",
-              fontSize: "100px",
+              fontFamily: 'Merriweather',
+              fontSize: '100px',
               fontWeight: 500,
-              marginTop: "60px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
+              marginTop: '60px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
             WingIt.
           </Typography>
-          <Box
-            sx={{
-              my: 4,
-              mx: 4,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              backgroundColor: "white",
-              borderRadius: "16px",
-              padding: "2rem",
-            }}
-          >
-            <Typography
-              variant="h1"
-              sx={{
-                fontFamily: "Merriweather",
-                fontSize: "1.5rem",
-                fontWeight: "bold",
-                marginTop: "auto",
-                marginLeft: "0rem",
-                marginRight: "auto",
-                marginBottom: "0.5rem",
-              }}
-            >
+          <Box sx={{
+            my: 4,
+            mx: 4,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            backgroundColor: 'white',
+            borderRadius: '16px',
+            padding: '2rem',
+          }}>
+            <Typography variant="h1" sx={{ fontFamily: 'Merriweather', fontSize: '1.5rem', fontWeight: 'bold', marginTop: 'auto', marginLeft: '0rem', marginRight: 'auto', marginBottom: '0.5rem' }}>
               Sign up
             </Typography>
-            <Box
-              component="form"
-              noValidate
-              onSubmit={handleSubmit}
-              sx={{ mt: 1 }}
-            >
+            <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
               <Grid container spacing={2}>
                 <Grid item xs={6} sm={4} md={3}>
                   <FormControl fullWidth required>
@@ -174,11 +122,9 @@ export default function SignUpPage() {
                       <MenuItem value={"Miss"}>Ms</MenuItem>
                       <MenuItem value={"Mdm"}>Mdm</MenuItem>
                       <MenuItem value={"Master"}>Master</MenuItem>
-                      {/* You can add more salutations as needed */}
                     </Select>
                   </FormControl>
                 </Grid>
-
                 <Grid item xs={12} sm={4.5}>
                   <TextField
                     autoComplete="given-name"
@@ -204,7 +150,7 @@ export default function SignUpPage() {
                     onChange={handleChange}
                   />
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item xs={12} >
                   <TextField
                     required
                     fullWidth
@@ -267,42 +213,19 @@ export default function SignUpPage() {
                   />
                 </Grid>
 
+
                 <Grid item xs={12}>
                   <FormControlLabel
-                    control={
-                      <Checkbox
-                        name="hasAgreedToTerms"
-                        color="primary"
-                        checked={hasAgreedToTerms}
-                        onChange={handleChange}
-                      />
-                    } // Updated name and added checked prop
+                    control={<Checkbox name="hasAgreedToTerms" color="primary" checked={formData.hasAgreedToTerms} onChange={handleChange} />} // Updated name and added checked prop
                     label={
                       <span>
-                        I agree to all the{" "}
-                        <span
-                          style={{
-                            color: "orange",
-                            textDecoration: "underline",
-                          }}
-                        >
-                          Terms and Privacy Policies
-                        </span>
+                        I agree to all the{' '}
+                        <span style={{ color: 'orange', textDecoration: 'underline' }}>Terms and Privacy Policies</span>
                       </span>
                     }
                   />
                 </Grid>
-                <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  sx={{
-                    mt: 3,
-                    mb: 2,
-                    fontSize: "14px",
-                    backgroundColor: "#F58A07",
-                  }}
-                >
+                <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2, fontSize: '14px', backgroundColor: '#F58A07', }}>
                   Sign Up
                 </Button>
                 <Grid container justifyContent="flex-end">
