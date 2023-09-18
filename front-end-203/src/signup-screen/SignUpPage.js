@@ -1,71 +1,170 @@
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
-import Paper from '@mui/material/Paper';
-import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
+import Button from "@mui/material/Button";
+import CssBaseline from "@mui/material/CssBaseline";
+import TextField from "@mui/material/TextField";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
+import Link from "@mui/material/Link";
+import Paper from "@mui/material/Paper";
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
 
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useState } from "react";
+import axios from "axios";
 
 const defaultTheme = createTheme();
 
 export default function SignUpPage() {
-    const apiUrl = process.env.REACT_APP_API_BASE_URL;
-    const [formData, setFormData] = useState({
-        username: "",
-        password: "",
-        firstName: "",
-        lastName: "",
-        dob: "",
-        email: "",
-        phone: "",
-        salutation: "",
-        hasAgreedToTerms: false,
-    });
+  const apiUrl = process.env.REACT_APP_API_BASE_URL;
+  const [formData, setFormData] = useState({
+    username: "",
+    password: "",
+    firstName: "",
+    lastName: "",
+    dob: "",
+    email: "",
+    phone: "",
+    salutation: "",
+    hasAgreedToTerms: false,
+  });
+
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    const newValue = type === "checkbox" ? checked : value;
+    setFormData({ ...formData, [name]: newValue });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
 
-    const handleChange = (e) => {
-        const { name, value, type, checked } = e.target;
-        const newValue = type === 'checkbox' ? checked : value;
-        setFormData({ ...formData, [name]: newValue });
-    };
+      if (!formData.hasAgreedToTerms) {
+          console.error('Please agree to the terms before signing up.');
+          return; // This will exit the function without proceeding to the sign-up process.
+      }
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    try {
+      // Send a POST request to your backend API endpoint for sign-up
+      const response = await axios.post(apiUrl + "users/new", formData);
 
-        if (!formData.hasAgreedToTerms) {
-            console.error('Please agree to the terms before signing up.');
-            return; // This will exit the function without proceeding to the sign-up process.
-        }
+      if (response.status === 201) {
+        // HTTP status code is 201, which means success
+        // You can consider the sign-up successful here
+        console.log("Sign-up successful: HTTP 201");
+      } else {
+        // Handle other possible responses, e.g., display error messages
+        console.log("Sign-up failed:", response.status);
+      }
+    } catch (error) {
+      // Handle errors (e.g., show an error message)
+      console.error("Sign-up failed", error);
+    }
+  };
 
-        try {
-            // Send a POST request to your backend API endpoint for sign-up
-            const response = await axios.post(apiUrl + 'users/new', formData);
-
-            if (response.status === 201) {
-                // HTTP status code is 201, which means success
-                // You can consider the sign-up successful here
-                console.log('Sign-up successful: HTTP 201');
-            } else {
-                // Handle other possible responses, e.g., display error messages
-                console.log('Sign-up failed:', response.data.error);
-            }
-        } catch (error) {
-            // Handle errors (e.g., show an error message)
-            console.error('Sign-up failed', error);
-        }
-    };
-
+  return (
+    <ThemeProvider theme={defaultTheme}>
+      <Grid container component="main" sx={{ height: "100vh" }}>
+        <CssBaseline />
+        <Grid
+          item
+          xs={false}
+          sm={4}
+          md={7}
+          sx={{
+            backgroundImage:
+              "url(https://images.inc.com/uploaded_files/image/1920x1080/getty_543224919_124254.jpg)",
+            backgroundRepeat: "no-repeat",
+            backgroundColor: (t) =>
+              t.palette.mode === "light"
+                ? t.palette.grey[50]
+                : t.palette.grey[900],
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+        />
+        <Grid
+          item
+          xs={12}
+          sm={8}
+          md={5}
+          component={Paper}
+          elevation={6}
+          square
+          sx={{ backgroundColor: "#143965" }}
+        >
+          <Typography
+            variant="h3"
+            color="white"
+            sx={{
+              fontFamily: "Merriweather",
+              fontSize: "100px",
+              fontWeight: 500,
+              marginTop: "60px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            WingIt.
+          </Typography>
+          <Box
+            sx={{
+              my: 4,
+              mx: 4,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              backgroundColor: "white",
+              borderRadius: "16px",
+              padding: "2rem",
+            }}
+          >
+            <Typography
+              variant="h1"
+              sx={{
+                fontFamily: "Merriweather",
+                fontSize: "1.5rem",
+                fontWeight: "bold",
+                marginTop: "auto",
+                marginLeft: "0rem",
+                marginRight: "auto",
+                marginBottom: "0.5rem",
+              }}
+            >
+              Sign up
+            </Typography>
+            <Box
+              component="form"
+              noValidate
+              onSubmit={handleSubmit}
+              sx={{ mt: 1 }}
+            >
+              <Grid container spacing={2}>
+                <Grid item xs={6} sm={4} md={3}>
+                  <FormControl fullWidth required>
+                    <InputLabel id="salutation-label">Salutation</InputLabel>
+                    <Select
+                      labelId="salutation-label"
+                      id="salutation"
+                      name="salutation"
+                      value={formData.salutation}
+                      onChange={handleChange}
+                      label="Salutation"
+                    >
+                      <MenuItem value={"Mr"}>Mr</MenuItem>
+                      <MenuItem value={"Mrs"}>Mrs</MenuItem>
+                      <MenuItem value={"Miss"}>Ms</MenuItem>
+                      <MenuItem value={"Mdm"}>Mdm</MenuItem>
+                      <MenuItem value={"Master"}>Master</MenuItem>
+                      {/* You can add more salutations as needed */}
+                    </Select>
+                  </FormControl>
+                </Grid>
 
     return (
         <ThemeProvider theme={defaultTheme}>
@@ -224,8 +323,11 @@ export default function SignUpPage() {
                         </Box>
                     </Box>
                 </Grid>
-            </Grid>
-        </ThemeProvider>
-    );
+              </Grid>
+            </Box>
+          </Box>
+        </Grid>
+      </Grid>
+    </ThemeProvider>
+  );
 }
-

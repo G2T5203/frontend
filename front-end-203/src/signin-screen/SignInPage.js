@@ -102,6 +102,7 @@ export default function SignInPage() {
               fontSize: "100px",
               fontWeight: 500,
               textAlign: 'center',
+              marginTop: "60px",
             }}
           >
             WingIt.
@@ -183,6 +184,7 @@ export default function SignInPage() {
                 sx={{
                   mt: 3,
                   mb: 2,
+                  width: "calc(100% - 150px)",
                   fontSize: "14px",
                   backgroundColor: "#F58A07",
                 }}
@@ -196,7 +198,11 @@ export default function SignInPage() {
                   </Link>
                 </Grid>
                 <Grid item>
-                  <Link href="#" variant="body2">
+                  <Link
+                    href="#"
+                    variant="body2"
+                    style={{ marginRight: "4rem" }}
+                  >
                     {"Don't have an account? Sign Up"}
                   </Link>
                 </Grid>
