@@ -1,40 +1,67 @@
-.nav {
-    position: absolute;
-    z-index: 4;
-    width: 100%;
-    top: 0px;
-    
+/* Base styles */
+body, html {
+  padding: 0;
+  margin: 0;
 }
-.banner{
-    position: absolute;
-    width:100%;
-    z-index: 2;
-    top: auto;
-    margin-top: 10px;
-  }
+
+.nav {
+  position: fixed;
+  z-index: 4;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #fff; /* Set background color if needed */
+}
+
+.banner {
+  position: relative;
+  z-index: 2;
+  margin-top: 2rem;
+  overflow: hidden;
+}
+
 .text {
   position: absolute;
   z-index: 3;
-  bottom: 200px;
-  margin-left: 20px;
+  bottom: 8rem;
+  left: 2rem;
 }
-  
-.flight-search {
-    position: relative;
-    bottom: 110px;
-    width: 100%;
-  }
 
-.flight-info-container {
-  position: relative;
-  top: 500px;
-  left: 50px;
+.flight-search {
+  position: absolute;
+  z-index: 3;
+  bottom: 1rem;
+  left: 0;
+  /* Remove width property to prevent stretching */
+  padding: 10px;
+  box-sizing: border-box;
 }
+
+.flight-info-container-scrollable {
+  position: absolute;
+  left: 7rem;
+  max-height: 41rem;
+  overflow-y: scroll;
+  padding: 2rem;
+  width: 50rem;
+  box-sizing: border-box;
+  z-index: 1;
+  margin-top: 2rem;
+}
+
 .filter-container {
   position: absolute;
-  top: 500px;
-  right: 50px;
-  
+  right: 6rem;
+  /* Position below the banner */
+  margin-top: 4rem; /* Adjust this value as needed */
+  z-index: 2;
+
+  /* You can add more styles for the filter container here */
 }
-  
-  
+
+/* Media query for responsive layout */
+@media (max-width: 768px) {
+  .filter-container {
+    margin-right: 20px;
+  }
+}
