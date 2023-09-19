@@ -7,7 +7,7 @@ import Select from "@mui/material/Select";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-
+import { useNavigate } from "react-router-dom";
 const CompactForm = () => {
   //Trip Options funcs
   const tripOptions = ["One way", "Return"];
@@ -31,29 +31,36 @@ const CompactForm = () => {
   const [searchParameters, setSearchParameters] = useState({
     flyingFrom: "",
     flyingTo: "",
-    departuredt: null,
-    arrivaldt: null,
   });
   const spHandleChange = (event) => {
     const { name, value } = event.target;
     // const newValue = event.target.value;
     setSearchParameters({ ...searchParameters, [name]: value });
   };
-  const spHandleDateChange = (date) => {
-    const name = date.target;
-    setSearchParameters({ ...searchParameters, [name]: date });
+  //Depature date
+  const [Depdate, setDepDate] = useState("");
+  const DepHandleDateChange = (date) => {
+    setDepDate(date);
+  };
+  //Arrival date
+  const [arrivalDate, setArrivalDate] = useState("");
+  const arrivalHandleDateChange = (date) => {
+    setArrivalDate(date);
   };
   //form submission
+  const navigate = useNavigate();
   const handleClick = () => {
-    console.log(
-      tripSelected +
-        " " +
-        noGuestSelected +
-        " " +
-        classSelected +
-        " " +
-        searchParameters
-    );
+    let data = {
+      trip: tripSelected,
+      noGuest: noGuestSelected,
+      class: classSelected,
+      flyingFrom: searchParameters.flyingFrom,
+      flyingTo: searchParameters.flyingTo,
+      departuredt: JSON.stringify(Depdate),
+      arrivaldt: JSON.stringify(arrivalDate),
+    };
+    console.log(data);
+    navigate("flightsearch", { state: data });
   };
   return (
     <Container disableGutters={true}>
@@ -152,8 +159,8 @@ const CompactForm = () => {
               <DatePicker
                 name="departuredt"
                 label="Depature Date"
-                value={searchParameters.departuredt}
-                onChange={spHandleDateChange}
+                value={Depdate}
+                onChange={DepHandleDateChange}
               />
             </LocalizationProvider>
           </Grid>
@@ -163,8 +170,8 @@ const CompactForm = () => {
               <DatePicker
                 name="arrivaldt"
                 label="Arrival Date"
-                value={searchParameters.arrivaldt}
-                onChange={spHandleDateChange}
+                value={arrivalDate}
+                onChange={arrivalHandleDateChange}
               />
             </LocalizationProvider>
           </Grid>
