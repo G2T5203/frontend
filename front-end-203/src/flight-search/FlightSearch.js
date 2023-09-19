@@ -3,7 +3,7 @@ import { useState } from "react";
 import NavBar from "./nav-bar/NavigationBar"; // Import the Navbar component
 import Banner from "./banner/Banner";
 import "./FlightSearch.css";
-import { Typography, Button } from "@mui/material";
+import { Typography } from "@mui/material";
 import FlightInfoCard from "./flight-info-card/FlightInfoCard";
 import FilterTile from "./filter-tile/FilterTile";
 import FlightSearchBar2 from "./flight-search-bar/FlightSearchBar";
@@ -163,12 +163,15 @@ const searchLocations = {
   locations: ["Japan", "Singapore", "Sweden", "India", "USA", "Denmark"],
 };
 function FlightSearch() {
+  //dummy code
   const location = useLocation();
   const data = location.state;
 
-  const testOnClick = () => {
-    console.log(data);
-  };
+  console.log(data);
+
+  // const testOnClick = () => {
+  //   console.log(data);
+  // };
 
   const [filteredFlights, setFilteredFlights] = useState([]);
 
