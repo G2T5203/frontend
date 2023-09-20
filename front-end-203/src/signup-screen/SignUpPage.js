@@ -13,8 +13,7 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
-import Cookies from "js-cookie";
-import { setAuthToken, removeAuthToken } from "../auth";
+import { setAuthToken } from "../auth";
 
 
 import React, { useState } from "react";
@@ -58,13 +57,22 @@ export default function SignUpPage() {
       if (response.status === 201) {
         // Sign-up successful
         console.log('Sign-up successful: HTTP 201');
-        const jwt_token = await axios.post(apiUrl + "auth/token", {
-          username: formData.username,
-          password: formData.password,
-        });
+
+        // Send a POST request to /auth/token with basic authentication
+        const jwtResponse = await axios.post(
+          apiUrl + "api/auth/token",
+          {},
+          {
+            auth: {
+              username: formData.username,
+              password: formData.password,
+            },
+          }
+        );
+        console.log('JWT Response:', jwtResponse);
 
         // Set JWT token in cookies or headers
-        setAuthToken(jwt_token);
+        setAuthToken(jwtResponse.data);
 
       } else {
         // Handle other possible responses, e.g., display error messages

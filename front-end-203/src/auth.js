@@ -10,14 +10,14 @@ export const setAuthToken = (token) => {
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 };
 
-// Function to remove JWT token from cookies or headers
-export const removeAuthToken = () => {
-  Cookies.remove(TOKEN_COOKIE_NAME);
-  delete axios.defaults.headers.common["Authorization"];
-};
+// // Function to remove JWT token from cookies or headers
+// export const removeAuthToken = () => {
+//   Cookies.remove(TOKEN_COOKIE_NAME);
+//   delete axios.defaults.headers.common["Authorization"];
+// };
 
-// Function to check if the user is authenticated
-export const isAuthenticated = () => {
-  const token = Cookies.get(TOKEN_COOKIE_NAME);
-  return !!token;
-};
+// // Function to check if the user is authenticated
+// export const isAuthenticated = () => {
+//   const token = Cookies.get(TOKEN_COOKIE_NAME);
+//   return !!token;
+// };
