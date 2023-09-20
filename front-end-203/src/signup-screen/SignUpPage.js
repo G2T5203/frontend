@@ -14,6 +14,8 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import Cookies from "js-cookie";
+import { setAuthToken, removeAuthToken } from "../auth";
+
 
 import React, { useState } from "react";
 import axios from "axios";
@@ -56,16 +58,14 @@ export default function SignUpPage() {
       if (response.status === 201) {
         // Sign-up successful
         console.log('Sign-up successful: HTTP 201');
-  
-        // Assuming JWT token is in the response data as 'token'
-        const { token } = response.data;
-  
-        // Set the JWT token in a cookie with an expiry date (adjust as needed)
-        Cookies.set('jwt', token, { expires: 7 }); // Expires in 7 days
-  
-        // Optionally, you can redirect the user to a dashboard or another page
-        // Example:
-        // history.push('/dashboard');
+        const jwt_token = await axios.post(apiUrl + "auth/token", {
+          username: formData.username,
+          password: formData.password,
+        });
+
+        // Set JWT token in cookies or headers
+        setAuthToken(jwt_token);
+
       } else {
         // Handle other possible responses, e.g., display error messages
         console.log("Sign-up failed:", response.status);
