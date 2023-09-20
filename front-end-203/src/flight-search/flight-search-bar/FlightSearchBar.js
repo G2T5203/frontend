@@ -10,7 +10,7 @@ import MyDatePicker from "../date-picker/MyDatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
-const FlightSearchBar = ( {locations, onSearch, trip, noGuest, flightClass, flyingFrom, flyingTo, departuredt, arrivaldt} ) => {
+const FlightSearchBar = ( {locations, onSearch, trip, noGuest, flightClass, flyingFrom, flyingTo, departuredt, arrivaldt, onFetchData} ) => {
 
   // all variables initalised to values from home page (departurelocation, arrival location, triptype, departure time, arrival time)
   const [departureLocation, setDepartureLocation] = useState(flyingFrom);
@@ -27,31 +27,36 @@ const FlightSearchBar = ( {locations, onSearch, trip, noGuest, flightClass, flyi
     setReturnDate(date);
   };
 
+  // for handling click of search button on search bar
   const handleSearch = () => {
 
     // calback function to parent component
     if (onSearch) {
-      onSearch(departureLocation, arrivalLocation);
+      onSearch(departureLocation, arrivalLocation, departureDate);
     }
-  
+    // extract year, month and date from departure date object
+    const year = departureDate.$y;
+    const month = departureDate.$M + 1;
+    const day = departureDate.$D
     // Construct the URL with departure and arrival locations
-    const url = `http://localhost:8080/routeListings/fullSearch/${departureLocation}/${arrivalLocation}/2023/12/17`;
+    const url = `http://localhost:8080/routeListings/fullSearch/${departureLocation}/${arrivalLocation}/${year}/${month}/${day}`;
   
     // Send a GET request to the constructed URL
     axios.get(url)
       .then((response) => {
-        console.log("Response from the backend:", response.data);
+        onFetchData(response.data)
+        // console.log("Response from the backend:", response.data);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
 
     // print inputs to console
-    console.log("Departure Location:", departureLocation);
-    console.log("Arrival Location:", arrivalLocation);
-    console.log("Trip Type:", tripType);
-    console.log("Departure Date:", departureDate);
-    console.log("Return Date:", returnDate);
+    // console.log("Departure Location:", departureLocation);
+    // console.log("Arrival Location:", arrivalLocation);
+    // console.log("Trip Type:", tripType);
+    // console.log("Departure Date:", departureDate);
+    // console.log("Return Date:", returnDate);
   };
 
   return (
@@ -69,7 +74,7 @@ const FlightSearchBar = ( {locations, onSearch, trip, noGuest, flightClass, flyi
         {/* departure location textField with dropdown*/}
       <Autocomplete
         id="departure-location"
-        options={locations}
+        options={locations.filter(location => location !== arrivalLocation)}
         value={departureLocation}
         defaultValue={flyingFrom}
         renderInput={(params) => <TextField {...params} placeholder="Departure" />}
@@ -104,7 +109,7 @@ const FlightSearchBar = ( {locations, onSearch, trip, noGuest, flightClass, flyi
         {/* departure location textField with dropdown*/}
       <Autocomplete
         id="arrival-location"
-        options={locations}
+        options={locations.filter(location => location !== departureLocation)}
         value={arrivalLocation}
         defaultValue={flyingTo}
         renderInput={(params) => <TextField {...params} placeholder="Arrival" />}
