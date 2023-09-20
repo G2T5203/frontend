@@ -10,12 +10,14 @@ import MyDatePicker from "../date-picker/MyDatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
-const FlightSearchBar = ( {locations, onSearch} ) => {
-  const [departureLocation, setDepartureLocation] = useState(null);
-  const [arrivalLocation, setArrivalLocation] = useState(null);
-  const [tripType, setTripType] = useState("one-way");
-  const [departureDate, setDepartureDate] = useState(null);
-  const [returnDate, setReturnDate] = useState(null);
+const FlightSearchBar = ( {locations, onSearch, trip, noGuest, flightClass, flyingFrom, flyingTo, departuredt, arrivaldt} ) => {
+
+  // all variables initalised to values from home page (departurelocation, arrival location, triptype, departure time, arrival time)
+  const [departureLocation, setDepartureLocation] = useState(flyingFrom);
+  const [arrivalLocation, setArrivalLocation] = useState(flyingTo);
+  const [tripType, setTripType] = useState(trip);
+  const [departureDate, setDepartureDate] = useState(departuredt);
+  const [returnDate, setReturnDate] = useState(arrivaldt);
 
   const handleDepartureDateChange = (date) => {
     setDepartureDate(date);
@@ -68,6 +70,8 @@ const FlightSearchBar = ( {locations, onSearch} ) => {
       <Autocomplete
         id="departure-location"
         options={locations}
+        value={departureLocation}
+        defaultValue={flyingFrom}
         renderInput={(params) => <TextField {...params} placeholder="Departure" />}
         onChange={(event, newValue) => setDepartureLocation(newValue)}
         sx={{ marginRight: "10px",
@@ -101,6 +105,8 @@ const FlightSearchBar = ( {locations, onSearch} ) => {
       <Autocomplete
         id="arrival-location"
         options={locations}
+        value={arrivalLocation}
+        defaultValue={flyingTo}
         renderInput={(params) => <TextField {...params} placeholder="Arrival" />}
         onChange={(event, newValue) => setArrivalLocation(newValue)}
         sx={{ marginRight: "10px",
@@ -130,16 +136,17 @@ const FlightSearchBar = ( {locations, onSearch} ) => {
         } }}
       />
         {/* toggle button group to select number of stops and assign to triptype variable*/}
-      <ToggleButtonGroup
+        <ToggleButtonGroup
         value={tripType}
+        defaultValue={trip}
         exclusive
         onChange={(event, newTripType) => setTripType(newTripType)}
         aria-label="Trip Type"
         sx={{ marginRight: "10px", marginLeft: "10px" }}
       >
-        <ToggleButton value="one-way" aria-label="One Way" 
+        <ToggleButton value="One way" aria-label="One Way" 
         sx={{
-            backgroundColor: 'transparent',
+          backgroundColor: tripType === 'One way' ? 'darkorange' : 'transparent',
             color: 'white',
             '&.Mui-selected': {
               backgroundColor: 'darkorange',
@@ -154,9 +161,9 @@ const FlightSearchBar = ( {locations, onSearch} ) => {
           }}>
           One Way
         </ToggleButton>
-        <ToggleButton value="round-trip" aria-label="Round Trip"
+        <ToggleButton value="Return" aria-label="Round Trip"
         sx={{
-            backgroundColor: 'transparent',
+          backgroundColor: tripType === 'Return' ? 'darkorange' : 'transparent',
             color: 'white',
             '&.Mui-selected': {
               backgroundColor: 'darkorange',
@@ -173,6 +180,7 @@ const FlightSearchBar = ( {locations, onSearch} ) => {
         </ToggleButton>
       </ToggleButtonGroup>
 
+
       {/* Reusable MyDatePicker for Departure Date */}
       <LocalizationProvider dateAdapter={AdapterDayjs}>
       <MyDatePicker
@@ -186,7 +194,7 @@ const FlightSearchBar = ( {locations, onSearch} ) => {
         label="Return Date"
         value={returnDate}
         onChange={handleReturnDateChange}
-        disabled={tripType !== "round-trip"}
+        disabled={tripType !== "Return"}
         />
       
 

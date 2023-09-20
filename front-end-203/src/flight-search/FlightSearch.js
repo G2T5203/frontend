@@ -6,7 +6,7 @@ import "./FlightSearch.css";
 import { Typography } from "@mui/material";
 import FlightInfoCard from "./flight-info-card/FlightInfoCard";
 import FilterTile from "./filter-tile/FilterTile";
-import FlightSearchBar2 from "./flight-search-bar/FlightSearchBar";
+import FlightSearchBar from "./flight-search-bar/FlightSearchBar";
 import { useLocation } from "react-router-dom";
 
 const flightInfoArray = [
@@ -160,7 +160,7 @@ const filterInfo = {
   airlines: ["Singapore Airlines", "Qatar Airways", "Air India", "Emirates"],
 };
 const searchLocations = {
-  locations: ["Japan", "Singapore", "Sweden", "India", "USA", "Denmark"],
+  locations: ["Japan", "Singapore", "Taiwan", "India", "USA", "China"],
 };
 function FlightSearch() {
   //dummy code
@@ -168,6 +168,16 @@ function FlightSearch() {
   const data = location.state;
 
   console.log(data);
+
+  const { trip, noGuest, flightClass, flyingFrom, flyingTo, departuredt, arrivaldt } = location.state;
+
+  console.log(trip);
+  console.log(noGuest);
+  console.log(flightClass);
+  console.log(flyingFrom);
+  console.log(flyingTo);
+  console.log(departuredt);
+  console.log(arrivaldt);
 
   // const testOnClick = () => {
   //   console.log(data);
@@ -211,8 +221,13 @@ function FlightSearch() {
           </Typography>
         </div>
         <div className="flight-search">
-          <FlightSearchBar2
+          <FlightSearchBar
             locations={searchLocations.locations}
+            flyingFrom={flyingFrom}
+            flyingTo={flyingTo}
+            trip={trip}
+            departuredt={departuredt}
+            arrivaldt={arrivaldt}
             onSearch={handleSearch}
           />
         </div>
