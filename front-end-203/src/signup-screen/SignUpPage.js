@@ -14,6 +14,7 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import { setAuthToken } from "../auth";
+// import { getCookie } from '../cookieUtils';
 
 
 import React, { useState } from "react";
@@ -58,7 +59,7 @@ export default function SignUpPage() {
         // Sign-up successful
         console.log('Sign-up successful: HTTP 201');
 
-        // Send a POST request to /auth/token with basic authentication
+        // Send a POST request to /api/auth/token with basic authentication
         const jwtResponse = await axios.post(
           apiUrl + "api/auth/token",
           {},
