@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 import { TextField, Button, Paper, Container } from "@mui/material";
-import { setAuthToken, getCurrentUser, getUserByUsernameAndEmail, getAllCookies } from "../auth";
+import { setAuthToken, getCurrentUser, getUserByUsernameAndEmail, getAllCookies, isAuthenticated, removeAuthToken } from "../auth";
 
 const AdminPortalLogin = () => {
   const apiUrl = process.env.REACT_APP_API_BASE_URL;
@@ -12,6 +12,12 @@ const AdminPortalLogin = () => {
     password: "",
   });
   const [errorMsg, setErrorMsg] = useState(String);
+
+  // Calls immediately upon page load
+  useEffect(() => {
+    checkAlreadyLoggedIn();
+  }, []);
+
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -33,6 +39,20 @@ const AdminPortalLogin = () => {
 
 
     navigate('/adminPortal/home');
+  }
+
+  const checkAlreadyLoggedIn = () => {
+    if (isAuthenticated()) {
+      axios.get(apiUrl + "users/adminAuthTest").then((response) => {
+        if (response.status == 200) {
+          navigate('/adminPortal/home');
+        } else {
+          setErrorMsg("ERROR, Please login again");
+        }
+      }).catch((error) => {
+        setErrorMsg("LOGGED IN AS NON ADMIN USER");
+      })
+    }
   }
 
   const handleSubmit = async (e) => {
@@ -75,8 +95,8 @@ const AdminPortalLogin = () => {
             margin: 3,
           }}
           onSubmit={handleSubmit}
-          >
-          <p style={{color:'red'}}>{errorMsg}</p>
+        >
+          <p style={{ color: 'red' }}>{errorMsg}</p>
           <TextField
             style={{ marginBottom: "16px" }} // You can adjust the spacing
             label="Username"
