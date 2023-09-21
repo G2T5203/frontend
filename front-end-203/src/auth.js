@@ -75,7 +75,7 @@ export const getUserByUsernameAndEmail = (username, email) => {
   }
 };
 
-export function getCookie(cookieName) {
+export function getCookie(cookieName) { // get cookie by name
   // document.cookie property to access all cookies set for the current website
   const cookies = document.cookie.split(';').map(cookie => cookie.trim());
   for (const cookie of cookies) {
