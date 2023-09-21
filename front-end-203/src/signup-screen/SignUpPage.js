@@ -13,8 +13,7 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
-import { setAuthToken } from "../auth";
-// import { getCookie } from '../cookieUtils';
+import { setAuthToken, getCurrentUser, getUserByUsernameAndEmail } from "../auth";
 
 
 import React, { useState } from "react";
@@ -72,8 +71,22 @@ export default function SignUpPage() {
         );
         console.log('JWT Response:', jwtResponse);
 
-        // Set JWT token in cookies or headers
-        setAuthToken(jwtResponse.data);
+        // // Set JWT token in cookies or headers
+        // setAuthToken(jwtResponse.data);
+
+          // Set JWT token in cookies or headers, including user data
+        const tempUser = {
+          username: formData.username,
+          email: formData.email,
+          // Add other user-related data here
+        };
+        setAuthToken(jwtResponse.data, tempUser);
+
+        const CurrentUser = getCurrentUser();
+        console.log(CurrentUser);
+
+        const user = getUserByUsernameAndEmail(formData.username, formData.email);
+        console.log(user);
 
       } else {
         // Handle other possible responses, e.g., display error messages
