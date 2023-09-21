@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import NavBar from "./nav-bar/NavigationBar"; // Import the Navbar component
 import Banner from "./banner/Banner";
 import "./FlightSearch.css";
@@ -8,6 +8,7 @@ import FlightInfoCard from "./flight-info-card/FlightInfoCard";
 import FilterTile from "./filter-tile/FilterTile";
 import FlightSearchBar from "./flight-search-bar/FlightSearchBar";
 import { useLocation } from "react-router-dom";
+import dayjs from "dayjs";
 
 // values for the filter tile
 const filterInfo = {
@@ -21,6 +22,8 @@ const searchLocations = {
 
 // flight search function
 function FlightSearch() {
+
+  
   //dummy code to check if all the data from homepage is brought to flight search screen
   const location = useLocation();
   const data = location.state;
@@ -54,6 +57,15 @@ const handleReturnFlightData = (data) => {
   const { trip, noGuest, flightClass, flyingFrom, flyingTo, departuredt, arrivaldt } = location.state;
 
 
+// Remove the enclosing quotes and convert to Day.js object
+const depDateObj = dayjs(departuredt.replace(/"/g, ''));
+const arrDateObj = dayjs(arrivaldt.replace(/"/g, ''));
+  console.log(departuredt)
+  console.log(arrivaldt)
+
+  useEffect(() => {
+    handleSearch(flyingFrom, flyingTo);
+  }, [flyingFrom, flyingTo]);
   // for passing into the flight information cards (arrival and departure are not provided as data from fullsearch endpoint)
   const [departureLocation, setDepartureLocation] = useState("");
   const [arrivalLocation, setArrivalLocation] = useState("");
@@ -101,10 +113,8 @@ const handleReturnFlightData = (data) => {
             flyingTo={flyingTo}
             trip={trip}
 
-            //TODO: figure out how to make date from homepage appear in the search bar when routed to flight search page. Currently it is not working.
-            // potentially due to data type mismatch, not sure.
-            // departuredt={JSON.parse(departuredt)}
-            // arrivaldt={JSON.parse(arrivaldt)}
+            departuredt={depDateObj}
+            arrivaldt={arrDateObj}
             onSearch={handleSearch}
           />
         </div>
