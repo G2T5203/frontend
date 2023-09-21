@@ -30,15 +30,25 @@ function FlightSearch() {
   console.log(data);
 
   // for setting flightdata array (containing data from fullsearch endpoint)
-  const [flightData, setFlightData] = useState([]);
+  const [departureFlightData, setDepartureFlightData] = useState([]);
+  const [returnFlightData, setReturnFlightData] = useState([]);
 
-  const handleFlightData = (data) => {
-    setFlightData(data);
-}
+const handleDepartureFlightData = (data) => {
+  setDepartureFlightData(data);
+};
+
+const handleReturnFlightData = (data) => {
+  setReturnFlightData(data || [])
+};
+
 
   // printing data from fullsearch endpoint
-  console.log("This is flightdata")
-  console.log(flightData);
+  console.log("This is departure flightdata")
+  console.log(departureFlightData);
+
+  console.log("This is return flightdata")
+  console.log(returnFlightData);
+
 
   // for getting data from homepage
   const { trip, noGuest, flightClass, flyingFrom, flyingTo, departuredt, arrivaldt } = location.state;
@@ -52,6 +62,8 @@ function FlightSearch() {
   const handleSearch = (departureLocation, arrivalLocation) => {
     setDepartureLocation(departureLocation)
     setArrivalLocation(arrivalLocation)
+
+
   
   };
   return (
@@ -78,7 +90,8 @@ function FlightSearch() {
           <FlightSearchBar
 
             // setting flight data array
-            onFetchData={handleFlightData}
+            onFetchDepartureData={handleDepartureFlightData}
+            onFetchReturnData={handleReturnFlightData}
 
             // setting locations in departure/arrival locations
             locations={searchLocations.locations}
@@ -98,8 +111,10 @@ function FlightSearch() {
       </div>
       {/* Container for FlightInfoCard */}
       {/* populating the flight-info-cards with the data from fullSearch endpoint. */}
-      <div className="flight-info-container-scrollable">
-        {flightData.map((flight, index) => (
+      <div className="departure-flight-info-container-scrollable">
+            
+        <Typography> Departure Flights</Typography>
+        {departureFlightData.map((flight, index) => (
           <div key={index} style={{ marginBottom: "10px" }}>
             <FlightInfoCard
 
@@ -132,10 +147,49 @@ function FlightSearch() {
           </div>
         ))}
       </div>
+
+      <div className="return-flight-info-container-scrollable">
+            
+        <Typography> Arrival Flights</Typography>
+        {returnFlightData.map((flight, index) => (
+          <div key={index} style={{ marginBottom: "10px" }}>
+            <FlightInfoCard
+
+            // SIA logo url
+            imageURL={"https://graphic.sg/media/pages/gallery/singapore-airlines-logo-1987/3067018395-1599296800/1987-singapore-airlines-logo-240x.png"}
+
+            // departure location that is passed in as input
+            departureAirport={arrivalLocation}
+
+            // departure date and time extracted from departureDatetime
+            departureDate={flight.departureDatetime.split('T')[0]}
+            departureTime={flight.departureDatetime.split('T')[1].substring(0, 5)}
+
+            // arrival location that is passed in as input
+            arrivalAirport={departureLocation}
+
+            // departure date and time extracted from departureDatetime
+            arrivalDate={flight.departureDatetime.split('T')[0]}
+            arrivalTime={flight.departureDatetime.split('T')[1].substring(0, 5)}
+
+            // stops hardcoded as Direct
+            stops={"Direct"}
+
+            // travelTime hardcoded as 5 hr 10 min
+            travelTime={"5hr 10 min"}
+
+            // price and flightNumber from endpoint
+            price={flight.basePrice.toFixed(2)}
+            flightNumber={flight.planeId}/>
+          </div>
+        ))}
+      </div>
       {/* Container for FilterTile */}
       <div className="filter-container">
         <FilterTile airlines={filterInfo.airlines} />
       </div>
+
+      
     </div>
   );
 }

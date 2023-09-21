@@ -37,7 +37,7 @@ body, html {
   box-sizing: border-box;
 }
 
-.flight-info-container-scrollable {
+.departure-flight-info-container-scrollable {
   position: absolute;
   left: 4rem;
   max-height: 41rem;
@@ -47,6 +47,19 @@ body, html {
   box-sizing: border-box;
   z-index: 1;
   margin-top: 2rem;
+  margin-right: 2rem;
+}
+
+.return-flight-info-container-scrollable {
+  position: absolute;
+  left: 4rem;
+  max-height: 41rem;
+  overflow-y: scroll;
+  padding: 2rem;
+  width: 60rem;
+  box-sizing: border-box;
+  z-index: 1;
+  margin-top: 25rem;
   margin-right: 2rem;
 }
 
