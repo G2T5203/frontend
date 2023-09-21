@@ -149,7 +149,7 @@ const arrDateObj = dayjs(arrivaldt.replace(/"/g, ''));
             stops={"Direct"}
 
             // travelTime hardcoded as 5 hr 10 min
-            travelTime={"5hr 10 min"}
+            travelTime={`${flight.flightDuration.match(/(\d+)H/)[1]} hr ${flight.flightDuration.match(/(\d+)M/)[1]} min`}
 
             // price and flightNumber from endpoint
             price={flight.basePrice.toFixed(2)}
@@ -186,7 +186,7 @@ const arrDateObj = dayjs(arrivaldt.replace(/"/g, ''));
             stops={"Direct"}
 
             // travelTime hardcoded as 5 hr 10 min
-            travelTime={"5hr 10 min"}
+            travelTime={`${flight.flightDuration.match(/(\d+)H/)[1]} hr ${flight.flightDuration.match(/(\d+)M/)[1]} min`}
 
             // price and flightNumber from endpoint
             price={flight.basePrice.toFixed(2)}
