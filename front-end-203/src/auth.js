@@ -86,3 +86,18 @@ export function getCookie(cookieName) {
   }
   return null; // Return null if the cookie is not found
 }
+
+export function getAllCookies(cookieName) {
+  const cookies = document.cookie.split(';').map(cookie => cookie.trim());
+  const matchingCookies = [];
+
+  for (const cookie of cookies) {
+    const [name, value] = cookie.split('=');
+    if (name === cookieName) {
+      matchingCookies.push(decodeURIComponent(value));
+    }
+  }
+
+  return matchingCookies;
+}
+

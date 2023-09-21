@@ -13,7 +13,7 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
-import { setAuthToken, getCurrentUser, getUserByUsernameAndEmail } from "../auth";
+import { setAuthToken, getCurrentUser, getUserByUsernameAndEmail, getAllCookies } from "../auth";
 
 
 import React, { useState } from "react";
@@ -88,6 +88,19 @@ export default function SignUpPage() {
         const user = getUserByUsernameAndEmail(formData.username, formData.email);
         console.log(user);
 
+        // // Retrieve and split the cookie string into individual cookies
+        // const cookies = document.cookie.split(';').map(cookie => cookie.trim());
+
+        // // Find the 'jwt' cookies and display their values
+        // for (const cookie of cookies) {
+        //   const [name, value] = cookie.split('=');
+        //   if (name === 'jwt') {
+        //     console.log(`JWT Cookie Value: ${value}`);
+        //   }
+        // }
+
+        const jwtCookies = getAllCookies('jwt'); // Replace 'jwt' with your cookie name
+        console.log(jwtCookies);
       } else {
         // Handle other possible responses, e.g., display error messages
         console.log("Sign-up failed:", response.status);
