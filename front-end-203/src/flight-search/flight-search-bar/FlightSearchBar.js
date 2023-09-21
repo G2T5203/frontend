@@ -44,7 +44,9 @@ const FlightSearchBar = ({
     if (onSearch) {
       onSearch(departureLocation, arrivalLocation, departureDate, returnDate);
     }
-
+    console.log(departureLocation)
+    console.log(arrivalLocation)
+    console.log(departureDate)
     // console.log(departureDate);
     // console.log(returnDate);
     // console.log(tripType);
@@ -55,8 +57,12 @@ const FlightSearchBar = ({
     // }
     // extract year, month and date from departure date object
     const year1 = departureDate.$y;
-    const month1 = departureDate.$M + 1;
+    const month1 = departureDate.$M+1;
     const day1 = departureDate.$D;
+    console.log(year1)
+    console.log(month1);
+    console.log(day1)
+
 
     let year2 = null;
     let month2 = null;
@@ -70,6 +76,7 @@ const FlightSearchBar = ({
     }
 
     // Construct the URL with departure and arrival locations
+
     const url1 = `http://localhost:8080/routeListings/fullSearch/${departureLocation}/${arrivalLocation}/${year1}/${month1}/${day1}`;
     const url2 = `http://localhost:8080/routeListings/fullSearch/${arrivalLocation}/${departureLocation}/${year2}/${month2}/${day2}`;
 
@@ -77,6 +84,9 @@ const FlightSearchBar = ({
       .get(url1)
       .then((response1) => {
         onFetchDepartureData(response1.data);
+        console.log("This is response from backend:")
+        console.log(response1.data)
+        console.log(response1.status)
 
         // If tripType is "Return", fetch the return data, otherwise send null
         if (tripType === "Return") {

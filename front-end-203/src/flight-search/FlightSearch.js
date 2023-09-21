@@ -43,11 +43,11 @@ const handleReturnFlightData = (data) => {
 
 
   // printing data from fullsearch endpoint
-  console.log("This is departure flightdata")
-  console.log(departureFlightData);
+  // console.log("This is departure flightdata")
+  // console.log(departureFlightData);
 
-  console.log("This is return flightdata")
-  console.log(returnFlightData);
+  // console.log("This is return flightdata")
+  // console.log(returnFlightData);
 
 
   // for getting data from homepage
