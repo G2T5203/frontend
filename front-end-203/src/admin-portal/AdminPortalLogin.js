@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-import { TextField, Button, Paper, Container } from "@mui/material";
+import { Typography, TextField, Button, Paper, Container } from "@mui/material";
 import { setAuthToken, isAuthenticated, removeAuthToken } from "../auth";
 
 const AdminPortalLogin = () => {
@@ -38,8 +38,6 @@ const AdminPortalLogin = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // You can access the values of planeID, capacity, and model from formData
-    setErrorMsg("Trying to Login")
 
     try {
       const jwtResponse = await axios.post(
@@ -87,6 +85,7 @@ const AdminPortalLogin = () => {
   return (
     <Container>
       <Paper elevation={3}>
+
         <form
           style={{
             display: "flex",
@@ -98,8 +97,12 @@ const AdminPortalLogin = () => {
           }}
           onSubmit={handleSubmit}
         >
+          <Typography variant="h3">
+            ADMIN PORTAL
+          </Typography>
+
           <p style={{ color: 'red' }}>{errorMsg}</p>
-          <TextField
+          <TextField fullWidth
             style={{ marginBottom: "16px" }} // You can adjust the spacing
             label="Username"
             variant="outlined"
@@ -107,7 +110,7 @@ const AdminPortalLogin = () => {
             value={formData.username}
             onChange={handleInputChange}
           />
-          <TextField
+          <TextField fullWidth
             style={{ marginBottom: "16px" }} // You can adjust the spacing
             label="Password"
             variant="outlined"
@@ -116,8 +119,8 @@ const AdminPortalLogin = () => {
             value={formData.password}
             onChange={handleInputChange}
           />
-          <Button type="submit" variant="contained" color="primary" p={3}>
-            Submit
+          <Button type="submit" variant="contained" color="primary" p={3} fullWidth>
+            LOGIN
           </Button>
         </form>
       </Paper>
