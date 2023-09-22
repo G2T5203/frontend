@@ -67,9 +67,11 @@ const CompactForm = () => {
 
     if ((data.trip === "Return" && returnDate === "") || Depdate === "") {
       alert("Please select appropriate dates");
+    } else if (data.flyingFrom === "" || data.flyingTo === "") {
+      alert("Please select appropriate locations");
     } else {
       console.log(data);
-      //navigate("flightsearch", { state: data });
+      navigate("flightsearch", { state: data });
     }
   };
   return (

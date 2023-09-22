@@ -32,8 +32,6 @@ const BlueRoundedRectangle = () => {
           {" "}
           next adventure...
         </Typography>
-
-        <Typography variant="subtitle1">Book now</Typography>
       </Paper>
     </ThemeProvider>
   );
