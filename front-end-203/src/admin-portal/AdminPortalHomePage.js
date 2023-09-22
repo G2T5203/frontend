@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import Link from "@mui/material/Link";
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
 
-import { Button, Container } from "@mui/material";
+import { Grid, Box, Button, Paper, Container } from "@mui/material";
 import { isAuthenticated, getCurrentUser, removeAuthToken, updateAuthHeadersFromCurrentUser } from "../auth";
 
 const AdminPortalHomePage = () => {
@@ -61,29 +64,50 @@ const AdminPortalHomePage = () => {
 
     return (
         <Container>
-            <div className="Header">
-                <h2>Welcome {currentUser != null ? currentUser.username : ""}</h2>
-                <Button onClick={onLogout}>Logout</Button>
-            </div>
-            <div className="All-Users-Display">
-                <div>
-                    <h1>All Users</h1>
-                    {allUsers.length > 0 ? (
-                        allUsers.map(item => (
-                            <div key={item.username}>
-                                {item.salutation} {item.firstName} {item.lastName} ({item.authorityRoles})
-                                <br />
-                                {item.username}
-                                {item.email}
-                                <br />
-                                <br />
-                            </div>
-                        ))
-                    ) : (
-                        <p>Loading... something might have went wrong (check console)</p>
-                    )}
+            <Paper elevation={3}
+                style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    paddingTop: 50,
+                    margin: 30,
+                }}
+            >
+                <AppBar position="static">
+                    <Toolbar style={{ width: '900px' }}>
+                        <h1>Welcome {currentUser != null ? currentUser.username : ""}</h1>
+                        <Box flexGrow={1} />
+                        <Button variant="contained" color="secondary" onClick={onLogout}>Logout</Button>
+                    </Toolbar>
+                </AppBar>
+
+                <Grid style={{
+                    padding: 50,
+                }}>
+                    <Link component={Button} href="/adminPortal/planes">Manage Planes</Link>
+                    <Link component={Button} href="/adminPortal/routes">Manage Routes</Link>
+                </Grid>
+
+                <div className="All-Users-Display">
+                    <div>
+                        <h1>All Users</h1>
+                        {allUsers.length > 0 ? (
+                            allUsers.map(item => (
+                                <div key={item.username}>
+                                    {item.salutation}. {item.firstName} {item.lastName}
+                                    <br />
+                                    {item.username}
+                                    {item.email}
+                                    <br />
+                                    <br />
+                                </div>
+                            ))
+                        ) : (
+                            <p>Loading... something might have went wrong (check console)</p>
+                        )}
+                    </div>
                 </div>
-            </div>
+            </Paper>
         </Container>
     );
 };
