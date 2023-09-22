@@ -68,6 +68,7 @@ const AdminPortalLogin = () => {
   useEffect(() => {
     if (isAuthenticated()) {
       axios.get(apiUrl + "users/adminAuthTest").then((response) => {
+        // TODO: This isn't correctly reporting errors. Postman is 403, but here it's still 200.
         if (response.status === 200) {
           navigate('/adminPortal/home');
         } else {
@@ -109,6 +110,7 @@ const AdminPortalLogin = () => {
             style={{ marginBottom: "16px" }} // You can adjust the spacing
             label="Password"
             variant="outlined"
+            type="password"
             name="password"
             value={formData.password}
             onChange={handleInputChange}

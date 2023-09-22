@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 import { Button, Container } from "@mui/material";
-import { getCurrentUser, removeAuthToken, updateAuthHeadersFromCurrentUser } from "../auth";
+import { isAuthenticated, getCurrentUser, removeAuthToken, updateAuthHeadersFromCurrentUser } from "../auth";
 
 const AdminPortalHomePage = () => {
     const apiUrl = process.env.REACT_APP_API_BASE_URL;
@@ -38,9 +38,20 @@ const AdminPortalHomePage = () => {
 
     // Calls immediately upon page load
     useEffect(() => {
-        if (currentUser != null) {
-            updateAuthHeadersFromCurrentUser();
-            GetAllUsers();
+        if (isAuthenticated()) {
+            axios.get(apiUrl + "users/adminAuthTest").then((response) => {
+                // TODO: This isn't correctly reporting errors. Postman is 403, but here it's still 200.
+                if (response.status === 200) {
+                    updateAuthHeadersFromCurrentUser();
+                    GetAllUsers();
+                } else {
+                    removeAuthToken();
+                    navigate('/adminPortal/login');
+                }
+            }).catch((error) => {
+                removeAuthToken();
+                navigate('/adminPortal/login');
+            })
         } else {
             navigate('/adminPortal/login');
         }
