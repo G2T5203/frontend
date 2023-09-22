@@ -9,6 +9,33 @@ const AdminPortalHomePage = () => {
     const apiUrl = process.env.REACT_APP_API_BASE_URL;
     const [allUsers, setAllUsers] = useState([]);
 
+
+    const navigate = useNavigate();
+    const currentUser = getCurrentUser();
+    const onLogout = () => {
+        console.log("LOGOUT");
+        removeAuthToken();
+        navigate('/adminPortal/login');
+    }
+
+    function GetAllUsers() {
+        axios.get(apiUrl + "users")
+            .then((response) => {
+                // If the call fails, a html to the login page is sent back.
+                const isResponseJsonType = response.headers.get('content-type')?.includes('application/json');
+                if (response.data != null && isResponseJsonType) {
+                    setAllUsers(response.data)
+                } else {
+                    setAllUsers([])
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+                setAllUsers([]);
+            })
+    }
+
+
     // Calls immediately upon page load
     useEffect(() => {
         if (currentUser != null) {
@@ -17,15 +44,9 @@ const AdminPortalHomePage = () => {
         } else {
             navigate('/adminPortal/login');
         }
-    });
-    
-    const navigate = useNavigate();
-    const currentUser = getCurrentUser();
-    const onLogout = () => {
-        console.log("LOGOUT");
-        removeAuthToken();
-        navigate('/adminPortal/login');
-    }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
 
     return (
         <Container>
@@ -54,25 +75,6 @@ const AdminPortalHomePage = () => {
             </div>
         </Container>
     );
-
-    function GetAllUsers() {
-        axios.get(apiUrl + "users")
-            .then((response) => {
-                console.log(response.status)
-                console.log(response.data)
-                // If the call fails, a html to the login page is sent back.
-                const isResponseJsonType = response.headers.get('content-type')?.includes('application/json');
-                if (response.data != null && isResponseJsonType) {
-                    setAllUsers(response.data)
-                } else {
-                    setAllUsers([])
-                }
-            })
-            .catch((error) => {
-                console.log(error);
-                setAllUsers([]);
-            })
-    }
 };
 
 export default AdminPortalHomePage;
