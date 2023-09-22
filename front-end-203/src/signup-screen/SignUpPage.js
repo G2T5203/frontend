@@ -13,7 +13,8 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
-import { setAuthToken, getCurrentUser, getUserByUsername, getAllCookies } from "../auth";
+import Alert from "@mui/material/Alert"
+import AlertTitle from "@mui/material/AlertTitle"
 
 
 import React, { useState } from "react";
@@ -34,6 +35,7 @@ export default function SignUpPage() {
     salutation: "",
     hasAgreedToTerms: false,
   });
+  const [signupSuccess, setSignupSuccess] = useState(false);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -57,50 +59,7 @@ export default function SignUpPage() {
       if (response.status === 201) {
         // Sign-up successful
         console.log('Sign-up successful: HTTP 201');
-
-        // Send a POST request to /api/auth/token with basic authentication
-        const jwtResponse = await axios.post(
-          apiUrl + "api/auth/token",
-          {},
-          {
-            auth: {
-              username: formData.username,
-              password: formData.password,
-            },
-          }
-        );
-        console.log('JWT Response:', jwtResponse);
-
-        // // Set JWT token in cookies or headers
-        // setAuthToken(jwtResponse.data);
-
-          // Set JWT token in cookies or headers, including user data
-        const tempUser = {
-          username: formData.username,
-          email: formData.email,
-          // Add other user-related data here
-        };
-        setAuthToken(jwtResponse.data, tempUser);
-
-        const CurrentUser = getCurrentUser();
-        console.log(CurrentUser);
-
-        const user = getUserByUsername(formData.username);
-        console.log(user);
-
-        // // Retrieve and split the cookie string into individual cookies
-        // const cookies = document.cookie.split(';').map(cookie => cookie.trim());
-
-        // // Find the 'jwt' cookies and display their values
-        // for (const cookie of cookies) {
-        //   const [name, value] = cookie.split('=');
-        //   if (name === 'jwt') {
-        //     console.log(`JWT Cookie Value: ${value}`);
-        //   }
-        // }
-
-        const jwtCookies = getAllCookies('jwt'); // Replace 'jwt' with your cookie name
-        console.log(jwtCookies);
+        setSignupSuccess(true);
       } else {
         // Handle other possible responses, e.g., display error messages
         console.log("Sign-up failed:", response.status);
@@ -111,15 +70,6 @@ export default function SignUpPage() {
     }
   };
 
-  // // Function to handle user logout
-  // const handleLogout = () => {
-  //   // Remove the JWT cookie
-  //   Cookies.remove('jwt');
-
-  //   // Optionally, you can redirect the user to the login page
-  //   // Example:
-  //   // history.push('/login');
-  // };
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -280,12 +230,24 @@ export default function SignUpPage() {
                     }
                   />
                 </Grid>
-                <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2, fontSize: '14px', backgroundColor: '#F58A07', }}>
-                  Sign Up
-                </Button>
+                <Grid item xs={12}>
+                  {signupSuccess ? (
+                    <Alert severity="success" fullWidth>
+                      <AlertTitle>Success</AlertTitle>
+                      Account created!
+                      <strong>
+                        Click <Link href="/signin">here</Link> to sign in!
+                      </strong>
+                    </Alert>
+                  ) : (
+                    <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2, fontSize: '14px', backgroundColor: '#F58A07', }}>
+                      Sign Up
+                    </Button>
+                  )}
+                </Grid>
                 <Grid container justifyContent="flex-end">
                   <Grid item>
-                    <Link href="#" variant="body2">
+                    <Link href="/signin" variant="body2">
                       Already have an account? Sign in
                     </Link>
                   </Grid>
