@@ -6,7 +6,6 @@ const TOKEN_COOKIE_NAME = "jwt";
 // Function to set JWT token in cookies or headers with additional payload data
 export const setAuthToken = (token, userData) => {
   // Decode the original token
-  console.log("QQQ: token: " + token);
   const tokenParts = token.split('.');
   const header = JSON.parse(atob(tokenParts[0]));
   const payload = JSON.parse(atob(tokenParts[1]));
@@ -107,10 +106,9 @@ export function getAllCookies(cookieName) {
 export const updateAuthHeadersFromCurrentUser = () => {
   const currentUser = getCurrentUser();
   if (currentUser) {
-    const currentUser = getCurrentUser(); // Replace 'jwt' with your actual cookie name
-    console.log("QQQ: currentUser.fullJwtToken: " + currentUser.fullJwtToken);
-
-    // setAuthToken(token, currentUser);
+    const currentUser = getCurrentUser();
     axios.defaults.headers.common["Authorization"] = `Bearer ${currentUser.fullJwtToken}`;
+  } else {
+    axios.defaults.headers.common["Authorization"] = ``;
   }
 };

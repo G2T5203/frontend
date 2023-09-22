@@ -13,7 +13,7 @@ const AdminPortalLogin = () => {
   });
   const [errorMsg, setErrorMsg] = useState(String);
 
- 
+
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -30,25 +30,10 @@ const AdminPortalLogin = () => {
       username: formData.username,
       // Add other user-related data here
     };
-    console.log("QQQ: jwtResponse.data: " + jwtResponse.data);
     setAuthToken(jwtResponse.data, adminUser);
 
 
     navigate('/adminPortal/home');
-  }
-
-  const checkAlreadyLoggedIn = () => {
-    if (isAuthenticated()) {
-      axios.get(apiUrl + "users/adminAuthTest").then((response) => {
-        if (response.status === 200) {
-          navigate('/adminPortal/home');
-        } else {
-          setErrorMsg("ERROR, Please login again");
-        }
-      }).catch((error) => {
-        setErrorMsg("LOGGED IN AS NON ADMIN USER");
-      })
-    }
   }
 
   const handleSubmit = async (e) => {
@@ -81,8 +66,19 @@ const AdminPortalLogin = () => {
 
   // Calls immediately upon page load
   useEffect(() => {
-    checkAlreadyLoggedIn();
-  });
+    if (isAuthenticated()) {
+      axios.get(apiUrl + "users/adminAuthTest").then((response) => {
+        if (response.status === 200) {
+          navigate('/adminPortal/home');
+        } else {
+          setErrorMsg("ERROR, Please login again");
+        }
+      }).catch((error) => {
+        setErrorMsg("LOGGED IN AS NON ADMIN USER");
+      })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
 
   return (
