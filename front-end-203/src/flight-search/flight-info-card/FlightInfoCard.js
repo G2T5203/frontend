@@ -33,7 +33,8 @@ const FlightInfoCard = ({
       <Typography
           variant="body1"
           fontSize={30}
-          sx={{ fontFamily: "Merriweather Sans"}}
+          sx={{ fontFamily: "Merriweather Sans",marginTop: "1.25rem"}}
+          
         >
           {flightNumber} {/* Display flight number here */}
         </Typography>
@@ -64,7 +65,7 @@ const FlightInfoCard = ({
 
           <Divider className="divider" />
 
-          <Typography variant="body1" sx={{fontFamily: 'Merriweather Sans'}}>{stops} stop</Typography>
+          <Typography variant="body1" sx={{fontFamily: 'Merriweather Sans'}}>{stops}</Typography>
         </Stack>
       </div>
 

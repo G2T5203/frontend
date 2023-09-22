@@ -2,12 +2,21 @@ import React from "react";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
-const MyDatePicker = ({ label, value, onChange, disabled}) => {
+const MyDatePicker = ({ label, value, onChange, disabled, minDate}) => {
+
   const handleDateChange = (date) => {
     if (onChange) {
       onChange(date);
     }
   };
+
+  // const shouldDisable = (date) => {
+  //   if (minDate) {
+  //     // If minDate is provided, disable dates on or before the minDate
+  //     return date.isSameOrBefore(minDate);
+  //   }
+  //   return false;
+  // };
 
   return (
     <DatePicker
@@ -16,6 +25,7 @@ const MyDatePicker = ({ label, value, onChange, disabled}) => {
       value={value}
       onChange={handleDateChange}
       disabled={disabled}
+      minDate={minDate}
       dateAdapter={AdapterDayjs}
       sx={{
         marginLeft: "10px",
