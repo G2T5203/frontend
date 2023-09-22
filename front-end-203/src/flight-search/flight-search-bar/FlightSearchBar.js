@@ -123,9 +123,9 @@ const FlightSearchBar = ({
 
   // for automatic flightSearch when the page loads
   useEffect(() => {
-    if (flyingTo == null) {
-      navigate("/");
-    }
+    // if (flyingTo == null) {
+    //   navigate("/");
+    // }
     handleSearch();
     // eslint-disable-next-line react-hooks/exhaustive-deps
 }, []);
