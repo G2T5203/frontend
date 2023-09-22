@@ -15,9 +15,11 @@ import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import Alert from "@mui/material/Alert"
 import AlertTitle from "@mui/material/AlertTitle"
+import { isAuthenticated, removeAuthToken } from "../auth";
+import { useNavigate } from 'react-router-dom';
 
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 const defaultTheme = createTheme();
@@ -36,6 +38,7 @@ export default function SignUpPage() {
     hasAgreedToTerms: false,
   });
   const [signupSuccess, setSignupSuccess] = useState(false);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -69,6 +72,22 @@ export default function SignUpPage() {
       console.error("Sign-up failed", error);
     }
   };
+
+  // Calls immediately upon page load
+  useEffect(() => {
+    if (isAuthenticated()) {
+      axios.get(apiUrl + "users/authTest").then((response) => {
+        if (response.status === 200) {
+          navigate('/');
+        } else {
+          removeAuthToken();
+        }
+      }).catch((error) => {
+        removeAuthToken();
+      })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
 
   return (
