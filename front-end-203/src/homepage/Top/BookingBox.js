@@ -66,8 +66,8 @@ const CompactForm = () => {
     };
 
     if (
-      data.departuredt == null ||
-      (data.trip == "return" && data.returndt == null)
+      (data.trip == "return" && data.returndt == null) ||
+      data.departuredt == null
     ) {
       alert("Please select appropriate dates");
     } else {
