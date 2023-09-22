@@ -2,10 +2,8 @@ import React, { useEffect, useState } from "react";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Link from "@mui/material/Link";
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
 
-import { Grid, Box, Button, Paper, Container } from "@mui/material";
+import { Typography, Grid, Box, Button, Paper, Container } from "@mui/material";
 import { isAuthenticated, getCurrentUser, removeAuthToken, updateAuthHeadersFromCurrentUser } from "../auth";
 
 const AdminPortalHomePage = () => {
@@ -64,50 +62,76 @@ const AdminPortalHomePage = () => {
 
     return (
         <Container>
-            <Paper elevation={3}
+            <Grid container
+                alignItems="center"
+                justifyContent="center"
                 style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    paddingTop: 50,
-                    margin: 30,
+                    paddingTop: 80,
+                    padding: 20,
                 }}
             >
-                <AppBar position="static">
-                    <Toolbar style={{ width: '900px' }}>
-                        <h1>Welcome {currentUser != null ? currentUser.username : ""}</h1>
-                        <Box flexGrow={1} />
-                        <Button variant="contained" color="secondary" onClick={onLogout}>Logout</Button>
-                    </Toolbar>
-                </AppBar>
+                <Grid item xs={10} md={10}>
+                    <Typography variant="h3">Welcome {currentUser != null ? currentUser.username : ""}</Typography>
+                </Grid>
+                <Grid item xs={2} md={2} justify="flex end">
+                    <Button variant="contained" color="secondary" onClick={onLogout}>Logout</Button>
+                </Grid>
+            </Grid>
 
-                <Grid style={{
-                    padding: 50,
-                }}>
-                    <Link component={Button} href="/adminPortal/planes">Manage Planes</Link>
-                    <Link component={Button} href="/adminPortal/routes">Manage Routes</Link>
+
+            <Grid container justify="center" lg={10} xl={8}>
+                <Grid item xs={6} md={6}
+                    style={{
+                        // backgroundColor: "#FF0000",
+                        padding: 10,
+                    }}
+                >
+                    <Paper elevation={3}
+                        style={{
+                            padding: 20,
+                        }}
+                    >
+                        <div>
+                            <h1>All Users</h1>
+                            {allUsers.length > 0 ? (
+                                allUsers.map(item => (
+                                    <div key={item.username}>
+                                        {item.salutation}. {item.firstName} {item.lastName}
+                                        <br />
+                                        {item.username}
+                                        {item.email}
+                                        <br />
+                                        <br />
+                                    </div>
+                                ))
+                            ) : (
+                                <p>Loading... something might have went wrong (check console)</p>
+                            )}
+                        </div>
+                    </Paper>
+
                 </Grid>
 
-                <div className="All-Users-Display">
-                    <div>
-                        <h1>All Users</h1>
-                        {allUsers.length > 0 ? (
-                            allUsers.map(item => (
-                                <div key={item.username}>
-                                    {item.salutation}. {item.firstName} {item.lastName}
-                                    <br />
-                                    {item.username}
-                                    {item.email}
-                                    <br />
-                                    <br />
-                                </div>
-                            ))
-                        ) : (
-                            <p>Loading... something might have went wrong (check console)</p>
-                        )}
-                    </div>
-                </div>
-            </Paper>
+                <Grid item xs={6} md={6}
+                    style={{
+                        // backgroundColor: "#00FF00",
+                        padding: 10
+                    }}>
+                    <Paper elevation={3}>
+                        <Grid container justifyContent="center">
+                            <Grid item xs={12}>
+                                <Link component={Button} href="/adminPortal/planes">Manage Planes</Link>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <Link component={Button} href="/adminPortal/routes" style={{
+                                    // backgroundColor: "#FF0000"
+                                }}
+                                >Manage Routes</Link>
+                            </Grid>
+                        </Grid>
+                    </Paper>
+                </Grid>
+            </Grid>
         </Container>
     );
 };
