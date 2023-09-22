@@ -25,7 +25,9 @@ const FlightSearchBar = ({
   onFetchReturnData,
 }) => {
   //navigate set up 
+  // eslint-disable-next-line 
   const navigate = useNavigate();
+  
   // all variables initalised to values from home page (departurelocation, arrival location, triptype, departure time, arrival time)
   const [departureLocation, setDepartureLocation] = useState(flyingFrom);
   const [arrivalLocation, setArrivalLocation] = useState(flyingTo);
@@ -126,7 +128,7 @@ const FlightSearchBar = ({
     // if (flyingTo == null) {
     //   navigate("/");
     // }
-    //handleSearch();
+    handleSearch();
     // eslint-disable-next-line react-hooks/exhaustive-deps
 }, []);
 

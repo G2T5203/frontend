@@ -54,9 +54,9 @@ const handleReturnFlightData = (data) => {
   // console.log(returnFlightData);
 
 
-  // for getting data from homepage
+  // for getting data from homepage (noGuest and flightClass are not used, warnings currently disabled)
+  // eslint-disable-next-line
   const { trip, noGuest, flightClass, flyingFrom, flyingTo, departuredt, returndt } = location.state;
-
 
 // Remove the enclosing quotes and convert to Day.js object
 const depDateObj = dayjs(departuredt.replace(/"/g, ''));
