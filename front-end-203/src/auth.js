@@ -101,3 +101,12 @@ export function getAllCookies(cookieName) {
   return matchingCookies;
 }
 
+// Function to update the JWT token from the current user
+export const updateAuthTokenFromCurrentUser = () => {
+  const currentUser = getCurrentUser();
+  if (currentUser) {
+    const token = getCurrentUser(); // Replace 'jwt' with your actual cookie name
+
+    setAuthToken(token, currentUser);
+  }
+};
