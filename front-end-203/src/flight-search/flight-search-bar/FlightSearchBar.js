@@ -9,6 +9,7 @@ import axios from "axios";
 import MyDatePicker from "../date-picker/MyDatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { useNavigate } from "react-router-dom";
 
 const FlightSearchBar = ({
   locations,
@@ -23,7 +24,8 @@ const FlightSearchBar = ({
   onFetchDepartureData,
   onFetchReturnData,
 }) => {
-  
+  //navigate set up 
+  const navigate = useNavigate();
   // all variables initalised to values from home page (departurelocation, arrival location, triptype, departure time, arrival time)
   const [departureLocation, setDepartureLocation] = useState(flyingFrom);
   const [arrivalLocation, setArrivalLocation] = useState(flyingTo);
@@ -121,7 +123,11 @@ const FlightSearchBar = ({
 
   // for automatic flightSearch when the page loads
   useEffect(() => {
+    if (flyingTo == null) {
+      navigate("/");
+    }
     handleSearch();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
 }, []);
 
   return (

@@ -1,5 +1,5 @@
 import { React, useState } from "react";
-import { Paper, TextField, Button, Grid, Container } from "@mui/material";
+import { Paper, TextField, Button, Grid, Container, Autocomplete } from "@mui/material";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 const CompactForm = () => {
   //Trip Options funcs
   const tripOptions = ["One way", "Return"];
-  const [tripSelected, setTripSelected] = useState("");
+  const [tripSelected, setTripSelected] = useState("One way");
   const tripHandleChange = (e) => {
     setTripSelected(e.target.value);
   };
@@ -27,16 +27,15 @@ const CompactForm = () => {
   const classHandleChange = (e) => {
     setClassSelected(e.target.value);
   };
-  //Search parameters
-  const [searchParameters, setSearchParameters] = useState({
-    flyingFrom: "",
-    flyingTo: "",
-  });
-  const spHandleChange = (event) => {
-    const { name, value } = event.target;
-    // const newValue = event.target.value;
-    setSearchParameters({ ...searchParameters, [name]: value });
-  };
+  //flying to Options funcs
+  const flyingToOptions = ["Japan", "Singapore", "Taiwan", "India", "China"];
+  const [flyingToSelected, setFlyingToSelected] = useState(null);
+  
+  //flying from Options funcs
+  const flyingFromOptions = ["Japan", "Singapore", "Taiwan", "India", "China"];
+  const [flyingFromSelected, setFlyingFromSelected] = useState(null);
+  
+ 
   //Depature date
   const [Depdate, setDepDate] = useState("");
   const DepHandleDateChange = (date) => {
@@ -54,8 +53,8 @@ const CompactForm = () => {
       trip: tripSelected,
       noGuest: noGuestSelected,
       class: classSelected,
-      flyingFrom: searchParameters.flyingFrom,
-      flyingTo: searchParameters.flyingTo,
+      flyingFrom: flyingFromSelected,
+      flyingTo: flyingToSelected,
       departuredt: JSON.stringify(Depdate),
       arrivaldt: JSON.stringify(arrivalDate),
     };
@@ -133,23 +132,23 @@ const CompactForm = () => {
 
           {/* Row 2: 2 Text Inputs */}
           <Grid item xs={6}>
-            <TextField
-              label="Flying from"
-              variant="outlined"
-              size="small"
-              name="flyingFrom"
-              value={searchParameters.flyingFrom}
-              onChange={spHandleChange}
+            <Autocomplete
+            id="flyingFrom"
+            options={flyingFromOptions}
+            value={flyingFromSelected}
+            renderInput={(params) => (<TextField {...params} placeholder="Flying From" />)}
+            onChange = {(event, newValue) => setFlyingFromSelected(newValue)}
+            fullWidth
             />
           </Grid>
           <Grid item xs={6}>
-            <TextField
-              label="Flying to"
-              variant="outlined"
-              size="small"
-              name="flyingTo"
-              value={searchParameters.flyingTo}
-              onChange={spHandleChange}
+            <Autocomplete
+            id="flyingTo"
+            options={flyingToOptions}
+            value={flyingToSelected}
+            renderInput={(params) => (<TextField {...params} placeholder="Flying To" />)}
+            onChange = {(event, newValue) => setFlyingToSelected(newValue)}
+            fullWidth
             />
           </Grid>
 
@@ -172,6 +171,8 @@ const CompactForm = () => {
                 label="Arrival Date"
                 value={arrivalDate}
                 onChange={arrivalHandleDateChange}
+                disabled={tripSelected !== "Return"}
+                minDate={Depdate}
               />
             </LocalizationProvider>
           </Grid>
