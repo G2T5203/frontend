@@ -65,14 +65,11 @@ const CompactForm = () => {
       returndt: JSON.stringify(returnDate),
     };
 
-    if (
-      (data.trip == "return" && data.returndt == null) ||
-      data.departuredt == null
-    ) {
+    if ((data.trip === "Return" && returnDate === "") || Depdate === "") {
       alert("Please select appropriate dates");
     } else {
       console.log(data);
-      navigate("flightsearch", { state: data });
+      //navigate("flightsearch", { state: data });
     }
   };
   return (
