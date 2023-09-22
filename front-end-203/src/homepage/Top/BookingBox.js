@@ -1,5 +1,12 @@
 import { React, useState } from "react";
-import { Paper, TextField, Button, Grid, Container, Autocomplete } from "@mui/material";
+import {
+  Paper,
+  TextField,
+  Button,
+  Grid,
+  Container,
+  Autocomplete,
+} from "@mui/material";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
@@ -30,12 +37,11 @@ const CompactForm = () => {
   //flying to Options funcs
   const flyingToOptions = ["Japan", "Singapore", "Taiwan", "India", "China"];
   const [flyingToSelected, setFlyingToSelected] = useState(null);
-  
+
   //flying from Options funcs
   const flyingFromOptions = ["Japan", "Singapore", "Taiwan", "India", "China"];
   const [flyingFromSelected, setFlyingFromSelected] = useState(null);
-  
- 
+
   //Depature date
   const [Depdate, setDepDate] = useState("");
   const DepHandleDateChange = (date) => {
@@ -58,8 +64,16 @@ const CompactForm = () => {
       departuredt: JSON.stringify(Depdate),
       returndt: JSON.stringify(returnDate),
     };
-    console.log(data);
-    navigate("flightsearch", { state: data });
+
+    if (
+      data.departuredt == null ||
+      (data.trip == "return" && data.returndt == null)
+    ) {
+      alert("Please select appropriate dates");
+    } else {
+      console.log(data);
+      navigate("flightsearch", { state: data });
+    }
   };
   return (
     <Container disableGutters={true}>
@@ -133,22 +147,26 @@ const CompactForm = () => {
           {/* Row 2: 2 Text Inputs */}
           <Grid item xs={6}>
             <Autocomplete
-            id="flyingFrom"
-            options={flyingFromOptions}
-            value={flyingFromSelected}
-            renderInput={(params) => (<TextField {...params} placeholder="Flying From" />)}
-            onChange = {(event, newValue) => setFlyingFromSelected(newValue)}
-            fullWidth
+              id="flyingFrom"
+              options={flyingFromOptions}
+              value={flyingFromSelected}
+              renderInput={(params) => (
+                <TextField {...params} placeholder="Flying From" />
+              )}
+              onChange={(event, newValue) => setFlyingFromSelected(newValue)}
+              fullWidth
             />
           </Grid>
           <Grid item xs={6}>
             <Autocomplete
-            id="flyingTo"
-            options={flyingToOptions}
-            value={flyingToSelected}
-            renderInput={(params) => (<TextField {...params} placeholder="Flying To" />)}
-            onChange = {(event, newValue) => setFlyingToSelected(newValue)}
-            fullWidth
+              id="flyingTo"
+              options={flyingToOptions}
+              value={flyingToSelected}
+              renderInput={(params) => (
+                <TextField {...params} placeholder="Flying To" />
+              )}
+              onChange={(event, newValue) => setFlyingToSelected(newValue)}
+              fullWidth
             />
           </Grid>
 
