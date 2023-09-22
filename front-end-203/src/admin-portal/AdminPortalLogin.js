@@ -92,8 +92,9 @@ const AdminPortalLogin = () => {
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-            paddingTop: 5,
-            margin: 3,
+            verticalAlign: "center",
+            padding: 50,
+            margin: 300,
           }}
           onSubmit={handleSubmit}
         >

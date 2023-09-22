@@ -1,12 +1,19 @@
-import React, { useState } from "react";
-import { TextField, Button, Paper, Container } from "@mui/material";
+import React, { useState, useEffect } from "react";
+import { Link, TextField, Button, Paper, Container } from "@mui/material";
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+
+import { isAuthenticated, getCurrentUser, removeAuthToken, updateAuthHeadersFromCurrentUser } from "../auth";
 
 const PlaneUpdatingForm = () => {
+  const apiUrl = process.env.REACT_APP_API_BASE_URL;
   const [formData, setFormData] = useState({
-    planeID: "",
+    planeId: "",
     capacity: "",
     model: "",
   });
+  const [allPlanes, setAllPlanes] = useState([]);
+  const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -18,36 +25,95 @@ const PlaneUpdatingForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // You can access the values of planeID, capacity, and model from formData
-    console.log("Plane ID:", formData.planeID);
+
+    axios.post(apiUrl + "planes/new", formData)
+    .then((response) => {
+      if (response.status === 201) {
+        getAllPlanes();
+      } else {
+        console.log("Did not create plane: " + response.status);
+      }
+    })
+    .catch((error) => {
+      console.log("Did not create plane: " + error);
+    })
+
+    // You can access the values of planeId, capacity, and model from formData
+    console.log("Plane ID:", formData.planeId);
     console.log("Capacity:", formData.capacity);
     console.log("Model:", formData.model);
-
-    //UNCOMMENT when doing real logic
-    // try {
-    //   const response = await axios.post(apiUrl + "/planes/update/{formData.planeID}", formData);
-
-    //   if (response.status === 201) {
-    //     console.log("Update Successful! HTTP 201");
-    //     alert("Update Successful!");
-    //   }else {
-    //     console.log("Update failed:", response.data.error);
-    //   }
-    // } catch (error) {
-    //   console.error("Update failed", error);
-    // }
   };
+
+  function getAllPlanes() {
+    axios.get(apiUrl + "planes")
+      .then((response) => {
+        // If the call fails, a html to the login page is sent back.
+        const isResponseJsonType = response.headers.get('content-type')?.includes('application/json');
+        if (response.data != null && isResponseJsonType) {
+          setAllPlanes(response.data)
+        } else {
+          setAllPlanes([])
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        setAllPlanes([]);
+      })
+  }
+
+  function onDelete(planeId) {
+    // TODO: delete by planeId and then also call get all planes again.
+    axios.delete(apiUrl + "planes/delete/" + planeId)
+    .then(() => {
+      getAllPlanes();
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+  }
+
+  // Calls immediately upon page load
+  useEffect(() => {
+    if (isAuthenticated()) {
+      axios.get(apiUrl + "users/adminAuthTest").then((response) => {
+        // TODO: This isn't correctly reporting errors. Postman is 403, but here it's still 200.
+        if (response.status === 200) {
+          updateAuthHeadersFromCurrentUser();
+          getAllPlanes();
+        } else {
+          removeAuthToken();
+          navigate('/adminPortal/login');
+        }
+      }).catch((error) => {
+        removeAuthToken();
+        navigate('/adminPortal/login');
+      })
+    } else {
+      navigate('/adminPortal/login');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
 
   return (
     <Container>
-      <Paper elevation={3}>
+      <Link href="/adminPortal/home">Go Back Home</Link>
+      <Paper elevation={3}
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          paddingTop: 50,
+          margin: 30,
+        }}
+      >
         <form
           style={{
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-            paddingTop: 5,
-            margin: 3,
+            padding: 50,
+            margin: 100,
           }}
           onSubmit={handleSubmit}
         >
@@ -55,8 +121,8 @@ const PlaneUpdatingForm = () => {
             style={{ marginBottom: "16px" }} // You can adjust the spacing
             label="Plane ID"
             variant="outlined"
-            name="planeID"
-            value={formData.planeID}
+            name="planeId"
+            value={formData.planeId}
             onChange={handleInputChange}
           />
           <TextField
@@ -75,10 +141,33 @@ const PlaneUpdatingForm = () => {
             value={formData.model}
             onChange={handleInputChange}
           />
-          <Button type="submit" variant="contained" color="primary" p={3}>
-            Submit
+          <Button type="submit" variant="contained" color="primary" p={3} fullWidth>
+            Add Plane
           </Button>
         </form>
+
+
+        <div className="All-Planes-Display">
+          <div>
+            <Button onClick={getAllPlanes} variant="contained">Get All Planes</Button>
+            <h1>All Planes (Count: {allPlanes != null ? allPlanes.length : 0})</h1>
+            <ol>
+              {allPlanes.length > 0 ? (
+                allPlanes.map(item => (
+                  <li key={item.planeId} style={{fontSize: '24px'}}>
+                    {item.planeId}-{item.model} ({item.capacity})
+                    &nbsp; &nbsp; &nbsp;
+                    <Button onClick={() => {onDelete(item.planeId);}} variant="contained" color="error">DELETE</Button>
+                    <br />
+                    <br />
+                  </li>
+                ))
+              ) : (
+                <p></p>
+              )}
+            </ol>
+          </div>
+        </div>
       </Paper>
     </Container>
   );
