@@ -11,10 +11,10 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import axios from "axios";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Alert from "@mui/material/Alert"
 import AlertTitle from "@mui/material/AlertTitle"
-import { setAuthToken, isAuthenticated } from "../auth";
+import { setAuthToken, isAuthenticated, removeAuthToken } from "../auth";
 import { useNavigate } from 'react-router-dom';
 
 
@@ -30,7 +30,6 @@ export default function SignInPage() {
   const [hasFailedLogin, setHasFailedLogin] = useState(false);
 
   const navigate = useNavigate();
-  const { username, password } = formData;
 
   const handleChange = (e) => {
     const { name, type } = e.target;
@@ -78,6 +77,23 @@ export default function SignInPage() {
       console.error("Login failed", error);
     }
   };
+
+  // Calls immediately upon page load
+  useEffect(() => {
+    if (isAuthenticated()) {
+      axios.get(apiUrl + "users/authTest").then((response) => {
+        if (response.status === 200) {
+          navigate('/');
+        } else {
+          removeAuthToken();
+        }
+      }).catch((error) => {
+        removeAuthToken();
+      })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
 
   return (
     <ThemeProvider theme={defaultTheme}>

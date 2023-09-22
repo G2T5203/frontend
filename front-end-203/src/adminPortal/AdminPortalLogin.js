@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 import { TextField, Button, Paper, Container } from "@mui/material";
-import { setAuthToken, isAuthenticated } from "../auth";
+import { setAuthToken, isAuthenticated, removeAuthToken } from "../auth";
 
 const AdminPortalLogin = () => {
   const apiUrl = process.env.REACT_APP_API_BASE_URL;
@@ -72,9 +72,11 @@ const AdminPortalLogin = () => {
           navigate('/adminPortal/home');
         } else {
           setErrorMsg("ERROR, Please login again");
+          removeAuthToken();
         }
       }).catch((error) => {
         setErrorMsg("LOGGED IN AS NON ADMIN USER");
+        removeAuthToken();
       })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
