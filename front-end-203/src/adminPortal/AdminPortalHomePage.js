@@ -1,10 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import axios from 'axios';
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { TextField, Button, Paper, Container } from "@mui/material";
-import { setAuthToken, getCurrentUser, getUserByUsername, getAllCookies, isAuthenticated, removeAuthToken, updateAuthHeadersFromCurrentUser } from "../auth";
+import { Button, Container } from "@mui/material";
+import { getCurrentUser, removeAuthToken, updateAuthHeadersFromCurrentUser } from "../auth";
 
 const AdminPortalHomePage = () => {
     const apiUrl = process.env.REACT_APP_API_BASE_URL;
@@ -18,7 +17,7 @@ const AdminPortalHomePage = () => {
         } else {
             navigate('/adminPortal/login');
         }
-    }, []);
+    });
     
     const navigate = useNavigate();
     const currentUser = getCurrentUser();
