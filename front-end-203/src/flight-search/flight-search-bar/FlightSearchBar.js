@@ -20,7 +20,7 @@ const FlightSearchBar = ({
   flyingFrom,
   flyingTo,
   departuredt,
-  arrivaldt,
+  returndt,
   onFetchDepartureData,
   onFetchReturnData,
 }) => {
@@ -31,7 +31,7 @@ const FlightSearchBar = ({
   const [arrivalLocation, setArrivalLocation] = useState(flyingTo);
   const [tripType, setTripType] = useState(trip);
   const [departureDate, setDepartureDate] = useState(departuredt);
-  const [returnDate, setReturnDate] = useState(arrivaldt);
+  const [returnDate, setReturnDate] = useState(returndt);
 
   // for handling change of departure and return date when set manually on page
   const handleDepartureDateChange = (date) => {
@@ -126,7 +126,7 @@ const FlightSearchBar = ({
     // if (flyingTo == null) {
     //   navigate("/");
     // }
-    handleSearch();
+    //handleSearch();
     // eslint-disable-next-line react-hooks/exhaustive-deps
 }, []);
 

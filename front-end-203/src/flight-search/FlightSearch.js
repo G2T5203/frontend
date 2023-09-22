@@ -55,14 +55,14 @@ const handleReturnFlightData = (data) => {
 
 
   // for getting data from homepage
-  const { trip, noGuest, flightClass, flyingFrom, flyingTo, departuredt, arrivaldt } = location.state;
+  const { trip, noGuest, flightClass, flyingFrom, flyingTo, departuredt, returndt } = location.state;
 
 
 // Remove the enclosing quotes and convert to Day.js object
 const depDateObj = dayjs(departuredt.replace(/"/g, ''));
-const arrDateObj = dayjs(arrivaldt.replace(/"/g, ''));
+const arrDateObj = dayjs(returndt.replace(/"/g, ''));
   console.log(departuredt)
-  console.log(arrivaldt)
+  console.log(returndt)
 
   // for passing into the flight information cards (arrival and departure are not provided as data from fullsearch endpoint)
   const [departureLocation, setDepartureLocation] = useState("");
@@ -112,7 +112,7 @@ const arrDateObj = dayjs(arrivaldt.replace(/"/g, ''));
             trip={trip}
 
             departuredt={depDateObj}
-            arrivaldt={arrDateObj}
+            returndt={arrDateObj}
             onSearch={handleSearch}
           />
         </div>
