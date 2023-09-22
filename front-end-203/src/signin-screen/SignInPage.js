@@ -11,7 +11,12 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import axios from "axios";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import Alert from "@mui/material/Alert"
+import AlertTitle from "@mui/material/AlertTitle"
+import { setAuthToken, isAuthenticated, removeAuthToken } from "../auth";
+import { useNavigate } from 'react-router-dom';
+
 
 const defaultTheme = createTheme();
 
@@ -22,8 +27,9 @@ export default function SignInPage() {
     password: "",
     rememberBoolean: false,
   });
+  const [hasFailedLogin, setHasFailedLogin] = useState(false);
 
-  const { username, password } = formData;
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, type } = e.target;
@@ -33,30 +39,61 @@ export default function SignInPage() {
     });
   };
 
+  const handleLoginSuccess = (jwtResponse) => {
+    // Set JWT token in cookies or headers, including user data
+    const adminUser = {
+      username: formData.username,
+      // Add other user-related data here
+    };
+    setAuthToken(jwtResponse.data, adminUser);
+
+    navigate('/');
+  }
+
   const handleSubmit = async (e) => {
     //here just to not trigger errors
     // console.log(formData);
     e.preventDefault();
 
     try {
-      // Send a POST request to your backend API endpoint
-      const response = await axios.post(apiUrl + "/signin", {
-        username,
-        password,
-      });
-
-      if (response.status === 200) {
-        // HTTP status code is 200, which means success
-        // You can consider the sign-in successful here
-        console.log("Sign-in successful");
+      const jwtResponse = await axios.post(
+        apiUrl + "api/auth/token",
+        {},
+        {
+          auth: {
+            username: formData.username,
+            password: formData.password,
+          },
+        }
+      );
+      if (jwtResponse.status === 200) {
+        handleLoginSuccess(jwtResponse);
       } else {
-        console.log("Sign-in failed: Account does not exist");
+        setHasFailedLogin(true);
+        console.log('JWT Response:', jwtResponse);
       }
     } catch (error) {
-      // Handle errors (e.g., show an error message)
-      console.error("Sign-in failed", error);
+      setHasFailedLogin(true);
+      console.error("Login failed", error);
     }
   };
+
+  // Calls immediately upon page load
+  useEffect(() => {
+    if (isAuthenticated()) {
+      axios.get(apiUrl + "users/authTest").then((response) => {
+        if (response.status === 200) {
+          navigate('/');
+        } else {
+          removeAuthToken();
+        }
+      }).catch((error) => {
+        removeAuthToken();
+      })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -190,6 +227,7 @@ export default function SignInPage() {
               >
                 Sign In
               </Button>
+
               <Grid container justifyContent="space-between">
                 <Grid item>
                   <Link href="#" variant="body2">
@@ -198,7 +236,7 @@ export default function SignInPage() {
                 </Grid>
                 <Grid item>
                   <Link
-                    href="#"
+                    href="/signup"
                     variant="body2"
                   >
                     {"Don't have an account? Sign Up"}
@@ -207,6 +245,18 @@ export default function SignInPage() {
               </Grid>
             </Box>
           </Box>
+          {hasFailedLogin &&
+            <Box sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}>
+              < Alert severity="error" fullWidth>
+                <AlertTitle>Error</AlertTitle>
+                Sign in failed. Please check your username and password.
+              </Alert>
+            </Box>
+          }
         </Grid>
       </Grid>
     </ThemeProvider>

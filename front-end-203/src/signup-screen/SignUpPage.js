@@ -13,8 +13,13 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
+import Alert from "@mui/material/Alert"
+import AlertTitle from "@mui/material/AlertTitle"
+import { isAuthenticated, removeAuthToken } from "../auth";
+import { useNavigate } from 'react-router-dom';
 
-import React, { useState } from "react";
+
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 const defaultTheme = createTheme();
@@ -32,6 +37,8 @@ export default function SignUpPage() {
     salutation: "",
     hasAgreedToTerms: false,
   });
+  const [signupSuccess, setSignupSuccess] = useState(false);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -53,9 +60,9 @@ export default function SignUpPage() {
       const response = await axios.post(apiUrl + "users/new", formData);
 
       if (response.status === 201) {
-        // HTTP status code is 201, which means success
-        // You can consider the sign-up successful here
-        console.log("Sign-up successful: HTTP 201");
+        // Sign-up successful
+        console.log('Sign-up successful: HTTP 201');
+        setSignupSuccess(true);
       } else {
         // Handle other possible responses, e.g., display error messages
         console.log("Sign-up failed:", response.status);
@@ -65,6 +72,23 @@ export default function SignUpPage() {
       console.error("Sign-up failed", error);
     }
   };
+
+  // Calls immediately upon page load
+  useEffect(() => {
+    if (isAuthenticated()) {
+      axios.get(apiUrl + "users/authTest").then((response) => {
+        if (response.status === 200) {
+          navigate('/');
+        } else {
+          removeAuthToken();
+        }
+      }).catch((error) => {
+        removeAuthToken();
+      })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -225,12 +249,24 @@ export default function SignUpPage() {
                     }
                   />
                 </Grid>
-                <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2, fontSize: '14px', backgroundColor: '#F58A07', }}>
-                  Sign Up
-                </Button>
+                <Grid item xs={12}>
+                  {signupSuccess ? (
+                    <Alert severity="success" fullWidth>
+                      <AlertTitle>Success</AlertTitle>
+                      Account created!
+                      <strong>
+                        Click <Link href="/signin">here</Link> to sign in!
+                      </strong>
+                    </Alert>
+                  ) : (
+                    <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2, fontSize: '14px', backgroundColor: '#F58A07', }}>
+                      Sign Up
+                    </Button>
+                  )}
+                </Grid>
                 <Grid container justifyContent="flex-end">
                   <Grid item>
-                    <Link href="#" variant="body2">
+                    <Link href="/signin" variant="body2">
                       Already have an account? Sign in
                     </Link>
                   </Grid>
