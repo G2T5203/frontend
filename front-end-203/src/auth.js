@@ -6,11 +6,13 @@ const TOKEN_COOKIE_NAME = "jwt";
 // Function to set JWT token in cookies or headers with additional payload data
 export const setAuthToken = (token, userData) => {
   // Decode the original token
+  console.log("QQQ: token: " + token);
   const tokenParts = token.split('.');
   const header = JSON.parse(atob(tokenParts[0]));
   const payload = JSON.parse(atob(tokenParts[1]));
 
-  // Add or update the user data in the payload
+  // Add any additional data or update the user data in the payload
+  userData.fullJwtToken = token; // storing the original jwt auth token for resetting bearer token.
   Object.assign(payload, userData);
 
   // Recreate the token with the updated payload
@@ -26,7 +28,7 @@ export const setAuthToken = (token, userData) => {
     // httpOnly: true,     // Cookie cannot be accessed via JavaScript
   });
 
-  axios.defaults.headers.common["Authorization"] = `Bearer ${updatedToken}`;
+  axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 };
 
 
@@ -66,9 +68,9 @@ export function clearAllCookies() {
 }
 
 // Function to retrieve a user based on username and email payload
-export const getUserByUsernameAndEmail = (username, email) => {
+export const getUserByUsername = (username) => {
   const currentUser = getCurrentUser();
-  if (currentUser && currentUser.username === username && currentUser.email === email) {
+  if (currentUser && currentUser.username === username) {
     return currentUser;
   } else {
     return null; // User not found or payload does not match
@@ -102,11 +104,13 @@ export function getAllCookies(cookieName) {
 }
 
 // Function to update the JWT token from the current user
-export const updateAuthTokenFromCurrentUser = () => {
+export const updateAuthHeadersFromCurrentUser = () => {
   const currentUser = getCurrentUser();
   if (currentUser) {
-    const token = getCurrentUser(); // Replace 'jwt' with your actual cookie name
+    const currentUser = getCurrentUser(); // Replace 'jwt' with your actual cookie name
+    console.log("QQQ: currentUser.fullJwtToken: " + currentUser.fullJwtToken);
 
-    setAuthToken(token, currentUser);
+    // setAuthToken(token, currentUser);
+    axios.defaults.headers.common["Authorization"] = `Bearer ${currentUser.fullJwtToken}`;
   }
 };

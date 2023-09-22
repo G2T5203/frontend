@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { TextField, Button, Paper, Container } from "@mui/material";
-import { setAuthToken, getCurrentUser, getUserByUsernameAndEmail, getAllCookies, isAuthenticated, removeAuthToken, updateAuthTokenFromCurrentUser } from "../auth";
+import { setAuthToken, getCurrentUser, getUserByUsername, getAllCookies, isAuthenticated, removeAuthToken, updateAuthHeadersFromCurrentUser } from "../auth";
 
 const AdminPortalHomePage = () => {
     const apiUrl = process.env.REACT_APP_API_BASE_URL;
@@ -13,13 +13,7 @@ const AdminPortalHomePage = () => {
     // Calls immediately upon page load
     useEffect(() => {
         if (currentUser != null) {
-            // This one works. We probably just have to set this value to the ORIGINAL jwtResponse.data then it can work.
-            // To test this, just get your adminAuth token from postman and copy paste into here below.
-            // So this line in setAuthToken needs to be debugged.
-            // axios.defaults.headers.common["Authorization"] = `Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzZWxmIiwic3ViIjoiYWRtaW4iLCJyb2xlIjoiUk9MRV9BRE1JTiIsImV4cCI6MTY5NTM1MzkwMSwiaWF0IjoxNjk1MzUwMzAxfQ.s9dZEItSGOEHnNAK1tq1uo7my1EjImnC5ktCHOirIk57sW1_mcUrWTeOfH0bfgDCR4VMCA7iPSQbIkl39Y2MJw`;
-            
-            // The updateAuthTokenFromCurrentUser() throws an error.
-            // updateAuthTokenFromCurrentUser();
+            updateAuthHeadersFromCurrentUser();
             GetAllUsers();
         } else {
             navigate('/adminPortal/login');

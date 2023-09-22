@@ -13,7 +13,7 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
-import { setAuthToken, getCurrentUser, getUserByUsernameAndEmail, getAllCookies } from "../auth";
+import { setAuthToken, getCurrentUser, getUserByUsername, getAllCookies } from "../auth";
 
 
 import React, { useState } from "react";
@@ -85,7 +85,7 @@ export default function SignUpPage() {
         const CurrentUser = getCurrentUser();
         console.log(CurrentUser);
 
-        const user = getUserByUsernameAndEmail(formData.username, formData.email);
+        const user = getUserByUsername(formData.username);
         console.log(user);
 
         // // Retrieve and split the cookie string into individual cookies

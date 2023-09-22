@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 import { TextField, Button, Paper, Container } from "@mui/material";
-import { setAuthToken, getCurrentUser, getUserByUsernameAndEmail, getAllCookies, isAuthenticated, removeAuthToken } from "../auth";
+import { setAuthToken, getCurrentUser, getUserByUsername, getAllCookies, isAuthenticated, removeAuthToken } from "../auth";
 
 const AdminPortalLogin = () => {
   const apiUrl = process.env.REACT_APP_API_BASE_URL;
@@ -32,9 +32,9 @@ const AdminPortalLogin = () => {
     // Set JWT token in cookies or headers, including user data
     const adminUser = {
       username: formData.username,
-      email: formData.email,
       // Add other user-related data here
     };
+    console.log("QQQ: jwtResponse.data: " + jwtResponse.data);
     setAuthToken(jwtResponse.data, adminUser);
 
 
