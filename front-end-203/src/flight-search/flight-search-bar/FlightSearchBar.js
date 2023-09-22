@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import ToggleButton from "@mui/material/ToggleButton";
@@ -23,6 +23,7 @@ const FlightSearchBar = ({
   onFetchDepartureData,
   onFetchReturnData,
 }) => {
+  
   // all variables initalised to values from home page (departurelocation, arrival location, triptype, departure time, arrival time)
   const [departureLocation, setDepartureLocation] = useState(flyingFrom);
   const [arrivalLocation, setArrivalLocation] = useState(flyingTo);
@@ -30,6 +31,7 @@ const FlightSearchBar = ({
   const [departureDate, setDepartureDate] = useState(departuredt);
   const [returnDate, setReturnDate] = useState(arrivaldt);
 
+  // for handling change of departure and return date when set manually on page
   const handleDepartureDateChange = (date) => {
     setDepartureDate(date);
   };
@@ -44,9 +46,11 @@ const FlightSearchBar = ({
     if (onSearch) {
       onSearch(departureLocation, arrivalLocation, departureDate, returnDate);
     }
-    console.log(departureLocation)
-    console.log(arrivalLocation)
-    console.log(departureDate)
+
+    // Printing to console
+    // console.log(departureLocation)
+    // console.log(arrivalLocation)
+    // console.log(departureDate)
     // console.log(departureDate);
     // console.log(returnDate);
     // console.log(tripType);
@@ -55,6 +59,8 @@ const FlightSearchBar = ({
     //     console.error("Departure Date or Return Date is undefined.");
     //     return; // Exit the function early.
     // }
+
+
     // extract year, month and date from departure date object
     const year1 = departureDate.$y;
     const month1 = departureDate.$M+1;
@@ -75,8 +81,7 @@ const FlightSearchBar = ({
       day2 = returnDate.$D;
     }
 
-    // Construct the URL with departure and arrival locations
-
+    // Construct the URLs with departure and arrival locations
     const url1 = `http://localhost:8080/routeListings/fullSearch/${departureLocation}/${arrivalLocation}/${year1}/${month1}/${day1}`;
     const url2 = `http://localhost:8080/routeListings/fullSearch/${arrivalLocation}/${departureLocation}/${year2}/${month2}/${day2}`;
 
@@ -107,12 +112,17 @@ const FlightSearchBar = ({
       });
 
     // print inputs to console
-    console.log("Departure Location:", departureLocation);
-    console.log("Arrival Location:", arrivalLocation);
-    console.log("Trip Type:", tripType);
-    console.log("Departure Date:", departureDate);
-    console.log("Return Date:", returnDate);
+    // console.log("Departure Location:", departureLocation);
+    // console.log("Arrival Location:", arrivalLocation);
+    // console.log("Trip Type:", tripType);
+    // console.log("Departure Date:", departureDate);
+    // console.log("Return Date:", returnDate);
   };
+
+  // for automatic flightSearch when the page loads
+  useEffect(() => {
+    handleSearch();
+}, []);
 
   return (
     <Box

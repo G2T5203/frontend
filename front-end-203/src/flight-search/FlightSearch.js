@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import NavBar from "./nav-bar/NavigationBar"; // Import the Navbar component
 import Banner from "./banner/Banner";
 import "./FlightSearch.css";
@@ -9,6 +9,7 @@ import FilterTile from "./filter-tile/FilterTile";
 import FlightSearchBar from "./flight-search-bar/FlightSearchBar";
 import { useLocation } from "react-router-dom";
 import dayjs from "dayjs";
+
 
 // values for the filter tile
 const filterInfo = {
@@ -63,9 +64,6 @@ const arrDateObj = dayjs(arrivaldt.replace(/"/g, ''));
   console.log(departuredt)
   console.log(arrivaldt)
 
-  useEffect(() => {
-    handleSearch(flyingFrom, flyingTo);
-  }, [flyingFrom, flyingTo]);
   // for passing into the flight information cards (arrival and departure are not provided as data from fullsearch endpoint)
   const [departureLocation, setDepartureLocation] = useState("");
   const [arrivalLocation, setArrivalLocation] = useState("");
@@ -123,7 +121,9 @@ const arrDateObj = dayjs(arrivaldt.replace(/"/g, ''));
       {/* populating the flight-info-cards with the data from fullSearch endpoint. */}
       <div className="departure-flight-info-container-scrollable">
             
-        <Typography> Departure Flights</Typography>
+        <Typography
+        variant="h5"
+        sx={{fontFamily:"Merriweather Sans", marginBottom:2}}>Departure Flights</Typography>
         {departureFlightData.map((flight, index) => (
           <div key={index} style={{ marginBottom: "10px" }}>
             <FlightInfoCard
@@ -160,7 +160,9 @@ const arrDateObj = dayjs(arrivaldt.replace(/"/g, ''));
 
       <div className="return-flight-info-container-scrollable">
             
-        <Typography> Arrival Flights</Typography>
+        <Typography 
+        variant="h5"
+        sx={{fontFamily: "Merriweather Sans", marginTop:2, marginBottom:2 }}>Return Flights</Typography>
         {returnFlightData.map((flight, index) => (
           <div key={index} style={{ marginBottom: "10px" }}>
             <FlightInfoCard
