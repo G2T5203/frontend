@@ -156,7 +156,7 @@ const PlaneUpdatingForm = () => {
 
         <div className="All-Planes-Display">
           <div>
-            <Button onClick={getAllPlanes} variant="contained">Get All Planes</Button>
+            <Button onClick={getAllPlanes} variant="contained">Refresh Planes List</Button>
             <h1>All Planes (Count: {allPlanes != null ? allPlanes.length : 0})</h1>
             <ol>
               {allPlanes.length > 0 ? (
