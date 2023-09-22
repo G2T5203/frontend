@@ -17,13 +17,13 @@ const CompactForm = () => {
   };
   //Number of guest options
   const noGuestOptions = [1, 2, 3, 4, 5];
-  const [noGuestSelected, setGuestSelected] = useState("");
+  const [noGuestSelected, setGuestSelected] = useState("1");
   const noGuestHandleChange = (e) => {
     setGuestSelected(e.target.value);
   };
   //Class Options funcs
   const classOptions = ["Economy", "Business", "First"];
-  const [classSelected, setClassSelected] = useState("");
+  const [classSelected, setClassSelected] = useState("Economy");
   const classHandleChange = (e) => {
     setClassSelected(e.target.value);
   };
