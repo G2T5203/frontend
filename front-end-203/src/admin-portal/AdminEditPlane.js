@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, TextField, Button, Paper, Container } from "@mui/material";
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 import { isAuthenticated, removeAuthToken, updateAuthHeadersFromCurrentUser } from "../auth";
 
@@ -12,7 +12,7 @@ const PlaneUpdatingForm = () => {
     capacity: "",
     model: "",
   });
-  const [allPlanes, setAllPlanes] = useState([]);
+  let location = useLocation();
   const navigate = useNavigate();
 
   const handleInputChange = (e) => {
@@ -26,58 +26,38 @@ const PlaneUpdatingForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    axios.post(apiUrl + "planes/new", formData)
+    axios.put(apiUrl + "planes/update/" + location.state.currentPlaneId, formData)
     .then((response) => {
-      if (response.status === 201) {
-        getAllPlanes();
+      if (response.status === 200) {
+        getPlane();
+        const msgStr = formData.planeId + " has been updated!\n" +
+          "Capcity: " + formData.capacity + "\n" +
+          "Model: " + formData.model;
+        alert(msgStr);
       } else {
-        console.log("Did not create plane: " + response.status);
+        console.log("Did not update plane: " + response.status);
       }
     })
     .catch((error) => {
       console.log("Did not create plane: " + error);
     })
-
-    // You can access the values of planeId, capacity, and model from formData
-    console.log("Plane ID:", formData.planeId);
-    console.log("Capacity:", formData.capacity);
-    console.log("Model:", formData.model);
   };
 
-  function getAllPlanes() {
-    axios.get(apiUrl + "planes")
+  function getPlane() {
+    console.log(location.state.currentPlaneId);
+    axios.get(apiUrl + "planes/" + location.state.currentPlaneId)
       .then((response) => {
         // If the call fails, a html to the login page is sent back.
         const isResponseJsonType = response.headers.get('content-type')?.includes('application/json');
         if (response.data != null && isResponseJsonType) {
-          setAllPlanes(response.data)
-        } else {
-          setAllPlanes([])
+          setFormData(response.data);
         }
       })
       .catch((error) => {
         console.log(error);
-        setAllPlanes([]);
       })
   }
 
-  function onDelete(planeId) {
-    // TODO: delete by planeId and then also call get all planes again.
-    axios.delete(apiUrl + "planes/delete/" + planeId)
-    .then(() => {
-      getAllPlanes();
-    })
-    .catch((error) => {
-      console.log(error)
-    })
-  }
-
-  function onEdit(planeId) {
-    let data = {
-      currentPlaneId: planeId
-    };
-    navigate("/adminPortal/planes/edit", { state: data });
-  }
 
   // Calls immediately upon page load
   useEffect(() => {
@@ -86,7 +66,7 @@ const PlaneUpdatingForm = () => {
         // TODO: This isn't correctly reporting errors. Postman is 403, but here it's still 200.
         if (response.status === 200) {
           updateAuthHeadersFromCurrentUser();
-          getAllPlanes();
+          getPlane();
         } else {
           removeAuthToken();
           navigate('/adminPortal/login');
@@ -104,7 +84,7 @@ const PlaneUpdatingForm = () => {
 
   return (
     <Container>
-      <Link href="/adminPortal/home">Go Back Home</Link>
+      <Link href="/adminPortal/planes">Go Back to Manage Planes</Link>
       <Paper elevation={3}
         style={{
           display: "flex",
@@ -124,14 +104,7 @@ const PlaneUpdatingForm = () => {
           }}
           onSubmit={handleSubmit}
         >
-          <TextField
-            style={{ marginBottom: "16px" }} // You can adjust the spacing
-            label="Plane ID"
-            variant="outlined"
-            name="planeId"
-            value={formData.planeId}
-            onChange={handleInputChange}
-          />
+          <h1>{formData.planeId}</h1>
           <TextField
             style={{ marginBottom: "16px" }} // You can adjust the spacing
             label="Capacity"
@@ -149,34 +122,10 @@ const PlaneUpdatingForm = () => {
             onChange={handleInputChange}
           />
           <Button type="submit" variant="contained" color="primary" p={3} fullWidth>
-            Add Plane
+            Update Plane
           </Button>
         </form>
 
-
-        <div className="All-Planes-Display">
-          <div>
-            <Button onClick={getAllPlanes} variant="contained">Get All Planes</Button>
-            <h1>All Planes (Count: {allPlanes != null ? allPlanes.length : 0})</h1>
-            <ol>
-              {allPlanes.length > 0 ? (
-                allPlanes.map(item => (
-                  <li key={item.planeId} style={{fontSize: '24px'}}>
-                    {item.planeId}-{item.model} ({item.capacity})
-                    &nbsp; &nbsp; &nbsp;
-                    <Button onClick={() => {onEdit(item.planeId);}} variant="contained" color="secondary">EDIT</Button>
-                    &nbsp;
-                    <Button onClick={() => {onDelete(item.planeId);}} variant="contained" color="error">DELETE</Button>
-                    <br />
-                    <br />
-                  </li>
-                ))
-              ) : (
-                <p></p>
-              )}
-            </ol>
-          </div>
-        </div>
       </Paper>
     </Container>
   );
