@@ -41,10 +41,10 @@ const CompactForm = () => {
   const DepHandleDateChange = (date) => {
     setDepDate(date);
   };
-  //Arrival date
-  const [arrivalDate, setArrivalDate] = useState("");
-  const arrivalHandleDateChange = (date) => {
-    setArrivalDate(date);
+  //return date
+  const [returnDate, setReturnDate] = useState("");
+  const returnHandleDateChange = (date) => {
+    setReturnDate(date);
   };
   //form submission
   const navigate = useNavigate();
@@ -56,7 +56,7 @@ const CompactForm = () => {
       flyingFrom: flyingFromSelected,
       flyingTo: flyingToSelected,
       departuredt: JSON.stringify(Depdate),
-      arrivaldt: JSON.stringify(arrivalDate),
+      returndt: JSON.stringify(returnDate),
     };
     console.log(data);
     navigate("flightsearch", { state: data });
@@ -167,10 +167,10 @@ const CompactForm = () => {
             {" "}
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
-                name="arrivaldt"
-                label="Arrival Date"
-                value={arrivalDate}
-                onChange={arrivalHandleDateChange}
+                name="returndt"
+                label="Return Date"
+                value={returnDate}
+                onChange={returnHandleDateChange}
                 disabled={tripSelected !== "Return"}
                 minDate={Depdate}
               />
