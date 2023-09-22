@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 import { TextField, Button, Paper, Container } from "@mui/material";
-import { setAuthToken, getCurrentUser, getUserByUsername, getAllCookies, isAuthenticated, removeAuthToken } from "../auth";
+import { setAuthToken, isAuthenticated } from "../auth";
 
 const AdminPortalLogin = () => {
   const apiUrl = process.env.REACT_APP_API_BASE_URL;
@@ -13,11 +13,7 @@ const AdminPortalLogin = () => {
   });
   const [errorMsg, setErrorMsg] = useState(String);
 
-  // Calls immediately upon page load
-  useEffect(() => {
-    checkAlreadyLoggedIn();
-  }, []);
-
+ 
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -44,7 +40,7 @@ const AdminPortalLogin = () => {
   const checkAlreadyLoggedIn = () => {
     if (isAuthenticated()) {
       axios.get(apiUrl + "users/adminAuthTest").then((response) => {
-        if (response.status == 200) {
+        if (response.status === 200) {
           navigate('/adminPortal/home');
         } else {
           setErrorMsg("ERROR, Please login again");
@@ -71,7 +67,7 @@ const AdminPortalLogin = () => {
           },
         }
       );
-      if (jwtResponse.status == 200) {
+      if (jwtResponse.status === 200) {
         handleLoginSuccess(jwtResponse);
       } else {
         setErrorMsg("Login failed: " + jwtResponse.status);
@@ -82,6 +78,12 @@ const AdminPortalLogin = () => {
       console.error("Login failed", error);
     }
   };
+
+  // Calls immediately upon page load
+  useEffect(() => {
+    checkAlreadyLoggedIn();
+  });
+
 
   return (
     <Container>
