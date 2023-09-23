@@ -5,12 +5,13 @@ import { useNavigate, useLocation } from 'react-router-dom';
 
 import { isAuthenticated, removeAuthToken, updateAuthHeadersFromCurrentUser } from "../auth";
 
-const PlaneUpdatingForm = () => {
+const RouteUpdatingForm = () => {
   const apiUrl = process.env.REACT_APP_API_BASE_URL;
   const [formData, setFormData] = useState({
-    planeId: "",
-    capacity: "",
-    model: "",
+    routeId: "-1",
+    departureDest: "",
+    arrivalDest: "",
+    flightDuration: "",
   });
   let location = useLocation();
   const navigate = useNavigate();
@@ -26,28 +27,29 @@ const PlaneUpdatingForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    axios.put(apiUrl + "planes/update/" + location.state.currentPlaneId, formData)
+    axios.put(apiUrl + "routes/update/" + location.state.currentRouteId, formData)
       .then((response) => {
         if (response.status === 200) {
-          getPlane();
-          const msgStr = formData.planeId + " has been updated!\n" +
-            "Capcity: " + formData.capacity + "\n" +
-            "Model: " + formData.model;
+          getRoute();
+          const msgStr = "Route " + formData.routeId + " has been updated!\n" +
+            "Departure Destination: " + formData.departureDest + "\n" +
+            "Arrival Destination: " + formData.arrivalDest + "\n" +
+            "Flight Duration: " + formData.flightDuration;
           alert(msgStr);
         } else {
-          alert("Failed to update plane: " + response.status);
-          console.log("Did not update plane: " + response.status);
+          alert("Failed to update route: " + response.status + "\nPlease check that Flight Duration is in the correct format of 'PT<hour>H<minute>M'");
+          console.log("Did not update route: " + response.status);
         }
       })
       .catch((error) => {
-        alert("Failed to update plane: " + error);
-        console.log("Did not create plane: " + error);
+        alert("Failed to update route: " + error + "\nPlease check that Flight Duration is in the correct format of 'PT<hour>H<minute>M'");
+        console.log("Did not create route: " + error);
       })
   };
 
-  function getPlane() {
-    console.log(location.state.currentPlaneId);
-    axios.get(apiUrl + "planes/" + location.state.currentPlaneId)
+  function getRoute() {
+    console.log(location.state.currentRouteId);
+    axios.get(apiUrl + "routes/" + location.state.currentRouteId)
       .then((response) => {
         // If the call fails, a html to the login page is sent back.
         const isResponseJsonType = response.headers.get('content-type')?.includes('application/json');
@@ -68,7 +70,7 @@ const PlaneUpdatingForm = () => {
         // TODO: This isn't correctly reporting errors. Postman is 403, but here it's still 200.
         if (response.status === 200) {
           updateAuthHeadersFromCurrentUser();
-          getPlane();
+          getRoute();
         } else {
           removeAuthToken();
           navigate('/adminPortal/login');
@@ -111,33 +113,41 @@ const PlaneUpdatingForm = () => {
                 marginBottom: 2,
               }}>
                 <Typography variant="h3">
-                  {formData.planeId}
+                  Route {formData.routeId}
                 </Typography>
 
                 <Button variant="contained" color="secondary"
-                  onClick={() => { navigate("/adminPortal/planes") }}>
+                  onClick={() => { navigate("/adminPortal/routes") }}>
                   Go Back
                 </Button>
               </Box>
 
               <TextField fullWidth
                 style={{ marginBottom: "16px" }} // You can adjust the spacing
-                label="Capacity"
+                label="Departure Destination"
                 variant="outlined"
-                name="capacity"
-                value={formData.capacity}
+                name="departureDest"
+                value={formData.departureDest}
                 onChange={handleInputChange}
               />
               <TextField fullWidth
                 style={{ marginBottom: "16px" }} // You can adjust the spacing
-                label="Model"
+                label="Arrival Destination"
                 variant="outlined"
-                name="model"
-                value={formData.model}
+                name="arrivalDest"
+                value={formData.arrivalDest}
+                onChange={handleInputChange}
+              />
+              <TextField fullWidth
+                style={{ marginBottom: "16px" }} // You can adjust the spacing
+                label="Flight Duration"
+                variant="outlined"
+                name="flightDuration"
+                value={formData.flightDuration}
                 onChange={handleInputChange}
               />
               <Button type="submit" variant="contained" color="primary" p={3} fullWidth>
-                UPDATE PLANE
+                UPDATE ROUTE
               </Button>
 
             </form>
@@ -148,4 +158,4 @@ const PlaneUpdatingForm = () => {
   );
 };
 
-export default PlaneUpdatingForm;
+export default RouteUpdatingForm;
