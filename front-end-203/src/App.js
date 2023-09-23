@@ -14,6 +14,7 @@ import AdminPortalEditProfile from "./admin-portal/AdminPortalEditProfile";
 import AdminPortalManagePlane from "./admin-portal/AdminManagePlane";
 import AdminPortalEditPlane from "./admin-portal/AdminEditPlane";
 import AdminPortalManageRoute from "./admin-portal/AdminManageRoute";
+import AdminPortalEditRoute from "./admin-portal/AdminEditRoute";
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
         <Route path="/adminPortal/planes" element={<AdminPortalManagePlane />} />
         <Route path="/adminPortal/planes/edit" element={<AdminPortalEditPlane />} />
         <Route path="/adminPortal/routes" element={<AdminPortalManageRoute />} />
+        <Route path="/adminPortal/routes/edit" element={<AdminPortalEditRoute />} />
       </Routes>
     </Router>
   );

@@ -31,7 +31,11 @@ const RouteUpdatingForm = () => {
       .then((response) => {
         if (response.status === 201) {
           getAllRoutes();
-          alert("Successfully added " + response.data.routeId);
+          const msgStr = "Successfully added new Route with ID: " + response.data.routeId + "\n" +
+            "Departure Destination: " + formData.departureDest + "\n" +
+            "Arrival Destination: " + formData.arrivalDest + "\n" +
+            "Flight Duration: " + formData.flightDuration;
+          alert(msgStr);
         } else {
           alert("Failed to create route.\nPlease check that Flight Duration is in the correct format of 'PT<hour>H<minute>M'");
           console.log("Did not create route: " + response.status);
