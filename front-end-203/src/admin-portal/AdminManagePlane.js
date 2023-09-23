@@ -134,7 +134,7 @@ const PlaneUpdatingForm = () => {
 
 
 
-      <Grid container xs={12}>
+      <Grid container>
         <Grid item xs={12} sm={8} style={{
           padding: 10,
         }}>
@@ -156,8 +156,13 @@ const PlaneUpdatingForm = () => {
                   flexDirection: 'column',
                 }}>
                   {allPlanes.length > 0 ? (
-                    allPlanes.map(item => (
-                      <li key={item.planeId}>
+                    allPlanes.map((item, index) => (
+                      <li key={item.planeId} style={{
+                        fontSize: '24px',
+                        fontFamily: 'Sans-Serif',
+                        fontWeight: 'bold',
+                        backgroundColor: index % 2 === 0 ? ("#F0F0F0") : ("#FFFFFF"),
+                      }}>
                         <Box sx={{
                           margin: 1,
                           display: 'flex',
@@ -176,7 +181,6 @@ const PlaneUpdatingForm = () => {
                           </Box>
                           <Button onClick={() => { onDelete(item.planeId); }} variant="contained" color="error">DELETE</Button>
                         </Box>
-                        <hr></hr>
                       </li>
                     ))) : (
                     <p></p>
