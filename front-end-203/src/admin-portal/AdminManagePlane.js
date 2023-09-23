@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Link, TextField, Button, Paper, Container } from "@mui/material";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-
 import { isAuthenticated, removeAuthToken, updateAuthHeadersFromCurrentUser } from "../auth";
+
+import { Typography, Box, TextField, Button, Paper, Container, Grid } from "@mui/material";
 
 const PlaneUpdatingForm = () => {
   const apiUrl = process.env.REACT_APP_API_BASE_URL;
@@ -27,16 +27,16 @@ const PlaneUpdatingForm = () => {
     e.preventDefault();
 
     axios.post(apiUrl + "planes/new", formData)
-    .then((response) => {
-      if (response.status === 201) {
-        getAllPlanes();
-      } else {
-        console.log("Did not create plane: " + response.status);
-      }
-    })
-    .catch((error) => {
-      console.log("Did not create plane: " + error);
-    })
+      .then((response) => {
+        if (response.status === 201) {
+          getAllPlanes();
+        } else {
+          console.log("Did not create plane: " + response.status);
+        }
+      })
+      .catch((error) => {
+        console.log("Did not create plane: " + error);
+      })
 
     // You can access the values of planeId, capacity, and model from formData
     console.log("Plane ID:", formData.planeId);
@@ -64,12 +64,12 @@ const PlaneUpdatingForm = () => {
   function onDelete(planeId) {
     // TODO: delete by planeId and then also call get all planes again.
     axios.delete(apiUrl + "planes/delete/" + planeId)
-    .then(() => {
-      getAllPlanes();
-    })
-    .catch((error) => {
-      console.log(error)
-    })
+      .then(() => {
+        getAllPlanes();
+      })
+      .catch((error) => {
+        console.log(error)
+      })
   }
 
   function onEdit(planeId) {
@@ -104,80 +104,136 @@ const PlaneUpdatingForm = () => {
 
   return (
     <Container>
-      <Link href="/adminPortal/home">Go Back Home</Link>
-      <Paper elevation={3}
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          paddingTop: 50,
-          margin: 30,
-        }}
-      >
-        <form
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            padding: 50,
-            margin: 100,
-          }}
-          onSubmit={handleSubmit}
-        >
-          <TextField
-            style={{ marginBottom: "16px" }} // You can adjust the spacing
-            label="Plane ID"
-            variant="outlined"
-            name="planeId"
-            value={formData.planeId}
-            onChange={handleInputChange}
-          />
-          <TextField
-            style={{ marginBottom: "16px" }} // You can adjust the spacing
-            label="Capacity"
-            variant="outlined"
-            name="capacity"
-            value={formData.capacity}
-            onChange={handleInputChange}
-          />
-          <TextField
-            style={{ marginBottom: "16px" }} // You can adjust the spacing
-            label="Model"
-            variant="outlined"
-            name="model"
-            value={formData.model}
-            onChange={handleInputChange}
-          />
-          <Button type="submit" variant="contained" color="primary" p={3} fullWidth>
-            Add Plane
-          </Button>
-        </form>
-
-
-        <div className="All-Planes-Display">
-          <div>
-            <Button onClick={getAllPlanes} variant="contained">Refresh Planes List</Button>
-            <h1>All Planes (Count: {allPlanes != null ? allPlanes.length : 0})</h1>
-            <ol>
-              {allPlanes.length > 0 ? (
-                allPlanes.map(item => (
-                  <li key={item.planeId} style={{fontSize: '24px'}}>
-                    {item.planeId}-{item.model} ({item.capacity})
-                    &nbsp; &nbsp; &nbsp;
-                    <Button onClick={() => {onEdit(item.planeId);}} variant="contained" color="secondary">EDIT</Button>
-                    &nbsp;
-                    <Button onClick={() => {onDelete(item.planeId);}} variant="contained" color="error">DELETE</Button>
-                    <br />
-                    <br />
-                  </li>
-                ))
-              ) : (
-                <p></p>
-              )}
-            </ol>
-          </div>
-        </div>
+      <Paper sx={{
+        p: 1,
+        m: 1
+      }}>
+        <Box sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          p: 1,
+          m: 1,
+          bgcolor: 'background.paper',
+          borderRadius: 1,
+          alignItems: 'center',
+        }}>
+          <Box>
+            <Typography variant="h3">Planes Management</Typography>
+          </Box>
+          <Box>
+            <Button variant="contained" color="secondary"
+              onClick={() => { navigate("/adminPortal/home") }}>Back to Home</Button>
+          </Box>
+        </Box>
       </Paper>
+
+
+
+      <Grid container xs={12}>
+        <Grid item xs={12} sm={8} style={{
+          padding: 10,
+        }}>
+          <Paper elevation={3} style={{
+            padding: 20,
+          }}>
+            <div>
+              <Box sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+              }}>
+                <Typography variant="h4">All Planes (Count: {allPlanes != null ? allPlanes.length : 0})</Typography>
+                <Button onClick={getAllPlanes} variant="contained">Refresh Planes List</Button>
+              </Box>
+              <br />
+              <ol>
+                <Box sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                }}>
+                  {allPlanes.length > 0 ? (
+                    allPlanes.map(item => (
+                      <li key={item.planeId}>
+                        <Box sx={{
+                          margin: 1,
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                        }}>
+                          <Box sx={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            justifyContent: 'flex-start',
+                          }}>
+                            <Button onClick={() => { onEdit(item.planeId); }} variant="contained" color="secondary"
+                            sx={{paddingLeft: 3, paddingRight: 3,}}>EDIT</Button>
+                            <Typography variant="h5" sx={{paddingLeft: 1}}>
+                              {item.planeId}-{item.model} ({item.capacity})
+                            </Typography>
+                          </Box>
+                          <Button onClick={() => { onDelete(item.planeId); }} variant="contained" color="error">DELETE</Button>
+                        </Box>
+                        <hr></hr>
+                      </li>
+                    ))) : (
+                    <p></p>
+                  )}
+                </Box>
+              </ol>
+            </div>
+          </Paper>
+        </Grid>
+
+        <Grid item xs={12} sm={4} style={{
+          padding: 10
+        }}>
+          <Paper elevation={3}>
+            <Box columnGap={2} style={{
+              display: 'flex',
+              flexDirection: 'column',
+              padding: 20,
+              alignItems: 'center',
+            }}>
+              <form 
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  width: '100%',
+                }}
+                onSubmit={handleSubmit}
+              >
+                <TextField fullWidth
+                  style={{ marginBottom: "16px" }} // You can adjust the spacing
+                  label="Plane ID"
+                  variant="outlined"
+                  name="planeId"
+                  value={formData.planeId}
+                  onChange={handleInputChange}
+                />
+                <TextField fullWidth
+                  style={{ marginBottom: "16px" }} // You can adjust the spacing
+                  label="Capacity"
+                  variant="outlined"
+                  name="capacity"
+                  value={formData.capacity}
+                  onChange={handleInputChange}
+                />
+                <TextField fullWidth
+                  style={{ marginBottom: "16px" }} // You can adjust the spacing
+                  label="Model"
+                  variant="outlined"
+                  name="model"
+                  value={formData.model}
+                  onChange={handleInputChange}
+                />
+                <Button type="submit" variant="contained" color="primary" p={3} fullWidth>
+                  Add Plane
+                </Button>
+              </form>
+
+            </Box>
+          </Paper>
+        </Grid>
+      </Grid>
     </Container>
   );
 };
