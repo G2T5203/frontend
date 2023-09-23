@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import Link from "@mui/material/Link";
 
 import { Typography, Grid, Box, Button, Paper, Container } from "@mui/material";
 import { isAuthenticated, getCurrentUser, removeAuthToken, updateAuthHeadersFromCurrentUser } from "../auth";

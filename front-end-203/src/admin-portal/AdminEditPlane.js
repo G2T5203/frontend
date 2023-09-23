@@ -4,7 +4,6 @@ import axios from 'axios';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 import { isAuthenticated, removeAuthToken, updateAuthHeadersFromCurrentUser } from "../auth";
-import { Rowing } from "@mui/icons-material";
 
 const PlaneUpdatingForm = () => {
   const apiUrl = process.env.REACT_APP_API_BASE_URL;
