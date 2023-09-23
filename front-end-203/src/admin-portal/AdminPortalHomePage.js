@@ -84,7 +84,7 @@ const AdminPortalHomePage = () => {
             </Paper>
 
 
-            <Grid container xs={12}>
+            <Grid container>
                 <Grid item xs={12} sm={8} style={{
                     padding: 10,
                 }}>
