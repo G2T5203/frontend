@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Link, TextField, Button, Paper, Container } from "@mui/material";
+import { Grid, Card, Typography, Box, TextField, Button, Container } from "@mui/material";
 import axios from 'axios';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 import { isAuthenticated, removeAuthToken, updateAuthHeadersFromCurrentUser } from "../auth";
+import { Rowing } from "@mui/icons-material";
 
 const PlaneUpdatingForm = () => {
   const apiUrl = process.env.REACT_APP_API_BASE_URL;
@@ -27,20 +28,20 @@ const PlaneUpdatingForm = () => {
     e.preventDefault();
 
     axios.put(apiUrl + "planes/update/" + location.state.currentPlaneId, formData)
-    .then((response) => {
-      if (response.status === 200) {
-        getPlane();
-        const msgStr = formData.planeId + " has been updated!\n" +
-          "Capcity: " + formData.capacity + "\n" +
-          "Model: " + formData.model;
-        alert(msgStr);
-      } else {
-        console.log("Did not update plane: " + response.status);
-      }
-    })
-    .catch((error) => {
-      console.log("Did not create plane: " + error);
-    })
+      .then((response) => {
+        if (response.status === 200) {
+          getPlane();
+          const msgStr = formData.planeId + " has been updated!\n" +
+            "Capcity: " + formData.capacity + "\n" +
+            "Model: " + formData.model;
+          alert(msgStr);
+        } else {
+          console.log("Did not update plane: " + response.status);
+        }
+      })
+      .catch((error) => {
+        console.log("Did not create plane: " + error);
+      })
   };
 
   function getPlane() {
@@ -84,49 +85,64 @@ const PlaneUpdatingForm = () => {
 
   return (
     <Container>
-      <Link href="/adminPortal/planes">Go Back to Manage Planes</Link>
-      <Paper elevation={3}
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          paddingTop: 50,
-          margin: 30,
-        }}
-      >
-        <form
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            padding: 50,
-            margin: 100,
-          }}
-          onSubmit={handleSubmit}
-        >
-          <h1>{formData.planeId}</h1>
-          <TextField
-            style={{ marginBottom: "16px" }} // You can adjust the spacing
-            label="Capacity"
-            variant="outlined"
-            name="capacity"
-            value={formData.capacity}
-            onChange={handleInputChange}
-          />
-          <TextField
-            style={{ marginBottom: "16px" }} // You can adjust the spacing
-            label="Model"
-            variant="outlined"
-            name="model"
-            value={formData.model}
-            onChange={handleInputChange}
-          />
-          <Button type="submit" variant="contained" color="primary" p={3} fullWidth>
-            Update Plane
-          </Button>
-        </form>
 
-      </Paper>
+
+      <Grid container sx={{
+        marginTop: "20%",
+      }}>
+        <Grid item md={3} sm={1} xs={0}></Grid>
+        <Grid item md={6} sm={10} xs={12}>
+          <Card elevation={3}>
+            <form
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                verticalAlign: "center",
+                padding: 50,
+              }}
+              onSubmit={handleSubmit}
+            >
+              <Box sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                width: '100%',
+                marginBottom: 2,
+              }}>
+                <Typography variant="h3">
+                  {formData.planeId}
+                </Typography>
+
+                <Button variant="contained" color="secondary"
+                  onClick={() => { navigate("/adminPortal/planes") }}>
+                  Go Back
+                </Button>
+              </Box>
+
+              <TextField fullWidth
+                style={{ marginBottom: "16px" }} // You can adjust the spacing
+                label="Capacity"
+                variant="outlined"
+                name="capacity"
+                value={formData.capacity}
+                onChange={handleInputChange}
+              />
+              <TextField fullWidth
+                style={{ marginBottom: "16px" }} // You can adjust the spacing
+                label="Model"
+                variant="outlined"
+                name="model"
+                value={formData.model}
+                onChange={handleInputChange}
+              />
+              <Button type="submit" variant="contained" color="primary" p={3} fullWidth>
+                UPDATE PLANE
+              </Button>
+
+            </form>
+          </Card>
+        </Grid>
+      </Grid>
     </Container>
   );
 };
