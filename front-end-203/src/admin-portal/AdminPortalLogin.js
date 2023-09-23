@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-import { Typography, TextField, Button, Paper, Container } from "@mui/material";
+import { Typography, TextField, Button, Card, Grid, Container } from "@mui/material";
 import { setAuthToken, isAuthenticated, removeAuthToken } from "../auth";
 
 const AdminPortalLogin = () => {
@@ -84,46 +84,51 @@ const AdminPortalLogin = () => {
 
   return (
     <Container>
-      <Paper elevation={3}>
+      <Grid container sx={{
+        marginTop: "20%",
+      }}>
+        <Grid item md={3} sm={1} xs={0}></Grid>
+        <Grid item md={6} sm={10} xs={12}>
+          <Card elevation={3}>
+            <form
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                verticalAlign: "center",
+                padding: 50,
+              }}
+              onSubmit={handleSubmit}
+            >
+              <Typography variant="h3">
+                ADMIN PORTAL
+              </Typography>
 
-        <form
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            verticalAlign: "center",
-            padding: 50,
-            margin: 300,
-          }}
-          onSubmit={handleSubmit}
-        >
-          <Typography variant="h3">
-            ADMIN PORTAL
-          </Typography>
-
-          <p style={{ color: 'red' }}>{errorMsg}</p>
-          <TextField fullWidth
-            style={{ marginBottom: "16px" }} // You can adjust the spacing
-            label="Username"
-            variant="outlined"
-            name="username"
-            value={formData.username}
-            onChange={handleInputChange}
-          />
-          <TextField fullWidth
-            style={{ marginBottom: "16px" }} // You can adjust the spacing
-            label="Password"
-            variant="outlined"
-            type="password"
-            name="password"
-            value={formData.password}
-            onChange={handleInputChange}
-          />
-          <Button type="submit" variant="contained" color="primary" p={3} fullWidth>
-            LOGIN
-          </Button>
-        </form>
-      </Paper>
+              <p style={{ color: 'red' }}>{errorMsg}</p>
+              <TextField fullWidth
+                style={{ marginBottom: "16px" }} // You can adjust the spacing
+                label="Username"
+                variant="outlined"
+                name="username"
+                value={formData.username}
+                onChange={handleInputChange}
+              />
+              <TextField fullWidth
+                style={{ marginBottom: "16px" }} // You can adjust the spacing
+                label="Password"
+                variant="outlined"
+                type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleInputChange}
+              />
+              <Button type="submit" variant="contained" color="primary" p={3} fullWidth>
+                LOGIN
+              </Button>
+            </form>
+          </Card>
+        </Grid>
+      </Grid>
     </Container>
   );
 };
