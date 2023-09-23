@@ -30,11 +30,14 @@ const PlaneUpdatingForm = () => {
       .then((response) => {
         if (response.status === 201) {
           getAllPlanes();
+          alert("Successfully added " + formData.planeId);
         } else {
+          alert("Failed to create " + formData.planeId + ".\nPlease check that there are no duplicate Plane IDs.");
           console.log("Did not create plane: " + response.status);
         }
       })
       .catch((error) => {
+        alert("Failed to create " + formData.planeId + ".\nPlease check that there are no duplicate Plane IDs.");
         console.log("Did not create plane: " + error);
       })
 
@@ -65,9 +68,11 @@ const PlaneUpdatingForm = () => {
     // TODO: delete by planeId and then also call get all planes again.
     axios.delete(apiUrl + "planes/delete/" + planeId)
       .then(() => {
+        alert("Successfully deleted " + planeId + "and refreshed planes list.");
         getAllPlanes();
       })
       .catch((error) => {
+        alert("Failed to delete " + planeId + ".\nPlease check that there are no dependent routeListings for this plane. Additonal error msg:\n" + error);
         console.log(error)
       })
   }
