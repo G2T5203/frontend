@@ -100,11 +100,12 @@ const AdminPortalLogin = () => {
               }}
               onSubmit={handleSubmit}
             >
-              <Typography variant="h3">
+              <Typography variant="h3" fontWeight="bold">
                 ADMIN PORTAL
               </Typography>
 
-              <p style={{ color: 'red' }}>{errorMsg}</p>
+              <Typography variant="body2" style={{ color: 'red', paddingBottom: 20, }}>{errorMsg}</Typography>
+
               <TextField fullWidth
                 style={{ marginBottom: "16px" }} // You can adjust the spacing
                 label="Username"
