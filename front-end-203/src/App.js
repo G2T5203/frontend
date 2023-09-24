@@ -5,12 +5,16 @@ import HomePage from "./homepage/HomePage";
 import FlightSearch from "./flight-search/FlightSearch";
 import SignIn from "./signin-screen/SignInPage";
 import SignUp from "./signup-screen/SignUpPage";
-import EditProfile from "./adminPortal/EditProfile";
-import PlaneAdd from "./adminPortal/PlaneAdd";
+
 
 // Admin Portal
-import AdminPortalLogin from "./adminPortal/AdminPortalLogin";
-import AdminPortalHomePage from "./adminPortal/AdminPortalHomePage";
+import AdminPortalLogin from "./admin-portal/AdminPortalLogin";
+import AdminPortalHomePage from "./admin-portal/AdminPortalHomePage";
+import AdminPortalEditProfile from "./admin-portal/AdminPortalEditProfile";
+import AdminPortalManagePlane from "./admin-portal/AdminManagePlane";
+import AdminPortalEditPlane from "./admin-portal/AdminEditPlane";
+import AdminPortalManageRoute from "./admin-portal/AdminManageRoute";
+import AdminPortalEditRoute from "./admin-portal/AdminEditRoute";
 
 function App() {
   return (
@@ -20,12 +24,16 @@ function App() {
         <Route path="/flightsearch" element={<FlightSearch />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
-        <Route path="/editprofile" element={<EditProfile />} />
-        <Route path="/planeadd" element={<PlaneAdd />} />
+
 
         {/* ADMIN PORTAL */}
-        <Route path="/adminPortal/home" element={<AdminPortalHomePage />} />
         <Route path="/adminPortal/login" element={<AdminPortalLogin />} />
+        <Route path="/adminPortal/home" element={<AdminPortalHomePage />} />
+        <Route path="/adminPortal/editProfile" element={<AdminPortalEditProfile />} />
+        <Route path="/adminPortal/planes" element={<AdminPortalManagePlane />} />
+        <Route path="/adminPortal/planes/edit" element={<AdminPortalEditPlane />} />
+        <Route path="/adminPortal/routes" element={<AdminPortalManageRoute />} />
+        <Route path="/adminPortal/routes/edit" element={<AdminPortalEditRoute />} />
       </Routes>
     </Router>
   );
