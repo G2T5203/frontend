@@ -27,6 +27,16 @@ const FlightSearchBar = ({
   //navigate set up 
   // eslint-disable-next-line 
   const navigate = useNavigate();
+
+  // for handling change in toggle button
+  const handleTripTypeChange = (event, newTripType) => {
+    setTripType(newTripType);
+    
+    // Reset the return date when changing to "One way"
+    if (newTripType === "One way") {
+        setReturnDate(null);
+    }
+};
   
   // all variables initalised to values from home page (departurelocation, arrival location, triptype, departure time, arrival time)
   const [departureLocation, setDepartureLocation] = useState(flyingFrom);
@@ -226,7 +236,7 @@ const FlightSearchBar = ({
         value={tripType}
         defaultValue={trip}
         exclusive
-        onChange={(event, newTripType) => setTripType(newTripType)}
+        onChange={handleTripTypeChange}
         aria-label="Trip Type"
         sx={{ marginRight: "10px", marginLeft: "10px" }}
       >
