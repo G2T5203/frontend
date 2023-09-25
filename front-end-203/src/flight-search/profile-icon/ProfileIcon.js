@@ -1,11 +1,8 @@
 // profile-icon component
 import React, { useState } from 'react';
 import './ProfileIcon.css'; // Import your CSS file for styling
-import { removeAuthToken } from '../../auth';
-import { useNavigate } from 'react-router-dom';
 
 const ProfileIcon = () => {
-  const navigate = useNavigate();
   // State to track the dropdown menu's open/closed state
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -15,10 +12,6 @@ const ProfileIcon = () => {
   };
   const handleClickSignOut = () => {
     console.log("Clicked sign out!")
-    removeAuthToken();
-    navigate("/signin");
-
-
   }
   const handleClickAccount = () => {
     console.log("Clicked my account!")
