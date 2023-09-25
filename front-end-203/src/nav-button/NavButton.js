@@ -3,19 +3,17 @@
 import React, { useState } from 'react';
 import './NavButton.css'; // Import your CSS file for styling
 
-const NavButton = ({ text }) => {
+const NavButton = ({ text, handleClick }) => {
   const [isHovered, setIsHovered] = useState(false);
 
-  const handleClick = () => {
-    console.log("Clicked "+ text + "!")
-  };
+
 
   return (
     <button
       className={`nav-button ${isHovered ? 'hovered' : ''}`}
-      onClick={handleClick}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      onClick={handleClick}
     >
       {text}
     </button>
