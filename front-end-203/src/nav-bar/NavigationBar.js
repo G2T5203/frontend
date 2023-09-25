@@ -1,11 +1,20 @@
-import React from "react";
+import { React } from "react";
 import "./NavigationBar.css"; // Import your CSS file for styling
 import NavButton from "../nav-button/NavButton"; // Import the Button component
 import ProfileIcon from "../profile-icon/ProfileIcon"; // Import the ProfileIcon component
-import LogoButton from "../logo-button/LogoButton";
+import LogoButton from "../flight-search/logo-button/LogoButton";
+import { isAuthenticated } from "../auth";
+import { useNavigate } from "react-router-dom";
 
 const NavigationBar = () => {
-  return (
+  const navigate = useNavigate();
+
+  const handleSignIn = (e) => {
+    console.log("routing to sign in");
+    navigate("/signin");
+  };
+
+  return isAuthenticated() ? (
     <div className="navbar">
       {/* Left Logo (without hover effect) */}
       <LogoButton text={"WingIt"}></LogoButton>
@@ -16,6 +25,11 @@ const NavigationBar = () => {
 
       {/* Profile Icon */}
       <ProfileIcon />
+    </div>
+  ) : (
+    <div className="navbar">
+      <LogoButton text={"WingIt"}></LogoButton>
+      <NavButton text="Sign in" handleClick={handleSignIn} />
     </div>
   );
 };
