@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-import { TextField, Button, Paper, Container } from "@mui/material";
+import { Typography, TextField, Button, Card, Grid, Container } from "@mui/material";
 import { setAuthToken, isAuthenticated, removeAuthToken } from "../auth";
 
 const AdminPortalLogin = () => {
@@ -38,8 +38,6 @@ const AdminPortalLogin = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // You can access the values of planeID, capacity, and model from formData
-    setErrorMsg("Trying to Login")
 
     try {
       const jwtResponse = await axios.post(
@@ -86,40 +84,52 @@ const AdminPortalLogin = () => {
 
   return (
     <Container>
-      <Paper elevation={3}>
-        <form
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            paddingTop: 5,
-            margin: 3,
-          }}
-          onSubmit={handleSubmit}
-        >
-          <p style={{ color: 'red' }}>{errorMsg}</p>
-          <TextField
-            style={{ marginBottom: "16px" }} // You can adjust the spacing
-            label="Username"
-            variant="outlined"
-            name="username"
-            value={formData.username}
-            onChange={handleInputChange}
-          />
-          <TextField
-            style={{ marginBottom: "16px" }} // You can adjust the spacing
-            label="Password"
-            variant="outlined"
-            type="password"
-            name="password"
-            value={formData.password}
-            onChange={handleInputChange}
-          />
-          <Button type="submit" variant="contained" color="primary" p={3}>
-            Submit
-          </Button>
-        </form>
-      </Paper>
+      <Grid container sx={{
+        marginTop: "20%",
+      }}>
+        <Grid item md={3} sm={1} xs={0}></Grid>
+        <Grid item md={6} sm={10} xs={12}>
+          <Card elevation={3}>
+            <form
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                verticalAlign: "center",
+                padding: 50,
+              }}
+              onSubmit={handleSubmit}
+            >
+              <Typography variant="h3" fontWeight="bold">
+                ADMIN PORTAL
+              </Typography>
+
+              <Typography variant="body2" style={{ color: 'red', paddingBottom: 20, }}>{errorMsg}</Typography>
+
+              <TextField fullWidth
+                style={{ marginBottom: "16px" }} // You can adjust the spacing
+                label="Username"
+                variant="outlined"
+                name="username"
+                value={formData.username}
+                onChange={handleInputChange}
+              />
+              <TextField fullWidth
+                style={{ marginBottom: "16px" }} // You can adjust the spacing
+                label="Password"
+                variant="outlined"
+                type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleInputChange}
+              />
+              <Button type="submit" variant="contained" color="primary" p={3} fullWidth>
+                LOGIN
+              </Button>
+            </form>
+          </Card>
+        </Grid>
+      </Grid>
     </Container>
   );
 };

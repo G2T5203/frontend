@@ -28,12 +28,10 @@ const BlueRoundedRectangle = () => {
           Where to next?
         </Typography>
         <Typography variant="h5">Get ready for your</Typography>
-        <Typography variant="h5" pb={3}>
+        <Typography variant="h5">
           {" "}
           next adventure...
         </Typography>
-
-        <Typography variant="subtitle1">Book now</Typography>
       </Paper>
     </ThemeProvider>
   );
