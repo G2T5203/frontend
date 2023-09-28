@@ -59,9 +59,10 @@ const FilterTile = ({ airlines, onFilterChange }) => {
   return (
     <div
       style={{
-        borderRadius: '8px',
-        padding: '20px',
-        width: '250px',
+        borderTopLeftRadius: '15px',
+        borderBottomLeftRadius: '15px',
+        padding: '3rem',
+        width: '17rem',
         backgroundColor: '#143965', // Background color
         color: 'white', // Text color
         fontFamily: 'Merriweather Sans, sans-serif', // Font style
