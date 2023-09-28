@@ -9,6 +9,10 @@ import FilterTile from "./filter-tile/FilterTile";
 import FlightSearchBar from "./flight-search-bar/FlightSearchBar";
 import { useLocation } from "react-router-dom";
 import dayjs from "dayjs";
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 // values for the filter tile
 const filterInfo = {
@@ -25,6 +29,7 @@ function FlightSearch() {
   //dummy code to check if all the data from homepage is brought to flight search screen
   const location = useLocation();
   const data = location.state;
+
 
   // printng data from homepage
   console.log("This is data");
@@ -66,6 +71,19 @@ function FlightSearch() {
   // Remove the enclosing quotes and convert to Day.js object
   const depDateObj = dayjs(departuredt.replace(/"/g, ""));
   const arrDateObj = dayjs(returndt.replace(/"/g, ""));
+
+  // selectedTrip type variable, initialised to trip from homepage, for use to render the return flight info cards if the triptype is 2 way
+  // const hasSesarched also used for conditional rendering of return flight section
+  const [hasSearched, setHasSearched] = useState(false);
+  const [selectedTripType, setSelectedTripType] = useState(trip);
+  const handleTripTypeChange = (newTripType) => {
+
+    // for conditional rendering of the return flight info card section
+    setSelectedTripType(newTripType);
+
+    // set this to false so that the return flight info card section disappears when the trip type is changed back to one way and the return date section is cleared
+    setHasSearched(false);
+};
   console.log(departuredt);
   console.log(returndt);
 
@@ -73,10 +91,18 @@ function FlightSearch() {
   const [departureLocation, setDepartureLocation] = useState("");
   const [arrivalLocation, setArrivalLocation] = useState("");
 
+  const [isDepartureAccordionExpanded, setDepartureAccordionExpanded] = useState(true);
+  
+
   // setting departure and arrival location based on input in search bar
   const handleSearch = (departureLocation, arrivalLocation) => {
     setDepartureLocation(departureLocation);
     setArrivalLocation(arrivalLocation);
+
+    // for control of expansion of departure accordion
+    setDepartureAccordionExpanded(true);
+    setHasSearched(true);
+    
   };
   return (
     <div>
@@ -101,6 +127,7 @@ function FlightSearch() {
         <div className="flight-search">
           <FlightSearchBar
             // setting flight data array
+            onTripTypeChange={handleTripTypeChange}
             onFetchDepartureData={handleDepartureFlightData}
             onFetchReturnData={handleReturnFlightData}
             // setting locations in departure/arrival locations
@@ -115,94 +142,65 @@ function FlightSearch() {
           />
         </div>
       </div>
-      {/* Container for FlightInfoCard */}
-      {/* populating the flight-info-cards with the data from fullSearch endpoint. */}
-      <div className="departure-flight-info-container-scrollable">
-        <Typography
-          variant="h5"
-          sx={{ fontFamily: "Merriweather Sans", marginBottom: 2 }}
-        >
-          Departure Flights
-        </Typography>
-        {departureFlightData.map((flight, index) => (
-          <div key={index} style={{ marginBottom: "10px" }}>
-            <FlightInfoCard
-              // SIA logo url
-              imageURL={
-                "https://graphic.sg/media/pages/gallery/singapore-airlines-logo-1987/3067018395-1599296800/1987-singapore-airlines-logo-240x.png"
-              }
-              // departure location that is passed in as input
-              departureAirport={departureLocation}
-              // departure date and time extracted from departureDatetime
-              departureDate={flight.departureDatetime.split("T")[0]}
-              departureTime={flight.departureDatetime
-                .split("T")[1]
-                .substring(0, 5)}
-              // arrival location that is passed in as input
-              arrivalAirport={arrivalLocation}
-              // departure date and time extracted from departureDatetime
-              arrivalDate={flight.departureDatetime.split("T")[0]}
-              arrivalTime={flight.departureDatetime
-                .split("T")[1]
-                .substring(0, 5)}
-              // stops hardcoded as Direct
-              stops={"Direct"}
-              // travelTime hardcoded as 5 hr 10 min
-              travelTime={`${flight.flightDuration.match(/(\d+)H/)[1]} hr ${
-                flight.flightDuration.match(/(\d+)M/)[1]
-              } min`}
-              // price and flightNumber from endpoint
-              price={flight.basePrice.toFixed(2)}
-              flightNumber={flight.planeId}
-            />
-          </div>
-        ))}
-      </div>
-
-      <div className="return-flight-info-container-scrollable">
-        <Typography
-          variant="h5"
-          sx={{
-            fontFamily: "Merriweather Sans",
-            marginTop: 2,
-            marginBottom: 2,
-          }}
-        >
-          Return Flights
-        </Typography>
-        {returnFlightData.map((flight, index) => (
-          <div key={index} style={{ marginBottom: "10px" }}>
-            <FlightInfoCard
-              // SIA logo url
-              imageURL={
-                "https://graphic.sg/media/pages/gallery/singapore-airlines-logo-1987/3067018395-1599296800/1987-singapore-airlines-logo-240x.png"
-              }
-              // departure location that is passed in as input
-              departureAirport={arrivalLocation}
-              // departure date and time extracted from departureDatetime
-              departureDate={flight.departureDatetime.split("T")[0]}
-              departureTime={flight.departureDatetime
-                .split("T")[1]
-                .substring(0, 5)}
-              // arrival location that is passed in as input
-              arrivalAirport={departureLocation}
-              // departure date and time extracted from departureDatetime
-              arrivalDate={flight.departureDatetime.split("T")[0]}
-              arrivalTime={flight.departureDatetime
-                .split("T")[1]
-                .substring(0, 5)}
-              // stops hardcoded as Direct
-              stops={"Direct"}
-              // travelTime hardcoded as 5 hr 10 min
-              travelTime={`${flight.flightDuration.match(/(\d+)H/)[1]} hr ${
-                flight.flightDuration.match(/(\d+)M/)[1]
-              } min`}
-              // price and flightNumber from endpoint
-              price={flight.basePrice.toFixed(2)}
-              flightNumber={flight.planeId}
-            />
-          </div>
-        ))}
+      <div className="accordion-container">
+      <Accordion
+      // these 2 lines are for default expansion of the outbound flights section on search. also handles case where it is collapsed manually before subsequent searches
+      expanded={isDepartureAccordionExpanded}
+      onChange={(event, newExpandedState) => setDepartureAccordionExpanded(newExpandedState)}>
+        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+          <Typography variant="h5" sx={{ fontFamily: "Merriweather Sans", marginBottom: 2 }}>
+            Outbound Flights
+          </Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          {departureFlightData.map((flight, index) => (
+            <div key={index} style={{ marginBottom: "10px" }}>
+              <FlightInfoCard
+                imageURL={"https://graphic.sg/media/pages/gallery/singapore-airlines-logo-1987/3067018395-1599296800/1987-singapore-airlines-logo-240x.png"}
+                departureAirport={departureLocation}
+                departureDate={flight.departureDatetime.split("T")[0]}
+                departureTime={flight.departureDatetime.split("T")[1].substring(0, 5)}
+                arrivalAirport={arrivalLocation}
+                arrivalDate={flight.departureDatetime.split("T")[0]}
+                arrivalTime={flight.departureDatetime.split("T")[1].substring(0, 5)}
+                stops={"Direct"}
+                travelTime={`${flight.flightDuration.match(/(\d+)H/)[1]} hr ${flight.flightDuration.match(/(\d+)M/)[1]} min`}
+                price={flight.basePrice.toFixed(2)}
+                flightNumber={flight.planeId}
+              />
+            </div>
+          ))}
+        </AccordionDetails>
+      </Accordion>
+      
+      {hasSearched && selectedTripType !== "One way" && (
+      <Accordion>
+        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+          <Typography variant="h5" sx={{ fontFamily: "Merriweather Sans", marginTop: 2, marginBottom: 2 }}>
+            Return Flights
+          </Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          {returnFlightData.map((flight, index) => (
+            <div key={index} style={{ marginBottom: "10px" }}>
+              <FlightInfoCard
+                imageURL={"https://graphic.sg/media/pages/gallery/singapore-airlines-logo-1987/3067018395-1599296800/1987-singapore-airlines-logo-240x.png"}
+                departureAirport={arrivalLocation}
+                departureDate={flight.departureDatetime.split("T")[0]}
+                departureTime={flight.departureDatetime.split("T")[1].substring(0, 5)}
+                arrivalAirport={departureLocation}
+                arrivalDate={flight.departureDatetime.split("T")[0]}
+                arrivalTime={flight.departureDatetime.split("T")[1].substring(0, 5)}
+                stops={"Direct"}
+                travelTime={`${flight.flightDuration.match(/(\d+)H/)[1]} hr ${flight.flightDuration.match(/(\d+)M/)[1]} min`}
+                price={flight.basePrice.toFixed(2)}
+                flightNumber={flight.planeId}
+              />
+            </div>
+          ))}
+        </AccordionDetails>
+      </Accordion>
+      )}
       </div>
       {/* Container for FilterTile */}
       <div className="filter-container">

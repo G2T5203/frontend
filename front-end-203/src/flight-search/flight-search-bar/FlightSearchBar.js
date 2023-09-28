@@ -23,6 +23,7 @@ const FlightSearchBar = ({
   returndt,
   onFetchDepartureData,
   onFetchReturnData,
+  onTripTypeChange,
 }) => {
   //navigate set up 
   // eslint-disable-next-line 
@@ -36,6 +37,10 @@ const FlightSearchBar = ({
     if (newTripType === "One way") {
         setReturnDate(null);
     }
+    // used in the render of return flight info cards in flightsearch
+    if (onTripTypeChange) {
+      onTripTypeChange(newTripType);
+  }
 };
   
   // all variables initalised to values from home page (departurelocation, arrival location, triptype, departure time, arrival time)
