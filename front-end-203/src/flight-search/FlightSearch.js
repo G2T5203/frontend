@@ -102,8 +102,30 @@ function FlightSearch() {
     // for control of expansion of departure accordion
     setDepartureAccordionExpanded(true);
     setHasSearched(true);
-    
+    setSelectedDepartureFlight(null);
+    setSelectedReturnFlight(null);
+
   };
+  const [selectedDepartureFlight, setSelectedDepartureFlight] = useState(null);
+  const [selectedReturnFlight, setSelectedReturnFlight] = useState(null);
+
+  const handleDepartureFlightSelection = (flight) => {
+    setSelectedDepartureFlight(flight);
+    console.log("Selected Departure Flight:", selectedDepartureFlight);
+ };
+ 
+ const handleReturnFlightSelection = (flight) => {
+    setSelectedReturnFlight(flight);
+    console.log("Selected return Flight:", selectedDepartureFlight);
+ };
+ 
+ const resetSelectedDepartureFlight = () => {
+    setSelectedDepartureFlight(null);
+ };
+ 
+ const resetSelectedReturnFlight = () => {
+    setSelectedReturnFlight(null);
+ };
   return (
     <div>
       <div className="nav">
@@ -153,24 +175,46 @@ function FlightSearch() {
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
-          {departureFlightData.map((flight, index) => (
-            <div key={index} style={{ marginBottom: "10px" }}>
-              <FlightInfoCard
-                imageURL={"https://graphic.sg/media/pages/gallery/singapore-airlines-logo-1987/3067018395-1599296800/1987-singapore-airlines-logo-240x.png"}
+    {selectedDepartureFlight ? (
+        <div style={{ marginBottom: "10px" }}>
+            <FlightInfoCard
+                imageURL="https://graphic.sg/media/pages/gallery/singapore-airlines-logo-1987/3067018395-1599296800/1987-singapore-airlines-logo-240x.png"
                 departureAirport={departureLocation}
-                departureDate={flight.departureDatetime.split("T")[0]}
-                departureTime={flight.departureDatetime.split("T")[1].substring(0, 5)}
+                departureDate={selectedDepartureFlight?.departureDatetime?.split("T")[0]}
+                departureTime={selectedDepartureFlight?.departureDatetime?.split("T")[1].substring(0, 5)}
                 arrivalAirport={arrivalLocation}
-                arrivalDate={flight.departureDatetime.split("T")[0]}
-                arrivalTime={flight.departureDatetime.split("T")[1].substring(0, 5)}
-                stops={"Direct"}
-                travelTime={`${flight.flightDuration.match(/(\d+)H/)[1]} hr ${flight.flightDuration.match(/(\d+)M/)[1]} min`}
-                price={flight.basePrice.toFixed(2)}
-                flightNumber={flight.planeId}
-              />
+                arrivalDate={selectedDepartureFlight?.departureDatetime?.split("T")[0]}
+                arrivalTime={selectedDepartureFlight?.departureDatetime?.split("T")[1].substring(0, 5)}
+                stops="Direct"
+                travelTime={`${selectedDepartureFlight.flightDuration.match(/(\d+)H/)[1]} hr ${selectedDepartureFlight.flightDuration.match(/(\d+)M/)[1]} min`}
+                price={selectedDepartureFlight.basePrice.toFixed(2)}
+                flightNumber={selectedDepartureFlight.planeId}
+                bookNowLabel="Selected!"
+                onSelect={() => resetSelectedDepartureFlight()}
+            />
+            <button onClick={resetSelectedDepartureFlight}>Go Back to All Flights</button>
+        </div>
+    ) : (
+        departureFlightData.map((flight, index) => (
+            <div key={index} style={{ marginBottom: "10px" }}>
+                <FlightInfoCard
+                    imageURL="https://graphic.sg/media/pages/gallery/singapore-airlines-logo-1987/3067018395-1599296800/1987-singapore-airlines-logo-240x.png"
+                    departureAirport={departureLocation}
+                    departureDate={flight.departureDatetime.split("T")[0]}
+                    departureTime={flight.departureDatetime.split("T")[1].substring(0, 5)}
+                    arrivalAirport={arrivalLocation}
+                    arrivalDate={flight.departureDatetime.split("T")[0]}
+                    arrivalTime={flight.departureDatetime.split("T")[1].substring(0, 5)}
+                    stops="Direct"
+                    travelTime={`${flight.flightDuration.match(/(\d+)H/)[1]} hr ${flight.flightDuration.match(/(\d+)M/)[1]} min`}
+                    price={flight.basePrice.toFixed(2)}
+                    flightNumber={flight.planeId}
+                    onSelect={() => handleDepartureFlightSelection(flight)}
+                />
             </div>
-          ))}
-        </AccordionDetails>
+        ))
+    )}
+</AccordionDetails>
       </Accordion>
       
       {hasSearched && selectedTripType !== "One way" && (
@@ -181,24 +225,46 @@ function FlightSearch() {
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
-          {returnFlightData.map((flight, index) => (
-            <div key={index} style={{ marginBottom: "10px" }}>
-              <FlightInfoCard
-                imageURL={"https://graphic.sg/media/pages/gallery/singapore-airlines-logo-1987/3067018395-1599296800/1987-singapore-airlines-logo-240x.png"}
+    {selectedReturnFlight ? (
+        <div style={{ marginBottom: "10px" }}>
+            <FlightInfoCard
+                imageURL="https://graphic.sg/media/pages/gallery/singapore-airlines-logo-1987/3067018395-1599296800/1987-singapore-airlines-logo-240x.png"
                 departureAirport={arrivalLocation}
-                departureDate={flight.departureDatetime.split("T")[0]}
-                departureTime={flight.departureDatetime.split("T")[1].substring(0, 5)}
+                departureDate={selectedReturnFlight?.departureDatetime?.split("T")[0]}
+                departureTime={selectedReturnFlight?.departureDatetime?.split("T")[1].substring(0, 5)}
                 arrivalAirport={departureLocation}
-                arrivalDate={flight.departureDatetime.split("T")[0]}
-                arrivalTime={flight.departureDatetime.split("T")[1].substring(0, 5)}
-                stops={"Direct"}
-                travelTime={`${flight.flightDuration.match(/(\d+)H/)[1]} hr ${flight.flightDuration.match(/(\d+)M/)[1]} min`}
-                price={flight.basePrice.toFixed(2)}
-                flightNumber={flight.planeId}
-              />
+                arrivalDate={selectedReturnFlight?.departureDatetime?.split("T")[0]}
+                arrivalTime={selectedReturnFlight?.departureDatetime?.split("T")[1].substring(0, 5)}
+                stops="Direct"
+                travelTime={`${selectedReturnFlight.flightDuration.match(/(\d+)H/)[1]} hr ${selectedReturnFlight.flightDuration.match(/(\d+)M/)[1]} min`}
+                price={selectedReturnFlight.basePrice.toFixed(2)}
+                flightNumber={selectedReturnFlight.planeId}
+                bookNowLabel="Selected!"
+                onSelect={() => resetSelectedReturnFlight()}
+            />
+            <button onClick={resetSelectedReturnFlight}>Go Back to All Flights</button>
+        </div>
+    ) : (
+        returnFlightData.map((flight, index) => (
+            <div key={index} style={{ marginBottom: "10px" }}>
+                <FlightInfoCard
+                    imageURL="https://graphic.sg/media/pages/gallery/singapore-airlines-logo-1987/3067018395-1599296800/1987-singapore-airlines-logo-240x.png"
+                    departureAirport={arrivalLocation}
+                    departureDate={flight.departureDatetime.split("T")[0]}
+                    departureTime={flight.departureDatetime.split("T")[1].substring(0, 5)}
+                    arrivalAirport={departureLocation}
+                    arrivalDate={flight.departureDatetime.split("T")[0]}
+                    arrivalTime={flight.departureDatetime.split("T")[1].substring(0, 5)}
+                    stops="Direct"
+                    travelTime={`${flight.flightDuration.match(/(\d+)H/)[1]} hr ${flight.flightDuration.match(/(\d+)M/)[1]} min`}
+                    price={flight.basePrice.toFixed(2)}
+                    flightNumber={flight.planeId}
+                    onSelect={() => handleReturnFlightSelection(flight)}
+                />
             </div>
-          ))}
-        </AccordionDetails>
+        ))
+    )}
+</AccordionDetails>
       </Accordion>
       )}
       </div>

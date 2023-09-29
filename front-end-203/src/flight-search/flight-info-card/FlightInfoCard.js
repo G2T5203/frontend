@@ -6,6 +6,8 @@ import "./FlightInfoCard.css"; // Import the CSS file
 import { Avatar } from "@mui/material";
 import { Stack } from "@mui/material";
 
+
+
 const FlightInfoCard = ({
   // parameters
   imageURL,
@@ -19,6 +21,8 @@ const FlightInfoCard = ({
   travelTime,
   price,
   flightNumber,
+  onSelect,
+  bookNowLabel = "Book Now"
 }) => {
   return (
     <div className="flight-info-card">
@@ -98,26 +102,21 @@ const FlightInfoCard = ({
           ${price}
         </Typography>
 
-        <Button
-          variant="contained"
-          sx={{
-            backgroundColor: "darkorange",
-            color: "white",
-            padding: "5px",
-            "&:hover": {
-              backgroundColor: "orange", // Change background color on hover
-            },
-          }}
-        >
-          <Typography
-            variant="h6"
-            fontSize={15}
-            sx={{ fontFamily: "Merriweather Sans", textTransform: "none",}}
-          >
-            Book Now
-          </Typography>
-
-        </Button>
+        <Button variant="contained"
+        onClick={onSelect}
+        sx={{
+          backgroundColor: "darkorange",
+          color: "white",
+          padding: "5px",
+          "&:hover": {
+            backgroundColor: "orange"
+          }
+        }}
+      >
+        <Typography variant="h6" fontSize={15} sx={{ fontFamily: "Merriweather Sans", textTransform: "none" }}>
+          {bookNowLabel}
+        </Typography>
+      </Button>
       </div>
     </div>
   );
