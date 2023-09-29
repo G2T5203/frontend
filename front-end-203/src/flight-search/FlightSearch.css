@@ -19,7 +19,13 @@ body, html {
   margin-top: 2rem;
   overflow: hidden;
 }
-
+.filter-container {
+  position: absolute; /* positioned right below the banner */
+  right: 0;          /* Flush to the right */
+  left: auto;       /* Reset any left value */
+  z-index: 1;
+  /* Removed margin-left and margin-top as they are not needed with this setup */
+}
 .text {
   position: absolute;
   z-index: 3;
@@ -39,17 +45,19 @@ body, html {
 
 .accordion-container {
   margin-top: 4rem;
-  position: absolute;
+  position: relative;
   left: 4rem;  /* Assuming the banner height is around 200px. Adjust as needed. */
   max-width: 60rem; /* Same width as the flight info containers */
   z-index: 1;
 }
 
-.filter-container {
-  position: absolute; /* positioned right below the banner */
-  right: 0;          /* Flush to the right */
-  left: auto;       /* Reset any left value */
-  z-index: 1;
-  /* Removed margin-left and margin-top as they are not needed with this setup */
+
+
+.proceed-button-container {
+  position:absolute;
+  right: 4rem;
+  top:55rem;
 }
+
+
 

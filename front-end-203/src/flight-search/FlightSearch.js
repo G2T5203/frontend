@@ -39,10 +39,12 @@ function FlightSearch() {
   const [departureFlightData, setDepartureFlightData] = useState([]);
   const [returnFlightData, setReturnFlightData] = useState([]);
 
+  // to generate departure flight info cards
   const handleDepartureFlightData = (data) => {
     setDepartureFlightData(data);
   };
 
+  // to generate return flight info cards
   const handleReturnFlightData = (data) => {
     setReturnFlightData(data || []);
   };
@@ -83,47 +85,81 @@ function FlightSearch() {
     // set this to false so that the return flight info card section disappears when the trip type is changed back to one way and the return date section is cleared
     setHasSearched(false);
   };
-  console.log(departuredt);
-  console.log(returndt);
+
+  // console.log(departuredt);
+  // console.log(returndt);
 
   // for passing into the flight information cards (arrival and departure are not provided as data from fullsearch endpoint)
   const [departureLocation, setDepartureLocation] = useState("");
   const [arrivalLocation, setArrivalLocation] = useState("");
 
+  // for expansion control of departure flights collapsable section
   const [isDepartureAccordionExpanded, setDepartureAccordionExpanded] =
     useState(true);
 
-  // setting departure and arrival location based on input in search bar
+  // handleSearch function (whatever happens on click of the search button in the search bar)
   const handleSearch = (departureLocation, arrivalLocation) => {
+    // seting departure and arrival location based on input in search bar
     setDepartureLocation(departureLocation);
     setArrivalLocation(arrivalLocation);
 
-    // for control of expansion of departure accordion
+    // for control of expansion of outbound accordion
     setDepartureAccordionExpanded(true);
+
+    // to track if the search button has been clicked
     setHasSearched(true);
+
+    // to reset departure and arrival flight selection from the accordions
     setSelectedDepartureFlight(null);
     setSelectedReturnFlight(null);
+
+    setMinPrice(potentialMinPrice);
+    setMaxPrice(potentialMaxPrice);
   };
+  // constants for the selected departure and arrival flights that will render when the "Book Now" button is clicked
   const [selectedDepartureFlight, setSelectedDepartureFlight] = useState(null);
   const [selectedReturnFlight, setSelectedReturnFlight] = useState(null);
 
+  // for handling outbound flight selection
   const handleDepartureFlightSelection = (flight) => {
     setSelectedDepartureFlight(flight);
     console.log("Selected Departure Flight:", selectedDepartureFlight);
   };
 
+  // for handling return flight selection
   const handleReturnFlightSelection = (flight) => {
     setSelectedReturnFlight(flight);
     console.log("Selected return Flight:", selectedDepartureFlight);
   };
 
+  // to reset the selected departure flight
   const resetSelectedDepartureFlight = () => {
     setSelectedDepartureFlight(null);
   };
 
+  // to reset the selected return flight
   const resetSelectedReturnFlight = () => {
     setSelectedReturnFlight(null);
   };
+
+  // function for actions upon click of proceed to next screen button
+  const handleProceedClick = () => {
+    alert("Proceeding to the next screen!"); // Temporary action
+    //TODO: send the outbound and inbound flight details to the seat selection screen
+  };
+
+  // for use of min and max price set on the filter tile in filtering the flight info cards rendered on click of the search button
+  const [minPrice, setMinPrice] = useState(0); // Assuming 0 as default min value
+  const [maxPrice, setMaxPrice] = useState(Infinity);
+  const [potentialMinPrice, setPotentialMinPrice] = useState(0);
+  const [potentialMaxPrice, setPotentialMaxPrice] = useState(Infinity);
+  const handlePriceChange = (min, max) => {
+    // console.log("Min Price from FilterTile:", min);
+    // console.log("Max Price from FilterTile:", max);
+    setPotentialMinPrice(min);
+    setPotentialMaxPrice(max);
+  };
+
   return (
     <div>
       <div className="nav">
@@ -161,6 +197,34 @@ function FlightSearch() {
             onSearch={handleSearch}
           />
         </div>
+      </div>
+      {/* Container for FilterTile */}
+      <div className="filter-container">
+        <FilterTile
+          airlines={filterInfo.airlines}
+          onPriceChange={handlePriceChange}
+        />
+      </div>
+      <div className="proceed-button-container">
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleProceedClick}
+          style={{
+            padding: "1rem",
+            borderRadius: "0.5rem",
+            margin: "20px 0", // Add some margin for spacing
+            backgroundColor: "darkorange", // Color of your choice
+            textTransform: "none",
+
+            fontFamily: "Merriweather Sans",
+            "&:hover": {
+              backgroundColor: "orange",
+            },
+          }}
+        >
+          Proceed to next screen
+        </Button>
       </div>
       <div className="accordion-container">
         <Accordion
@@ -234,30 +298,35 @@ function FlightSearch() {
                 />
               </div>
             ) : (
-              departureFlightData.map((flight, index) => (
-                <div key={index} style={{ marginBottom: "10px" }}>
-                  <FlightInfoCard
-                    imageURL="https://graphic.sg/media/pages/gallery/singapore-airlines-logo-1987/3067018395-1599296800/1987-singapore-airlines-logo-240x.png"
-                    departureAirport={departureLocation}
-                    departureDate={flight.departureDatetime.split("T")[0]}
-                    departureTime={flight.departureDatetime
-                      .split("T")[1]
-                      .substring(0, 5)}
-                    arrivalAirport={arrivalLocation}
-                    arrivalDate={flight.departureDatetime.split("T")[0]}
-                    arrivalTime={flight.departureDatetime
-                      .split("T")[1]
-                      .substring(0, 5)}
-                    stops="Direct"
-                    travelTime={`${
-                      flight.flightDuration.match(/(\d+)H/)[1]
-                    } hr ${flight.flightDuration.match(/(\d+)M/)[1]} min`}
-                    price={flight.basePrice.toFixed(2)}
-                    flightNumber={flight.planeId}
-                    onSelect={() => handleDepartureFlightSelection(flight)}
-                  />
-                </div>
-              ))
+              departureFlightData
+                .filter(
+                  (flight) =>
+                    flight.basePrice >= minPrice && flight.basePrice <= maxPrice
+                )
+                .map((flight, index) => (
+                  <div key={index} style={{ marginBottom: "10px" }}>
+                    <FlightInfoCard
+                      imageURL="https://graphic.sg/media/pages/gallery/singapore-airlines-logo-1987/3067018395-1599296800/1987-singapore-airlines-logo-240x.png"
+                      departureAirport={departureLocation}
+                      departureDate={flight.departureDatetime.split("T")[0]}
+                      departureTime={flight.departureDatetime
+                        .split("T")[1]
+                        .substring(0, 5)}
+                      arrivalAirport={arrivalLocation}
+                      arrivalDate={flight.departureDatetime.split("T")[0]}
+                      arrivalTime={flight.departureDatetime
+                        .split("T")[1]
+                        .substring(0, 5)}
+                      stops="Direct"
+                      travelTime={`${
+                        flight.flightDuration.match(/(\d+)H/)[1]
+                      } hr ${flight.flightDuration.match(/(\d+)M/)[1]} min`}
+                      price={flight.basePrice.toFixed(2)}
+                      flightNumber={flight.planeId}
+                      onSelect={() => handleDepartureFlightSelection(flight)}
+                    />
+                  </div>
+                ))
             )}
           </AccordionDetails>
         </Accordion>
@@ -361,12 +430,7 @@ function FlightSearch() {
           </Accordion>
         )}
       </div>
-      {/* Container for FilterTile */}
-      <div className="filter-container">
-        <FilterTile airlines={filterInfo.airlines} />
-      </div>
     </div>
-    
   );
 }
 
