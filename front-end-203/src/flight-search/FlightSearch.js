@@ -9,10 +9,11 @@ import FilterTile from "./filter-tile/FilterTile";
 import FlightSearchBar from "./flight-search-bar/FlightSearchBar";
 import { useLocation } from "react-router-dom";
 import dayjs from "dayjs";
-import Accordion from '@mui/material/Accordion';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import Accordion from "@mui/material/Accordion";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { Button } from "@mui/material";
 
 // values for the filter tile
 const filterInfo = {
@@ -29,7 +30,6 @@ function FlightSearch() {
   //dummy code to check if all the data from homepage is brought to flight search screen
   const location = useLocation();
   const data = location.state;
-
 
   // printng data from homepage
   console.log("This is data");
@@ -77,13 +77,12 @@ function FlightSearch() {
   const [hasSearched, setHasSearched] = useState(false);
   const [selectedTripType, setSelectedTripType] = useState(trip);
   const handleTripTypeChange = (newTripType) => {
-
     // for conditional rendering of the return flight info card section
     setSelectedTripType(newTripType);
 
     // set this to false so that the return flight info card section disappears when the trip type is changed back to one way and the return date section is cleared
     setHasSearched(false);
-};
+  };
   console.log(departuredt);
   console.log(returndt);
 
@@ -91,8 +90,8 @@ function FlightSearch() {
   const [departureLocation, setDepartureLocation] = useState("");
   const [arrivalLocation, setArrivalLocation] = useState("");
 
-  const [isDepartureAccordionExpanded, setDepartureAccordionExpanded] = useState(true);
-  
+  const [isDepartureAccordionExpanded, setDepartureAccordionExpanded] =
+    useState(true);
 
   // setting departure and arrival location based on input in search bar
   const handleSearch = (departureLocation, arrivalLocation) => {
@@ -104,7 +103,6 @@ function FlightSearch() {
     setHasSearched(true);
     setSelectedDepartureFlight(null);
     setSelectedReturnFlight(null);
-
   };
   const [selectedDepartureFlight, setSelectedDepartureFlight] = useState(null);
   const [selectedReturnFlight, setSelectedReturnFlight] = useState(null);
@@ -112,20 +110,20 @@ function FlightSearch() {
   const handleDepartureFlightSelection = (flight) => {
     setSelectedDepartureFlight(flight);
     console.log("Selected Departure Flight:", selectedDepartureFlight);
- };
- 
- const handleReturnFlightSelection = (flight) => {
+  };
+
+  const handleReturnFlightSelection = (flight) => {
     setSelectedReturnFlight(flight);
     console.log("Selected return Flight:", selectedDepartureFlight);
- };
- 
- const resetSelectedDepartureFlight = () => {
+  };
+
+  const resetSelectedDepartureFlight = () => {
     setSelectedDepartureFlight(null);
- };
- 
- const resetSelectedReturnFlight = () => {
+  };
+
+  const resetSelectedReturnFlight = () => {
     setSelectedReturnFlight(null);
- };
+  };
   return (
     <div>
       <div className="nav">
@@ -165,114 +163,210 @@ function FlightSearch() {
         </div>
       </div>
       <div className="accordion-container">
-      <Accordion
-      // these 2 lines are for default expansion of the outbound flights section on search. also handles case where it is collapsed manually before subsequent searches
-      expanded={isDepartureAccordionExpanded}
-      onChange={(event, newExpandedState) => setDepartureAccordionExpanded(newExpandedState)}>
-        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography variant="h5" sx={{ fontFamily: "Merriweather Sans", marginBottom: 2 }}>
-            Outbound Flights
-          </Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-    {selectedDepartureFlight ? (
-        <div style={{ marginBottom: "10px" }}>
-            <FlightInfoCard
-                imageURL="https://graphic.sg/media/pages/gallery/singapore-airlines-logo-1987/3067018395-1599296800/1987-singapore-airlines-logo-240x.png"
-                departureAirport={departureLocation}
-                departureDate={selectedDepartureFlight?.departureDatetime?.split("T")[0]}
-                departureTime={selectedDepartureFlight?.departureDatetime?.split("T")[1].substring(0, 5)}
-                arrivalAirport={arrivalLocation}
-                arrivalDate={selectedDepartureFlight?.departureDatetime?.split("T")[0]}
-                arrivalTime={selectedDepartureFlight?.departureDatetime?.split("T")[1].substring(0, 5)}
-                stops="Direct"
-                travelTime={`${selectedDepartureFlight.flightDuration.match(/(\d+)H/)[1]} hr ${selectedDepartureFlight.flightDuration.match(/(\d+)M/)[1]} min`}
-                price={selectedDepartureFlight.basePrice.toFixed(2)}
-                flightNumber={selectedDepartureFlight.planeId}
-                bookNowLabel="Selected!"
-                onSelect={() => resetSelectedDepartureFlight()}
-            />
-            <button onClick={resetSelectedDepartureFlight}>Go Back to All Flights</button>
-        </div>
-    ) : (
-        departureFlightData.map((flight, index) => (
-            <div key={index} style={{ marginBottom: "10px" }}>
+        <Accordion
+          // these 2 lines are for default expansion of the outbound flights section on search. also handles case where it is collapsed manually before subsequent searches
+          expanded={isDepartureAccordionExpanded}
+          onChange={(event, newExpandedState) =>
+            setDepartureAccordionExpanded(newExpandedState)
+          }
+        >
+          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+            <Typography
+              variant="h5"
+              sx={{ fontFamily: "Merriweather Sans", marginBottom: 2 }}
+            >
+              Outbound Flights
+            </Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            {selectedDepartureFlight ? (
+              <div style={{ marginBottom: "10px" }}>
+                <Button
+                  onClick={resetSelectedDepartureFlight}
+                  sx={{
+                    backgroundColor: "darkorange",
+                    color: "white",
+                    padding: "5px",
+                    marginBottom: "1rem",
+                    marginLeft: "43rem",
+                    "&:hover": {
+                      backgroundColor: "orange",
+                    },
+                  }}
+                >
+                  <Typography
+                    variant="h6"
+                    fontSize={15}
+                    sx={{
+                      fontFamily: "Merriweather Sans",
+                      textTransform: "none",
+                    }}
+                  >
+                    Change Selection
+                  </Typography>
+                </Button>
                 <FlightInfoCard
+                  imageURL="https://graphic.sg/media/pages/gallery/singapore-airlines-logo-1987/3067018395-1599296800/1987-singapore-airlines-logo-240x.png"
+                  departureAirport={departureLocation}
+                  departureDate={
+                    selectedDepartureFlight?.departureDatetime?.split("T")[0]
+                  }
+                  departureTime={selectedDepartureFlight?.departureDatetime
+                    ?.split("T")[1]
+                    .substring(0, 5)}
+                  arrivalAirport={arrivalLocation}
+                  arrivalDate={
+                    selectedDepartureFlight?.departureDatetime?.split("T")[0]
+                  }
+                  arrivalTime={selectedDepartureFlight?.departureDatetime
+                    ?.split("T")[1]
+                    .substring(0, 5)}
+                  stops="Direct"
+                  travelTime={`${
+                    selectedDepartureFlight.flightDuration.match(/(\d+)H/)[1]
+                  } hr ${
+                    selectedDepartureFlight.flightDuration.match(/(\d+)M/)[1]
+                  } min`}
+                  price={selectedDepartureFlight.basePrice.toFixed(2)}
+                  flightNumber={selectedDepartureFlight.planeId}
+                  bookNowLabel="Selected!"
+                  onSelect={() => resetSelectedDepartureFlight()}
+                />
+              </div>
+            ) : (
+              departureFlightData.map((flight, index) => (
+                <div key={index} style={{ marginBottom: "10px" }}>
+                  <FlightInfoCard
                     imageURL="https://graphic.sg/media/pages/gallery/singapore-airlines-logo-1987/3067018395-1599296800/1987-singapore-airlines-logo-240x.png"
                     departureAirport={departureLocation}
                     departureDate={flight.departureDatetime.split("T")[0]}
-                    departureTime={flight.departureDatetime.split("T")[1].substring(0, 5)}
+                    departureTime={flight.departureDatetime
+                      .split("T")[1]
+                      .substring(0, 5)}
                     arrivalAirport={arrivalLocation}
                     arrivalDate={flight.departureDatetime.split("T")[0]}
-                    arrivalTime={flight.departureDatetime.split("T")[1].substring(0, 5)}
+                    arrivalTime={flight.departureDatetime
+                      .split("T")[1]
+                      .substring(0, 5)}
                     stops="Direct"
-                    travelTime={`${flight.flightDuration.match(/(\d+)H/)[1]} hr ${flight.flightDuration.match(/(\d+)M/)[1]} min`}
+                    travelTime={`${
+                      flight.flightDuration.match(/(\d+)H/)[1]
+                    } hr ${flight.flightDuration.match(/(\d+)M/)[1]} min`}
                     price={flight.basePrice.toFixed(2)}
                     flightNumber={flight.planeId}
                     onSelect={() => handleDepartureFlightSelection(flight)}
-                />
-            </div>
-        ))
-    )}
-</AccordionDetails>
-      </Accordion>
-      
-      {hasSearched && selectedTripType !== "One way" && (
-      <Accordion>
-        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography variant="h5" sx={{ fontFamily: "Merriweather Sans", marginTop: 2, marginBottom: 2 }}>
-            Return Flights
-          </Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-    {selectedReturnFlight ? (
-        <div style={{ marginBottom: "10px" }}>
-            <FlightInfoCard
-                imageURL="https://graphic.sg/media/pages/gallery/singapore-airlines-logo-1987/3067018395-1599296800/1987-singapore-airlines-logo-240x.png"
-                departureAirport={arrivalLocation}
-                departureDate={selectedReturnFlight?.departureDatetime?.split("T")[0]}
-                departureTime={selectedReturnFlight?.departureDatetime?.split("T")[1].substring(0, 5)}
-                arrivalAirport={departureLocation}
-                arrivalDate={selectedReturnFlight?.departureDatetime?.split("T")[0]}
-                arrivalTime={selectedReturnFlight?.departureDatetime?.split("T")[1].substring(0, 5)}
-                stops="Direct"
-                travelTime={`${selectedReturnFlight.flightDuration.match(/(\d+)H/)[1]} hr ${selectedReturnFlight.flightDuration.match(/(\d+)M/)[1]} min`}
-                price={selectedReturnFlight.basePrice.toFixed(2)}
-                flightNumber={selectedReturnFlight.planeId}
-                bookNowLabel="Selected!"
-                onSelect={() => resetSelectedReturnFlight()}
-            />
-            <button onClick={resetSelectedReturnFlight}>Go Back to All Flights</button>
-        </div>
-    ) : (
-        returnFlightData.map((flight, index) => (
-            <div key={index} style={{ marginBottom: "10px" }}>
-                <FlightInfoCard
+                  />
+                </div>
+              ))
+            )}
+          </AccordionDetails>
+        </Accordion>
+
+        {hasSearched && selectedTripType !== "One way" && (
+          <Accordion>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+              <Typography
+                variant="h5"
+                sx={{
+                  fontFamily: "Merriweather Sans",
+                  marginTop: 2,
+                  marginBottom: 2,
+                }}
+              >
+                Return Flights
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              {selectedReturnFlight ? (
+                <div style={{ marginBottom: "10px" }}>
+                  <Button
+                    onClick={resetSelectedReturnFlight}
+                    sx={{
+                      backgroundColor: "darkorange",
+                      color: "white",
+                      padding: "5px",
+                      marginBottom: "1rem",
+                      marginLeft: "43rem",
+                      "&:hover": {
+                        backgroundColor: "orange",
+                      },
+                    }}
+                  >
+                    <Typography
+                      variant="h6"
+                      fontSize={15}
+                      sx={{
+                        fontFamily: "Merriweather Sans",
+                        textTransform: "none",
+                      }}
+                    >
+                      Change Selection
+                    </Typography>
+                  </Button>
+                  <FlightInfoCard
                     imageURL="https://graphic.sg/media/pages/gallery/singapore-airlines-logo-1987/3067018395-1599296800/1987-singapore-airlines-logo-240x.png"
                     departureAirport={arrivalLocation}
-                    departureDate={flight.departureDatetime.split("T")[0]}
-                    departureTime={flight.departureDatetime.split("T")[1].substring(0, 5)}
+                    departureDate={
+                      selectedReturnFlight?.departureDatetime?.split("T")[0]
+                    }
+                    departureTime={selectedReturnFlight?.departureDatetime
+                      ?.split("T")[1]
+                      .substring(0, 5)}
                     arrivalAirport={departureLocation}
-                    arrivalDate={flight.departureDatetime.split("T")[0]}
-                    arrivalTime={flight.departureDatetime.split("T")[1].substring(0, 5)}
+                    arrivalDate={
+                      selectedReturnFlight?.departureDatetime?.split("T")[0]
+                    }
+                    arrivalTime={selectedReturnFlight?.departureDatetime
+                      ?.split("T")[1]
+                      .substring(0, 5)}
                     stops="Direct"
-                    travelTime={`${flight.flightDuration.match(/(\d+)H/)[1]} hr ${flight.flightDuration.match(/(\d+)M/)[1]} min`}
-                    price={flight.basePrice.toFixed(2)}
-                    flightNumber={flight.planeId}
-                    onSelect={() => handleReturnFlightSelection(flight)}
-                />
-            </div>
-        ))
-    )}
-</AccordionDetails>
-      </Accordion>
-      )}
+                    travelTime={`${
+                      selectedReturnFlight.flightDuration.match(/(\d+)H/)[1]
+                    } hr ${
+                      selectedReturnFlight.flightDuration.match(/(\d+)M/)[1]
+                    } min`}
+                    price={selectedReturnFlight.basePrice.toFixed(2)}
+                    flightNumber={selectedReturnFlight.planeId}
+                    bookNowLabel="Selected!"
+                    onSelect={() => resetSelectedReturnFlight()}
+                  />
+                </div>
+              ) : (
+                returnFlightData.map((flight, index) => (
+                  <div key={index} style={{ marginBottom: "10px" }}>
+                    <FlightInfoCard
+                      imageURL="https://graphic.sg/media/pages/gallery/singapore-airlines-logo-1987/3067018395-1599296800/1987-singapore-airlines-logo-240x.png"
+                      departureAirport={arrivalLocation}
+                      departureDate={flight.departureDatetime.split("T")[0]}
+                      departureTime={flight.departureDatetime
+                        .split("T")[1]
+                        .substring(0, 5)}
+                      arrivalAirport={departureLocation}
+                      arrivalDate={flight.departureDatetime.split("T")[0]}
+                      arrivalTime={flight.departureDatetime
+                        .split("T")[1]
+                        .substring(0, 5)}
+                      stops="Direct"
+                      travelTime={`${
+                        flight.flightDuration.match(/(\d+)H/)[1]
+                      } hr ${flight.flightDuration.match(/(\d+)M/)[1]} min`}
+                      price={flight.basePrice.toFixed(2)}
+                      flightNumber={flight.planeId}
+                      onSelect={() => handleReturnFlightSelection(flight)}
+                    />
+                  </div>
+                ))
+              )}
+            </AccordionDetails>
+          </Accordion>
+        )}
       </div>
       {/* Container for FilterTile */}
       <div className="filter-container">
         <FilterTile airlines={filterInfo.airlines} />
       </div>
     </div>
+    
   );
 }
 
