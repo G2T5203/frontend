@@ -8,6 +8,7 @@ import SignUp from "./signup-screen/SignUpPage";
 
 //Booking screens
 import ConfirmationPage from "./6-confirmation/ComfirmationPage";
+import PassengerDetails from "./passenger-details/PassengerDetails";
 
 
 // Admin Portal
@@ -30,6 +31,7 @@ function App() {
 
         {/* Booking pages */}
         <Route path="/confirmation" element={<ConfirmationPage/>}/>
+        <Route path="/passengerdetails" element={<PassengerDetails/>}/>
 
         {/* ADMIN PORTAL */}
         <Route path="/adminPortal/login" element={<AdminPortalLogin />} />
