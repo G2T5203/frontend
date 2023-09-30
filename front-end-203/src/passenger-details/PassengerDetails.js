@@ -1,6 +1,7 @@
 import React from 'react';
 import { AppBar, Toolbar, Typography, Button, Container, TextField, Select, MenuItem, LinearProgress } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
+import ProgressBar from '../progress-bar/ProgressBar';
 
 const PassengerDetails = () => {
     return (
@@ -15,7 +16,7 @@ const PassengerDetails = () => {
                     <SearchIcon />
                 </Toolbar>
             </AppBar>
-            
+            <ProgressBar />
             <Container style={{ backgroundImage: 'url(https://media.npr.org/assets/img/2021/10/06/gettyimages-1302813215_wide-6c48e5a6aff547d2703693450c4805978de47435.jpg)', backgroundSize: 'cover', padding: '50px 0' }}>
                 <Typography variant="h5" gutterBottom>
                     Passenger Details
@@ -28,7 +29,7 @@ const PassengerDetails = () => {
                         Time Remaining: 07:30
                     </Typography>
                 </div>
-                
+            
                 <div style={{ backgroundColor: 'white', padding: '20px', marginTop: '20px' }}>
                     <Typography variant="h6" gutterBottom>
                         Passenger Information
