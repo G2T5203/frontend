@@ -41,7 +41,7 @@ export default function BookingSlip() {
               
               <FlightConfirm departureTime={"0940"} departureLocation={"SIN"} arrivalTime={"1140"} arrivalLocation={"BKK"}/>
               <FlightConfirm departureTime={"2100"} departureLocation={"BKK"} arrivalTime={"2300"} arrivalLocation={"SIN"}/>
-              <Typography variant="caption" color="white">
+              <Typography variant="caption" color="white" sx={{textAlign: "center", pl: "60px"}}>
                 Booking ID: 1293201
               </Typography>
             </Grid>
@@ -56,14 +56,14 @@ export default function BookingSlip() {
             direction="column"
             justifyContent="space-between"
             alignItems="center"
-            sx={{ height: "100%", padding: "16px" }}
+            sx={{ height: "100%", padding: "16px" , backgroundColor:"#F9AB55"}}
           >
-            <Typography variant="h4">Right Section</Typography>
+            <Typography variant="h5" fontFamily={"Merriweather"}>Mr Jared Hong</Typography>
             <div style={{ marginTop: "16px" }}>
-              <Typography variant="body1">Text 1</Typography>
-              <Typography variant="body1">Text 2</Typography>
-              <Typography variant="body1">Text 3</Typography>
-              <Typography variant="body1">Text 4</Typography>
+              <Typography variant="body1" fontFamily={"Noto Sans"}>Flight Number: SQ482</Typography>
+              <Typography variant="body1" fontFamily={"Noto Sans"}>Economy Class</Typography>
+              <Typography variant="body1" fontFamily={"Noto Sans"}>Outbound Seat Number: 21B</Typography>
+              <Typography variant="body1" fontFamily={"Noto Sans"}>Inbound Seat Number: 42C</Typography>
             </div>
           </Grid>
         </Grid>

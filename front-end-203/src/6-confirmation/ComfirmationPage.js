@@ -1,12 +1,33 @@
 import React from 'react';
 import BookingSlip from './BookingSlip.js';
-import { Container } from '@mui/material';
+import { Box, Container, Typography , Button} from '@mui/material';
 
 const ConfirmationPage = () => {
-    return (
+    return (<>
+        <Box sx={{
+            display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                textAlign: 'center',        }}>
+        <Typography variant='h4' fontWeight={"bold"} sx={{textDecoration: "underline", p: 3}}>Booking Success!</Typography>
+        <Button variant={"contained"} sx={{mb:3, color: "white", backgroundColor: "#F9AB55"}}>Download Calendar File</Button>
+        </Box>
         <Container>
             <BookingSlip/>
         </Container>
+            <Box sx={{
+            display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                textAlign: 'center',        }}>
+                
+        <Button variant={"contained"} sx={{mt:3, }}>Return to home</Button>
+
+                </Box>
+
+        </>
     )
 }
 
