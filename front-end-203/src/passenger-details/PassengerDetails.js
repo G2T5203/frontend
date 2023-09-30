@@ -17,7 +17,7 @@ const PassengerDetails = () => {
                 </Toolbar>
             </AppBar>
             <ProgressBar />
-            <Container style={{ backgroundImage: 'url(https://media.npr.org/assets/img/2021/10/06/gettyimages-1302813215_wide-6c48e5a6aff547d2703693450c4805978de47435.jpg)', backgroundSize: 'cover', padding: '50px 0' }}>
+            <Container style={{ backgroundImage: 'url({https://media.npr.org/assets/img/2021/10/06/gettyimages-1302813215_wide-6c48e5a6aff547d2703693450c4805978de47435.jpg})', backgroundSize: 'cover', padding: '50px 0' }}>
                 <Typography variant="h5" gutterBottom>
                     Passenger Details
                 </Typography>
