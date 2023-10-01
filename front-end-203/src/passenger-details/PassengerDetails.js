@@ -22,15 +22,17 @@ const PassengerDetails = () => {
                 <Typography variant="h5" gutterBottom>
                     Passenger Details
                 </Typography>
-                
+
                 <LinearProgress variant="determinate" value={50} style={{ marginBottom: '20px' }} />  {/* Adjust value as needed */}
 
                 <PassengerForm />
 
-                <Button variant="contained" color="primary" style={{ marginTop: '20px' }}>
+            
+                    <Button variant="contained" color="primary">
                         Proceed to Review
                     </Button>
-        
+
+
             </Container>
         </div>
     );
