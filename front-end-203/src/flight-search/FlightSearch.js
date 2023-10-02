@@ -97,9 +97,16 @@ function FlightSearch() {
   const [isDepartureAccordionExpanded, setDepartureAccordionExpanded] =
     useState(true);
 
+
+  const [recentDepartureDate, setRecentDepartureDate] = useState(depDateObj);
+  const [recentReturnDate, setRecentReturnDate] = useState(arrDateObj);
+
   // handleSearch function (whatever happens on click of the search button in the search bar)
-  const handleSearch = (departureLocation, arrivalLocation) => {
+  const handleSearch = (departureLocation, arrivalLocation, departureDate, returnDate) => {
     // seting departure and arrival location based on input in search bar
+    console.log("this is dep:" + departureDate);
+    console.log("this is ret:" + returnDate)
+    console.log("this is depdt:" + depDateObj)
     setDepartureLocation(departureLocation);
     setArrivalLocation(arrivalLocation);
 
@@ -114,9 +121,14 @@ function FlightSearch() {
     setMinPrice(potentialMinPrice);
     setMaxPrice(potentialMaxPrice);
 
-    if (!selectedDepartureFlight) {
-      setSelectedDepartureFlight(null);
+    if (departureDate !== recentDepartureDate) {
+      setSelectedDepartureFlight(null); // Reset the selected departure flight
+      setRecentDepartureDate(departureDate); // Update the recent date
   }
+  if (returnDate !== recentReturnDate) {
+    setSelectedReturnFlight(null); // Reset the selected return flight
+    setRecentReturnDate(returnDate); // Update the recent date
+}
 
   };
   // constants for the selected departure and arrival flights that will render when the "Book Now" button is clicked
