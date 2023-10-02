@@ -17,10 +17,15 @@ const PassengerDetails = () => {
                 <Banner />
             </div>
             <ProgressBar />
-            
+
             <PassengerForm />
 
-            <div>
+            <div style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: '25vh'
+            }}>
                 <Button variant="contained" color="primary">
                     Proceed to Review
                 </Button>
