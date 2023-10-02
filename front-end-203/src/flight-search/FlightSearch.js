@@ -86,9 +86,6 @@ function FlightSearch() {
     setHasSearched(false);
   };
 
-  // console.log(departuredt);
-  // console.log(returndt);
-
   // for passing into the flight information cards (arrival and departure are not provided as data from fullsearch endpoint)
   const [departureLocation, setDepartureLocation] = useState("");
   const [arrivalLocation, setArrivalLocation] = useState("");
@@ -97,16 +94,21 @@ function FlightSearch() {
   const [isDepartureAccordionExpanded, setDepartureAccordionExpanded] =
     useState(true);
 
-
+  // constants that are used for keeping track of the departure and return date changes, so that the selected flight can be reset
   const [recentDepartureDate, setRecentDepartureDate] = useState(depDateObj);
   const [recentReturnDate, setRecentReturnDate] = useState(arrDateObj);
 
   // handleSearch function (whatever happens on click of the search button in the search bar)
-  const handleSearch = (departureLocation, arrivalLocation, departureDate, returnDate) => {
+  const handleSearch = (
+    departureLocation,
+    arrivalLocation,
+    departureDate,
+    returnDate
+  ) => {
     // seting departure and arrival location based on input in search bar
     console.log("this is dep:" + departureDate);
-    console.log("this is ret:" + returnDate)
-    console.log("this is depdt:" + depDateObj)
+    console.log("this is ret:" + returnDate);
+    console.log("this is depdt:" + depDateObj);
     setDepartureLocation(departureLocation);
     setArrivalLocation(arrivalLocation);
 
@@ -116,30 +118,32 @@ function FlightSearch() {
     // to track if the search button has been clicked
     setHasSearched(true);
 
-    // to reset departure and arrival flight selection from the accordions
-
     setMinPrice(potentialMinPrice);
     setMaxPrice(potentialMaxPrice);
 
+    // to reset selected departure flight if the departure date changed
     if (departureDate !== recentDepartureDate) {
       setSelectedDepartureFlight(null); // Reset the selected departure flight
       setRecentDepartureDate(departureDate); // Update the recent date
-  }
-  if (returnDate !== recentReturnDate) {
-    setSelectedReturnFlight(null); // Reset the selected return flight
-    setRecentReturnDate(returnDate); // Update the recent date
-}
+    }
 
+    // to reset selected return flight if the return date changed
+    if (returnDate !== recentReturnDate) {
+      setSelectedReturnFlight(null); // Reset the selected return flight
+      setRecentReturnDate(returnDate); // Update the recent date
+    }
   };
-  // constants for the selected departure and arrival flights that will render when the "Book Now" button is clicked
+
+  // constants for the selected departure and arrival flights that will render when the "Select" button is clicked
   const [selectedDepartureFlight, setSelectedDepartureFlight] = useState(null);
   const [selectedReturnFlight, setSelectedReturnFlight] = useState(null);
 
   // for handling outbound flight selection
   const handleDepartureFlightSelection = (flight) => {
     setSelectedDepartureFlight(flight);
-    console.log("Selected Departure Flight:", selectedDepartureFlight);
+
     // Reset the filters
+    //TODO: the display for min and max price does not change, only the value internally changes. do we want to change the displays?
     setMinPrice(0); // Assuming 0 as default min value
     setMaxPrice(Infinity);
     setPotentialMinPrice(0);
@@ -149,7 +153,7 @@ function FlightSearch() {
   // for handling return flight selection
   const handleReturnFlightSelection = (flight) => {
     setSelectedReturnFlight(flight);
-    console.log("Selected return Flight:", selectedDepartureFlight);
+
     // Reset the filters
     setMinPrice(0); // Assuming 0 as default min value
     setMaxPrice(Infinity);
@@ -179,10 +183,22 @@ function FlightSearch() {
   const [potentialMinPrice, setPotentialMinPrice] = useState(0);
   const [potentialMaxPrice, setPotentialMaxPrice] = useState(Infinity);
 
+  // when price changes but search button is not clicked
   const handlePriceChange = (min, max) => {
     setPotentialMinPrice(min);
     setPotentialMaxPrice(max);
   };
+
+  // for time filter: declare 2 variables high and low for lower and upper limit
+  const [low, setLow] = useState(0);
+  const [high, setHigh] = useState(24);
+
+  const handleFlightTime = (time) => {
+    setLow(time[0]);
+    setHigh(time[1]);
+  };
+  console.log("this is low: " + low);
+  console.log("this is high: " + high);
 
   return (
     <div>
@@ -227,7 +243,7 @@ function FlightSearch() {
         <FilterTile
           airlines={filterInfo.airlines}
           onPriceChange={handlePriceChange}
-         
+          onFlightTimeChange={handleFlightTime}
         />
       </div>
       <div className="proceed-button-container">
@@ -324,10 +340,23 @@ function FlightSearch() {
               </div>
             ) : (
               departureFlightData
-              .filter(
-                flight => 
-                    (flight.basePrice >= minPrice && flight.basePrice <= maxPrice)
-            )
+                .filter(
+                  (flight) =>
+                    flight.basePrice >= minPrice &&
+                    flight.basePrice <= maxPrice &&
+                    parseInt(
+                      flight.departureDatetime
+                        .split("T")[1]
+                        .substring(0, 5)
+                        .split(":")[0]
+                    ) >= low &&
+                    parseInt(
+                      flight.departureDatetime
+                        .split("T")[1]
+                        .substring(0, 5)
+                        .split(":")[0]
+                    ) <= high
+                )
                 .map((flight, index) => (
                   <div key={index} style={{ marginBottom: "10px" }}>
                     <FlightInfoCard
@@ -426,33 +455,48 @@ function FlightSearch() {
                   />
                 </div>
               ) : (
-                returnFlightData.filter(
-                  flight => 
-                      (flight.basePrice >= minPrice && flight.basePrice <= maxPrice)
-              ).map((flight, index) => (
-                  <div key={index} style={{ marginBottom: "10px" }}>
-                    <FlightInfoCard
-                      imageURL="https://graphic.sg/media/pages/gallery/singapore-airlines-logo-1987/3067018395-1599296800/1987-singapore-airlines-logo-240x.png"
-                      departureAirport={arrivalLocation}
-                      departureDate={flight.departureDatetime.split("T")[0]}
-                      departureTime={flight.departureDatetime
-                        .split("T")[1]
-                        .substring(0, 5)}
-                      arrivalAirport={departureLocation}
-                      arrivalDate={flight.departureDatetime.split("T")[0]}
-                      arrivalTime={flight.departureDatetime
-                        .split("T")[1]
-                        .substring(0, 5)}
-                      stops="Direct"
-                      travelTime={`${
-                        flight.flightDuration.match(/(\d+)H/)[1]
-                      } hr ${flight.flightDuration.match(/(\d+)M/)[1]} min`}
-                      price={flight.basePrice.toFixed(2)}
-                      flightNumber={flight.planeId}
-                      onSelect={() => handleReturnFlightSelection(flight)}
-                    />
-                  </div>
-                ))
+                returnFlightData
+                  .filter(
+                    (flight) =>
+                      flight.basePrice >= minPrice &&
+                      flight.basePrice <= maxPrice &&
+                      parseInt(
+                        flight.departureDatetime
+                          .split("T")[1]
+                          .substring(0, 5)
+                          .split(":")[0]
+                      ) >= low &&
+                      parseInt(
+                        flight.departureDatetime
+                          .split("T")[1]
+                          .substring(0, 5)
+                          .split(":")[0]
+                      ) <= high
+                  )
+                  .map((flight, index) => (
+                    <div key={index} style={{ marginBottom: "10px" }}>
+                      <FlightInfoCard
+                        imageURL="https://graphic.sg/media/pages/gallery/singapore-airlines-logo-1987/3067018395-1599296800/1987-singapore-airlines-logo-240x.png"
+                        departureAirport={arrivalLocation}
+                        departureDate={flight.departureDatetime.split("T")[0]}
+                        departureTime={flight.departureDatetime
+                          .split("T")[1]
+                          .substring(0, 5)}
+                        arrivalAirport={departureLocation}
+                        arrivalDate={flight.departureDatetime.split("T")[0]}
+                        arrivalTime={flight.departureDatetime
+                          .split("T")[1]
+                          .substring(0, 5)}
+                        stops="Direct"
+                        travelTime={`${
+                          flight.flightDuration.match(/(\d+)H/)[1]
+                        } hr ${flight.flightDuration.match(/(\d+)M/)[1]} min`}
+                        price={flight.basePrice.toFixed(2)}
+                        flightNumber={flight.planeId}
+                        onSelect={() => handleReturnFlightSelection(flight)}
+                      />
+                    </div>
+                  ))
               )}
             </AccordionDetails>
           </Accordion>

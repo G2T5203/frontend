@@ -8,7 +8,8 @@ import {
   Autocomplete,
 } from "@mui/material";
 
-const FilterTile = ({ airlines, onFilterChange, onPriceChange }) => {
+const FilterTile = ({ airlines, onFilterChange, onPriceChange, onFlightTimeChange}) => {
+
   // State variables for flight time range, price range, selected airlines, and user input
   const [flightTime, setFlightTime] = useState([0, 24]);
   const [priceRange, setPriceRange] = useState([0, 5000]);
@@ -20,6 +21,11 @@ const FilterTile = ({ airlines, onFilterChange, onPriceChange }) => {
   // Handle flight time slider change
   const handleFlightTimeChange = (event, newTime) => {
     setFlightTime(newTime);
+    console.log(newTime);
+
+    if (onFlightTimeChange) {
+      onFlightTimeChange(newTime);
+  }
   };
   // Handle min price input change
   const handleMinPriceChange = (event) => {
