@@ -253,7 +253,7 @@ export default function SignUpPage() {
                   {signupSuccess ? (
                     <Alert severity="success" fullWidth>
                       <AlertTitle>Success</AlertTitle>
-                      Account created!
+                      Account created! <br />
                       <strong>
                         Click <Link href="/signin">here</Link> to sign in!
                       </strong>
