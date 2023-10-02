@@ -110,11 +110,14 @@ function FlightSearch() {
     setHasSearched(true);
 
     // to reset departure and arrival flight selection from the accordions
-    setSelectedDepartureFlight(null);
-    setSelectedReturnFlight(null);
 
     setMinPrice(potentialMinPrice);
     setMaxPrice(potentialMaxPrice);
+
+    if (!selectedDepartureFlight) {
+      setSelectedDepartureFlight(null);
+  }
+
   };
   // constants for the selected departure and arrival flights that will render when the "Book Now" button is clicked
   const [selectedDepartureFlight, setSelectedDepartureFlight] = useState(null);
@@ -124,12 +127,22 @@ function FlightSearch() {
   const handleDepartureFlightSelection = (flight) => {
     setSelectedDepartureFlight(flight);
     console.log("Selected Departure Flight:", selectedDepartureFlight);
+    // Reset the filters
+    setMinPrice(0); // Assuming 0 as default min value
+    setMaxPrice(Infinity);
+    setPotentialMinPrice(0);
+    setPotentialMaxPrice(Infinity);
   };
 
   // for handling return flight selection
   const handleReturnFlightSelection = (flight) => {
     setSelectedReturnFlight(flight);
     console.log("Selected return Flight:", selectedDepartureFlight);
+    // Reset the filters
+    setMinPrice(0); // Assuming 0 as default min value
+    setMaxPrice(Infinity);
+    setPotentialMinPrice(0);
+    setPotentialMaxPrice(Infinity);
   };
 
   // to reset the selected departure flight
@@ -153,9 +166,8 @@ function FlightSearch() {
   const [maxPrice, setMaxPrice] = useState(Infinity);
   const [potentialMinPrice, setPotentialMinPrice] = useState(0);
   const [potentialMaxPrice, setPotentialMaxPrice] = useState(Infinity);
+
   const handlePriceChange = (min, max) => {
-    // console.log("Min Price from FilterTile:", min);
-    // console.log("Max Price from FilterTile:", max);
     setPotentialMinPrice(min);
     setPotentialMaxPrice(max);
   };
@@ -203,6 +215,7 @@ function FlightSearch() {
         <FilterTile
           airlines={filterInfo.airlines}
           onPriceChange={handlePriceChange}
+         
         />
       </div>
       <div className="proceed-button-container">
@@ -299,10 +312,10 @@ function FlightSearch() {
               </div>
             ) : (
               departureFlightData
-                .filter(
-                  (flight) =>
-                    flight.basePrice >= minPrice && flight.basePrice <= maxPrice
-                )
+              .filter(
+                flight => 
+                    (flight.basePrice >= minPrice && flight.basePrice <= maxPrice)
+            )
                 .map((flight, index) => (
                   <div key={index} style={{ marginBottom: "10px" }}>
                     <FlightInfoCard
@@ -401,7 +414,10 @@ function FlightSearch() {
                   />
                 </div>
               ) : (
-                returnFlightData.map((flight, index) => (
+                returnFlightData.filter(
+                  flight => 
+                      (flight.basePrice >= minPrice && flight.basePrice <= maxPrice)
+              ).map((flight, index) => (
                   <div key={index} style={{ marginBottom: "10px" }}>
                     <FlightInfoCard
                       imageURL="https://graphic.sg/media/pages/gallery/singapore-airlines-logo-1987/3067018395-1599296800/1987-singapore-airlines-logo-240x.png"

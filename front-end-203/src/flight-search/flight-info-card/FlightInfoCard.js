@@ -22,7 +22,7 @@ const FlightInfoCard = ({
   price,
   flightNumber,
   onSelect,
-  bookNowLabel = "Book Now"
+  bookNowLabel = "Select"
 }) => {
   return (
     <div className="flight-info-card">

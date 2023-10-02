@@ -11,11 +11,11 @@ import {
 const FilterTile = ({ airlines, onFilterChange, onPriceChange }) => {
   // State variables for flight time range, price range, selected airlines, and user input
   const [flightTime, setFlightTime] = useState([0, 24]);
-  const [priceRange, setPriceRange] = useState([0, 1000]);
+  const [priceRange, setPriceRange] = useState([0, 5000]);
   const [selectedAirlines, setSelectedAirlines] = useState([]);
   const [inputValue, setInputValue] = useState("");
   const [minPrice, setMinPrice] = useState(0);
-  const [maxPrice, setMaxPrice] = useState(1000);
+  const [maxPrice, setMaxPrice] = useState(5000);
 
   // Handle flight time slider change
   const handleFlightTimeChange = (event, newTime) => {
