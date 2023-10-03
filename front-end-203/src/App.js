@@ -9,10 +9,9 @@ import SignUp from "./signup-screen/SignUpPage";
 //Booking screens
 import ConfirmationPage from "./6-confirmation/ComfirmationPage";
 import PassengerDetails from "./passenger-details/PassengerDetails";
-import Plane from './seat-selection-draft/Plane';
-import Seats from './seat-selection/seats/Seats';
-
-
+import Plane from "./seat-selection-draft/Plane";
+import Seats from "./seat-selection/seats/Seats";
+import SeatSelection from "./2-seat-selection/SeatSelection";
 
 // Admin Portal
 import AdminPortalLogin from "./admin-portal/AdminPortalLogin";
@@ -33,11 +32,11 @@ function App() {
         <Route path="/signup" element={<SignUp />} />
 
         {/* Booking pages */}
-        <Route path="/confirmation" element={<ConfirmationPage/>}/>
-        <Route path="/passengerdetails" element={<PassengerDetails/>}/>
-        <Route path="/plane" element={<Plane/>}/>
-        <Route path="/seats" element={<Seats/>}/>
-
+        <Route path="/confirmation" element={<ConfirmationPage />} />
+        <Route path="/passengerdetails" element={<PassengerDetails />} />
+        <Route path="/plane" element={<Plane />} />
+        <Route path="/seats" element={<Seats />} />
+        <Route path="/seatselection" element={<SeatSelection />} />
 
         {/* ADMIN PORTAL */}
         <Route path="/adminPortal/login" element={<AdminPortalLogin />} />
