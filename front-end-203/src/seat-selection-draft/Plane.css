@@ -1,0 +1,100 @@
+.plane {
+    font-family: Arial, sans-serif;
+    margin: 50px auto;
+    width: max-content;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.cockpit {
+    width: 200px;  /* Adjusted from 50px */
+    height: 200px; /* Adjusted from 50px */
+    border-radius: 100px 100px 0 0; /* Adjusted the radius to half of width/height */
+    background-color: #8da4ad;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cabin {
+    border: 8px solid #d8d8d8; /* Increase the border width */
+    padding: 20px; /* Adjust the padding to control the width */
+    border-top: none;
+    border-radius: 0% 0% 0% 0%;
+    position: relative;
+    
+}
+
+
+.row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.seats {
+    display: flex;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    gap: 10px;
+}
+
+.seat {
+    width: 40px;
+    height: 40px;
+    background-color: darkblue;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.seat.selected {
+    background-color: orange;
+    transition: background-color 0.3s ease;
+}
+
+.exit {
+    width: 20px;
+    height: 50px;
+    background-color: red;
+    margin: 20px 0;
+}
+
+.aisle {
+    width: 20px;  /* Adjust to your preference */
+    height: 30px; /* This height is inherited from the seat size */
+    display: inline-block;
+}
+
+/* Styles for the left wing */
+.left-wing {
+    width: 20%; /* Adjust the width to make it smaller */
+    height: 20px; /* Adjust the height to make it smaller and closer to the body */
+    background-color: #0074D9; /* Color of the wing */
+    position: absolute;
+    top: 40%; /* Adjust the top value to move it closer to the body */
+    left: 0; /* Left wing is positioned on the left side */
+    border-radius: 0 0 50% 50%;
+    transform: translateY(-50%); /* Adjust for vertical centering */
+    z-index: -1; /* Send the wing behind other elements */
+}
+
+/* Styles for the right wing */
+.right-wing {
+    width: 20%; /* Adjust the width to make it smaller */
+    height: 20px; /* Adjust the height to make it smaller and closer to the body */
+    background-color: #0074D9; /* Color of the wing */
+    position: absolute;
+    top: 40%; /* Adjust the top value to move it closer to the body */
+    right: 0; /* Right wing is positioned on the right side */
+    border-radius: 0 0 50% 50%;
+    transform: translateY(-50%); /* Adjust for vertical centering */
+    z-index: -1; /* Send the wing behind other elements */
+}
