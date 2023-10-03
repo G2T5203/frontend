@@ -72,29 +72,3 @@
     height: 30px; /* This height is inherited from the seat size */
     display: inline-block;
 }
-
-/* Styles for the left wing */
-.left-wing {
-    width: 20%; /* Adjust the width to make it smaller */
-    height: 20px; /* Adjust the height to make it smaller and closer to the body */
-    background-color: #0074D9; /* Color of the wing */
-    position: absolute;
-    top: 40%; /* Adjust the top value to move it closer to the body */
-    left: 0; /* Left wing is positioned on the left side */
-    border-radius: 0 0 50% 50%;
-    transform: translateY(-50%); /* Adjust for vertical centering */
-    z-index: -1; /* Send the wing behind other elements */
-}
-
-/* Styles for the right wing */
-.right-wing {
-    width: 20%; /* Adjust the width to make it smaller */
-    height: 20px; /* Adjust the height to make it smaller and closer to the body */
-    background-color: #0074D9; /* Color of the wing */
-    position: absolute;
-    top: 40%; /* Adjust the top value to move it closer to the body */
-    right: 0; /* Right wing is positioned on the right side */
-    border-radius: 0 0 50% 50%;
-    transform: translateY(-50%); /* Adjust for vertical centering */
-    z-index: -1; /* Send the wing behind other elements */
-}
