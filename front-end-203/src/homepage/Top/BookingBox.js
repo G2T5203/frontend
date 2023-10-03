@@ -28,12 +28,7 @@ const CompactForm = () => {
   const noGuestHandleChange = (e) => {
     setGuestSelected(e.target.value);
   };
-  //Class Options funcs
-  const classOptions = ["Economy", "Business", "First"];
-  const [classSelected, setClassSelected] = useState("Economy");
-  const classHandleChange = (e) => {
-    setClassSelected(e.target.value);
-  };
+
   //flying to Options funcs
   const flyingToOptions = ["Japan", "Singapore", "Taiwan", "India", "China"];
   const [flyingToSelected, setFlyingToSelected] = useState(null);
@@ -58,7 +53,6 @@ const CompactForm = () => {
     let data = {
       trip: tripSelected,
       noGuest: noGuestSelected,
-      class: classSelected,
       flyingFrom: flyingFromSelected,
       flyingTo: flyingToSelected,
       departuredt: JSON.stringify(Depdate),
@@ -67,8 +61,12 @@ const CompactForm = () => {
 
     if ((data.trip === "Return" && returnDate === "") || Depdate === "") {
       alert("Please select appropriate dates");
-    } else if (data.flyingFrom === "" || data.flyingTo === "" ||
-      data.flyingFrom === null || data.flyingTo === "") {
+    } else if (
+      data.flyingFrom === "" ||
+      data.flyingTo === "" ||
+      data.flyingFrom === null ||
+      data.flyingTo === ""
+    ) {
       alert("Please select appropriate locations");
     } else {
       console.log(data);
@@ -80,8 +78,8 @@ const CompactForm = () => {
       <Paper elevation={0} sx={{ padding: 1, width: "420px" }}>
         <Grid container rowSpacing={1} columnSpacing={2}>
           {/* Row 1: 3 Item Pickers */}
-          <Grid item xs={4}>
-            <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+          <Grid item xs={6}>
+            <FormControl sx={{ m: 0, minWidth: 120 }} size="small" fullWidth>
               <InputLabel id="Trip">Trip</InputLabel>
               <Select
                 labelId="Trip"
@@ -101,8 +99,8 @@ const CompactForm = () => {
               </Select>
             </FormControl>
           </Grid>
-          <Grid item xs={4}>
-            <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+          <Grid item xs={6}>
+            <FormControl sx={{ m: 0, minWidth: 120 }} size="small" fullWidth>
               <InputLabel id="noGuest">No. Guest</InputLabel>
               <Select
                 labelId="noGuest"
@@ -115,27 +113,6 @@ const CompactForm = () => {
                   <em>None</em>
                 </MenuItem>
                 {noGuestOptions.map((option) => (
-                  <MenuItem key={option} value={option}>
-                    {option}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid>
-          <Grid item xs={4}>
-            <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-              <InputLabel id="Class">Class</InputLabel>
-              <Select
-                labelId="Class"
-                id="Class"
-                value={classSelected}
-                label="Class"
-                onChange={classHandleChange}
-              >
-                <MenuItem value="">
-                  <em>None</em>
-                </MenuItem>
-                {classOptions.map((option) => (
                   <MenuItem key={option} value={option}>
                     {option}
                   </MenuItem>
