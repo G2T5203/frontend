@@ -10,6 +10,7 @@ import SignUp from "./signup-screen/SignUpPage";
 import ConfirmationPage from "./6-confirmation/ComfirmationPage";
 import PassengerDetails from "./passenger-details/PassengerDetails";
 import SeatSelection from "./2-seat-selection/SeatSelection";
+import PaymentPage from "./5-payment/PaymentPage";
 
 // Admin Portal
 import AdminPortalLogin from "./admin-portal/AdminPortalLogin";
@@ -33,6 +34,8 @@ function App() {
         <Route path="/confirmation" element={<ConfirmationPage />} />
         <Route path="/passengerdetails" element={<PassengerDetails />} />
         <Route path="/seatselection" element={<SeatSelection />} />
+        <Route path="/payment" element={<PaymentPage />} />
+
 
         {/* ADMIN PORTAL */}
         <Route path="/adminPortal/login" element={<AdminPortalLogin />} />

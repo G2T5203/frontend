@@ -1,4 +1,5 @@
 import React from "react";
+import { useState } from "react";
 import {
   CardNumberElement,
   CardExpiryElement,
@@ -6,16 +7,29 @@ import {
   useStripe,
   useElements,
 } from "@stripe/react-stripe-js";
+
 import { Button, Box, TextField, Typography } from "@mui/material";
 import { ThemeProvider, createTheme } from "@mui/material";
+
+
+  
+
+function PaymentForm() {
+
+    const [hasText, setHasText] = useState(false);
+
+  const handleTextChange = (e) => {
+    setHasText(e.target.value !== '');
+  };
 
 const CARD_ELEMENT_OPTIONS = {
     style: {
       base: {
-        color: "white",
+        color: "black",
         fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
         fontSmoothing: "antialiased",
         fontSize: "16px",
+        backgroundColor: "white",
         "::placeholder": {
           color: "grey",
         },
@@ -37,13 +51,14 @@ const CARD_ELEMENT_OPTIONS = {
             },
             "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
               borderColor: "white", // Border color when focused
+              borderWidth: "1px"
             },
           },
           notchedOutline: {
             borderColor: "white", // Default border color
           },
           input: {
-            color: "white", // This will change the input text color to white
+            color: "black", // This will change the input text color to white
           },
         },
       },
@@ -52,7 +67,7 @@ const CARD_ELEMENT_OPTIONS = {
           outlined: {
             color: "grey", // Label color
             "&.Mui-focused": {
-              color: "white", // Label color when input is focused
+              color: "grey", // Label color when input is focused
             },
           },
         },
@@ -60,15 +75,12 @@ const CARD_ELEMENT_OPTIONS = {
       MuiInputBase: {
         styleOverrides: {
           input: {
-            color: "white", // This will change the input text color to white for all input variants
+            color: "black",
           },
         },
       },
     },
   });
-  
-
-function PaymentForm() {
   const stripe = useStripe();
   const elements = useElements();
 
@@ -96,51 +108,84 @@ function PaymentForm() {
   };
 
   return (
-    <Box padding={5} bgcolor="#223662" width="400px" borderRadius={"0.75rem"}>
-      <Typography variant="h6" color={"white"}>
-        Payment method
+    <Box padding={5} bgcolor="#223662" width="400px" borderRadius={"0.75rem"} marginLeft={"12rem"} marginTop={"4rem"} marginBottom={"4rem"}>
+        <Typography variant="h5" color={"white"} sx={{fontFamily: "Merriweather Sans"}}>
+        Payment Method
       </Typography>
-      <Typography variant="body2" color={"white"}>
+      <Typography variant="body2" color={"white"} sx={{fontFamily: "Merriweather Sans", marginY: "0.75rem"}}>
         Select a payment method below. WingIt processes your payment securely
         with end-to-end encryption.
       </Typography>
-      <Typography variant="subtitle1" color={"white"} marginY={2}>
+      <Button 
+        sx={{
+          borderColor: '#FF9B00',
+          borderWidth: '2px',
+          padding: '10px 30px', 
+          backgroundColor: 'darkOrange',
+          fontFamily: "Merriweather Sans",
+          color: "white",
+          textTransform: "none",
+          '&:hover': {
+            backgroundColor: '#FF9B00',  // replace with your desired color
+          }
+        }}
+      >
+        Credit card
+      </Button>
+      
+      <Typography variant="h6" color={"white"} marginY={2} sx={{fontFamily: "Merriweather Sans", marginTop: "1.5rem"}}>
         Credit card details
       </Typography>
 
       <Box marginBottom={2}>
-    <ThemeProvider theme={customTheme}><TextField fullWidth margin="normal" variant="outlined" label="Name on card" /></ThemeProvider>
+    <ThemeProvider theme={customTheme}><TextField 
+    fullWidth 
+    margin="normal" 
+    variant="outlined"
+    label={!hasText ? "Name on card" : null}
+        sx={{ fontFamily: "Merriweather Sans" , backgroundColor: "white", borderRadius: "4px"}}
+        onChange={handleTextChange}
+    InputLabelProps={{ shrink: false }} 
+  /></ThemeProvider>
       
     </Box>
 
     <Box marginBottom={2}>
-      <div style={{ border: '1px solid white', padding: '8px', borderRadius: '4px'}}>
+      <div style={{ border: '1px solid white', borderRadius: '4px', padding: "1rem", backgroundColor: "white"}}>
         <CardNumberElement options={CARD_ELEMENT_OPTIONS} />
       </div>
     </Box>
 
     <Box display="flex" justifyContent="space-between" marginBottom={2}>
       <Box width="60%" marginRight={1}>
-        <div style={{ border: '1px solid white', padding: '8px', borderRadius: '4px' }}>
+        <div style={{ border: '1px solid white', borderRadius: '4px', padding: "1rem", backgroundColor: "white"} }>
           <CardExpiryElement options={CARD_ELEMENT_OPTIONS} />
         </div>
       </Box>
       <Box width="35%">
-        <div style={{ border: '1px solid white', padding: '8px', borderRadius: '4px' }}>
+        <div style={{ border: '1px solid white', borderRadius: '4px', padding: "1rem", backgroundColor: "white"} }>
           <CardCvcElement options={CARD_ELEMENT_OPTIONS} />
         </div>
       </Box>
     </Box>
-
-      <Button
-        fullWidth
-        variant="contained"
-        color="primary"
-        onClick={handleSubmit}
-        style={{ marginTop: "16px" }}
+    <Button 
+        sx={{
+          borderColor: '#FF9B00',
+          borderWidth: '2px',
+          padding: '10px 30px', 
+          backgroundColor: 'darkOrange',
+          fontFamily: "Merriweather Sans",
+          color: "white",
+          textTransform: "none",
+          '&:hover': {
+            backgroundColor: '#FF9B00',  // replace with your desired color
+          }
+        }}
       >
         Confirm and pay
       </Button>
+
+    
     </Box>
   );
 }

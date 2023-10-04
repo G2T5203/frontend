@@ -1,6 +1,5 @@
-import { useNavigate } from "react-router-dom";
 import React from "react";
-import { Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import ProgressBar from "../progress-bar/ProgressBar";
 import NavigationBar from "../nav-bar/NavigationBar";
 import { loadStripe } from '@stripe/stripe-js';
