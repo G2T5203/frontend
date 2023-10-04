@@ -22,7 +22,8 @@ const FlightInfoCard = ({
   price,
   flightNumber,
   onSelect,
-  bookNowLabel = "Select"
+  bookNowLabel = "Select",
+  seats
 }) => {
   return (
     <div className="flight-info-card">
@@ -91,13 +92,21 @@ const FlightInfoCard = ({
           {arrivalTime}
         </Typography>
       </div>
+      
+      <div>
+
+      </div>
 
       {/* Section 5: Price and Book Now Button */}
-      <div className="section">
+      <div className="price-select-seats">
+      <Stack direction={"column"} spacing={2} alignItems="center">
+      <Typography fontSize={17} sx={{ fontFamily: "Merriweather Sans", textTransform: "none", color: "white"}}>
+          Available Seats: {seats}
+        </Typography>
         <Typography
           variant="h6"
           fontSize={30}
-          sx={{ fontFamily: "Merriweather Sans" }}
+          sx={{ fontFamily: "Merriweather Sans", color: "white"}}
         >
           ${price}
         </Typography>
@@ -113,10 +122,13 @@ const FlightInfoCard = ({
           }
         }}
       >
-        <Typography variant="h6" fontSize={15} sx={{ fontFamily: "Merriweather Sans", textTransform: "none" }}>
+        <Typography variant="h6" fontSize={15} sx={{ fontFamily: "Merriweather Sans", textTransform: "none", color: "white"}}>
           {bookNowLabel}
         </Typography>
       </Button>
+      </Stack>
+      
+      
       </div>
     </div>
   );

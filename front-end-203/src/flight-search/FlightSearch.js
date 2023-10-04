@@ -336,6 +336,7 @@ function FlightSearch() {
                   flightNumber={selectedDepartureFlight.planeId}
                   bookNowLabel="Selected!"
                   onSelect={() => resetSelectedDepartureFlight()}
+                  seats={selectedDepartureFlight.availableSeats}
                 />
               </div>
             ) : (
@@ -378,6 +379,7 @@ function FlightSearch() {
                       price={flight.basePrice.toFixed(2)}
                       flightNumber={flight.planeId}
                       onSelect={() => handleDepartureFlightSelection(flight)}
+                      seats={flight.availableSeats}
                     />
                   </div>
                 ))
@@ -452,6 +454,7 @@ function FlightSearch() {
                     flightNumber={selectedReturnFlight.planeId}
                     bookNowLabel="Selected!"
                     onSelect={() => resetSelectedReturnFlight()}
+                    seats={selectedReturnFlight.availableSeats}
                   />
                 </div>
               ) : (
@@ -494,6 +497,7 @@ function FlightSearch() {
                         price={flight.basePrice.toFixed(2)}
                         flightNumber={flight.planeId}
                         onSelect={() => handleReturnFlightSelection(flight)}
+                        seats={flight.availableSeats}
                       />
                     </div>
                   ))
