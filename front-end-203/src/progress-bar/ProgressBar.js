@@ -20,16 +20,14 @@ const ProgressBar = ({ currentStep, number }) => {
           background: `url('https://media.npr.org/assets/img/2021/10/06/gettyimages-1302813215_wide-6c48e5a6aff547d2703693450c4805978de47435.jpg')`, // Replace with your image URL
           backgroundSize: "cover", // Scale the image to cover the entire container
           backgroundPosition: "10% 40%", // Center the image
+          alignItems: "flex-end",
+          display: "flex",
         }}
       >
-        <div
-          className="text"
-          style={{
-            position: "absolute", // this positions the text within the banner
-            bottom: 10, // this places it 10px from the bottom of the banner
-            width: "100%", // ensures it spans the width of the container
-            textAlign: "left", // centers the text horizontally
-            boxSizing: "border-box", // ensures padding is included in total height
+        <Box
+          sx={{
+            paddingX: "30px",
+            paddingBottom: "10px",
           }}
         >
           <Typography
@@ -42,8 +40,7 @@ const ProgressBar = ({ currentStep, number }) => {
           >
             {currentStep}
           </Typography>
-        </div>
-        {/* You can add content or additional components inside this div if needed */}
+        </Box>
       </Box>
       <Box
         sx={{ borderBottom: 1, borderColor: "divider", marginBottom: "20px" }}
