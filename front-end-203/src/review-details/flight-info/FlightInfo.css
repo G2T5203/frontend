@@ -1,0 +1,9 @@
+.flight-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #d9d9d9;
+}
+
+/* You can continue to style each child element (like .airport-code, .airport-name, etc.) to better match the design */
