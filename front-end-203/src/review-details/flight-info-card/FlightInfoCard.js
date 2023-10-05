@@ -25,6 +25,10 @@ const FlightInfoCard = ({
   bookNowLabel = "Select",
   seats
 }) => {
+
+  console.log(departureAirport, departureDate, departureTime, arrivalAirport, arrivalDate, arrivalTime);
+
+
   return (
     <div className="flight-info-card">
       {/* Section 1: Airline Name */}
@@ -97,6 +101,39 @@ const FlightInfoCard = ({
 
       </div>
 
+      {/* Section 5: Price and Book Now Button */}
+      <div className="price-select-seats">
+      <Stack direction={"column"} spacing={2} alignItems="center">
+      <Typography fontSize={17} sx={{ fontFamily: "Merriweather Sans", textTransform: "none", color: "white"}}>
+          Available Seats: {seats}
+        </Typography>
+        <Typography
+          variant="h6"
+          fontSize={30}
+          sx={{ fontFamily: "Merriweather Sans", color: "white"}}
+        >
+          ${price}
+        </Typography>
+
+        <Button variant="contained"
+        onClick={onSelect}
+        sx={{
+          backgroundColor: "darkorange",
+          color: "white",
+          padding: "5px",
+          "&:hover": {
+            backgroundColor: "orange"
+          }
+        }}
+      >
+        <Typography variant="h6" fontSize={15} sx={{ fontFamily: "Merriweather Sans", textTransform: "none", color: "white"}}>
+          {bookNowLabel}
+        </Typography>
+      </Button>
+      </Stack>
+      
+      
+      </div>
     </div>
   );
 };

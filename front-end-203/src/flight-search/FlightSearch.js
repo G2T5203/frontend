@@ -200,6 +200,22 @@ function FlightSearch() {
   console.log("this is low: " + low);
   console.log("this is high: " + high);
 
+
+  const selectedData = {
+    departureFlight: {
+      ...selectedDepartureFlight,
+      departureLocation: departureLocation,
+      arrivalLocation: arrivalLocation,
+    },
+    returnFlight: {
+      ...selectedReturnFlight,
+      departureLocation: arrivalLocation, // because it's the opposite for the return flight
+      arrivalLocation: departureLocation, // opposite for the return flight
+    }
+  };
+  localStorage.setItem('selectedFlights', JSON.stringify(selectedData));
+  
+
   return (
     <div>
       <div className="nav">
