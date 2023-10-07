@@ -12,6 +12,7 @@ const ImageWrapper = styled.div`
   background-size: cover;
   background-position: center;
   margin-right: 16px;
+  border-radius: 1rem !important;
 `;
 
 const CustomCard = styled(Card)`
@@ -63,7 +64,7 @@ const BookingSummary = () => {
           Your booking is protected by WingIt
         </Typography>
         <CustomDivider/>
-        <Typography variant="h6" sx={{color: 'white', fontFamily: "Merriweather Sans", marginTop: '1rem'}}>Seat Selected</Typography>
+        <Typography variant="h6" sx={{color: 'white', fontFamily: "Merriweather Sans", marginTop: '1rem'}}>Seats Selected</Typography>
         <Box display="flex" justifyContent="space-between" marginTop="16px">
           
           <Typography variant="h6" sx={{color: 'white'}}>A1</Typography>
