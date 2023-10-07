@@ -29,12 +29,16 @@ const SeatSelection = () => {
   const [depFirstSeats, setDepFirstSeats] = useState([]);
   const [depBusinessSeats, setDepBusinessSeats] = useState([]);
   const [depEconomySeats, setDepEconomySeats] = useState([]);
-
+  const [retFirstSeats, setRetFirstSeats] = useState([]);
+  const [retBusinessSeats, setRetBusinessSeats] = useState([]);
+  const [retEconomySeats, setRetEconomySeats] = useState([]);
   //math for number of rows
   const firstNumRows = Math.ceil(depFirstSeats.length / 2);
   const businessNumRows = Math.ceil(depBusinessSeats.length / 4);
   const economyNumRows = Math.ceil(depEconomySeats.length / 6);
-
+  const retFirstNumRows = Math.ceil(retFirstSeats.length / 2);
+  const retBusinessNumRows = Math.ceil(retBusinessSeats.length / 4);
+  const retEconomyNumRows = Math.ceil(retEconomySeats.length / 6);
   const [option, setOption] = useState("outbound");
 
   const depdt = departureFlight.departureDatetime.replace(/"/g, "");
@@ -42,8 +46,11 @@ const SeatSelection = () => {
   const urlDep =
     apiUrl +
     `seatListings/matchingRouteListing/${departureFlight.planeId}/${departureFlight.routeId}/${depdt}`;
+  const urlRet =
+    apiUrl +
+    `seatListings/matchingRouteListing/${returnFlight.planeId}/${returnFlight.routeId}/${retdt}`;
   //create booking departure flight
-  const fetchSeatListings = () => {
+  const fetchDepSeatListings = () => {
     try {
       axios.get(urlDep).then((response) => {
         if (response.status === 200) {
@@ -83,6 +90,46 @@ const SeatSelection = () => {
     }
   };
 
+  const fetchRetSeatListings = () => {
+    try {
+      axios.get(urlRet).then((response) => {
+        if (response.status === 200) {
+          //first class filters
+          const seatListings = response.data;
+          console.log(typeof seatListings);
+          const filteredSeatListings = seatListings.filter(
+            (listing) => listing.seatClass === "First"
+          );
+          const seatNumbers = filteredSeatListings.map(
+            (listing) => listing.seatNumber
+          );
+          setRetFirstSeats(seatNumbers);
+          console.log(seatNumbers);
+          //business class filters
+          const filteredBusinessSeatListings = seatListings.filter(
+            (listing) => listing.seatClass === "Business"
+          );
+          const businessSeatNumbers = filteredBusinessSeatListings.map(
+            (listing) => listing.seatNumber
+          );
+          setRetBusinessSeats(businessSeatNumbers);
+          console.log(businessSeatNumbers);
+          //economy class filters
+          const filteredEconomySeatListings = seatListings.filter(
+            (listing) => listing.seatClass === "Economy"
+          );
+          const economySeatNumbers = filteredEconomySeatListings.map(
+            (listing) => listing.seatNumber
+          );
+          setRetEconomySeats(economySeatNumbers);
+          console.log(economySeatNumbers);
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     if (isAuthenticated()) {
       axios
@@ -91,7 +138,7 @@ const SeatSelection = () => {
           // TODO: This isn't correctly reporting errors. Postman is 403, but here it's still 200.
           if (response.status === 200) {
             updateAuthHeadersFromCurrentUser();
-            fetchSeatListings();
+            fetchDepSeatListings();
           } else {
             removeAuthToken();
             navigate("/signin");
