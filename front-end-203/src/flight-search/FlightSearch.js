@@ -178,12 +178,12 @@ function FlightSearch() {
     alert("Proceeding to the next screen!"); // Temporary action
     //TODO: send the outbound and inbound flight details to the seat selection screen
     let seatselectinfo = {
-      bookingId: 1,
-      departureFlight: JSON.stringify(selectedDepartureFlight),
-      returnFlight: JSON.stringify(selectedReturnFlight),
+      bookingId: "1",
+      departureFlight: selectedDepartureFlight,
+      returnFlight: selectedReturnFlight ,
     }
     console.log(seatselectinfo + " is from search");
-    navigate("/seatselection", {state: seatselectinfo});
+    navigate("/seatselection", {state : seatselectinfo});
   };
 
   // for use of min and max price set on the filter tile in filtering the flight info cards rendered on click of the search button
