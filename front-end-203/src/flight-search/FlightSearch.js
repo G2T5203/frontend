@@ -175,7 +175,11 @@ function FlightSearch() {
   const handleProceedClick = () => {
     alert("Proceeding to the next screen!"); // Temporary action
     //TODO: send the outbound and inbound flight details to the seat selection screen
-    
+    let data = {
+      bookingId: 1,
+      departureFlight: selectedDepartureFlight,
+      returnFlight: selectedReturnFlight,
+    }
   };
 
   // for use of min and max price set on the filter tile in filtering the flight info cards rendered on click of the search button

@@ -14,8 +14,10 @@ import SingleSeat from "./seats/Seat";
 import axios from "axios";
 
 const SeatSelection = () => {
+  const apiUrl = process.env.REACT_APP_API_BASE_URL;
+
   //create seats array
-  const [numOfSeats, setNumOfSeats] = useState([
+  const [firstSeats, setFirstSeats] = useState([
     "A1",
     "A2",
     "B1",
@@ -23,7 +25,7 @@ const SeatSelection = () => {
     "B3",
     "B4",
   ]);
-  const [items, setItems] = useState([
+  const [businessSeats, setBusinessSeats] = useState([
     "C1",
     "C2",
     "C3",
@@ -47,7 +49,10 @@ const SeatSelection = () => {
     "F5",
     "F6",
   ]);
-  const numRows = Math.ceil(numOfSeats.length / 2);
+  //math for number of rows
+  const firstNumRows = Math.ceil(firstSeats.length / 2);
+  const businessNumRows = Math.ceil(businessSeats.length / 4);
+  const economyNumRows = Math.ceil(economySeats.length / 6);  
 
   // const fetchSeatListings = async () => {
   //   try {
@@ -150,17 +155,17 @@ const SeatSelection = () => {
             backgroundColor: "lightGrey",
             padding: "20px",
             borderRadius: "10px",
-            width: "322px",
+            width: "360px",
           }}
         >
           {/* First class rows */}
           <Box sx={{}}>
-            {Array.from({ length: numRows }, (_, rowIndex) => (
+            {Array.from({ length: firstNumRows }, (_, rowIndex) => (
               <div
                 key={rowIndex}
                 style={{ display: "flex", justifyContent: "space-between" }}
               >
-                {numOfSeats
+                {firstSeats
                   .slice(rowIndex * 2, rowIndex * 2 + 2)
                   .map((item, columnIndex) => (
                     <SingleSeat key={columnIndex} label={item} catagory={"First Class"} />
@@ -169,12 +174,12 @@ const SeatSelection = () => {
             ))}
           </Box>
           {/* business class rows */}
-          {Array.from({ length: numRows }, (_, rowIndex) => (
+          {Array.from({ length: businessNumRows }, (_, rowIndex) => (
             <div
               key={rowIndex}
               style={{ display: "flex", justifyContent: "space-between" }}
             >
-              {items
+              {businessSeats
                 .slice(rowIndex * 4, rowIndex * 4 + 4)
                 .map((item, columnIndex) => (
                   <SingleSeat key={columnIndex} label={item} catagory={"Business Class"}/>
@@ -183,7 +188,7 @@ const SeatSelection = () => {
           ))}
           {/* Economy class rows */}
           <Box>
-            {Array.from({ length: numRows }, (_, rowIndex) => (
+            {Array.from({ length: economyNumRows }, (_, rowIndex) => (
               <div
                 key={rowIndex}
                 style={{ display: "flex", justifyContent: "space-between" }}
