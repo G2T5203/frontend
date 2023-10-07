@@ -24,54 +24,63 @@ const SeatSelection = () => {
   const navigate = useNavigate();
   const apiUrl = process.env.REACT_APP_API_BASE_URL;
   const location = useLocation();
-  console.log(location.state);
   let { bookingId, departureFlight, returnFlight } = location.state;
+  //create seats array
+  const [depFirstSeats, setDepFirstSeats] = useState([]);
+  const [depBusinessSeats, setDepBusinessSeats] = useState([]);
+  const [depEconomySeats, setDepEconomySeats] = useState([]);
 
-  console.log("this is " + bookingId + " " + departureFlight);
+  //math for number of rows
+  const firstNumRows = Math.ceil(depFirstSeats.length / 2);
+  const businessNumRows = Math.ceil(depBusinessSeats.length / 4);
+  const economyNumRows = Math.ceil(depEconomySeats.length / 6);
+
+  const [option, setOption] = useState("outbound");
+
   const depdt = departureFlight.departureDatetime.replace(/"/g, "");
-  console.log(
-    departureFlight.planeId +
-      " hehe" +
-      " " +
-      departureFlight.routeId +
-      " " +
-      depdt
-  );
 
-  const urlDep = apiUrl + `seatListings/matchingRouteListing/${departureFlight.planeId}/${departureFlight.routeId}/${depdt}`;
+  const urlDep =
+    apiUrl +
+    `seatListings/matchingRouteListing/${departureFlight.planeId}/${departureFlight.routeId}/${depdt}`;
   //create booking departure flight
   const fetchSeatListings = () => {
-    
     try {
-      axios
-        .get(urlDep)
-        .then((response) => {
-          if (response.status === 200) {
-            const seatListings = response.data;
-            console.log(seatListings);
-            // const firstClassSeats = seatListings.filter(
-            //   (seatListing) => seatListing.seatClass === "First"
-            // );
-            // setFirstSeats(
-            //   firstClassSeats.map((seatListing) => seatListing.seatNumber)
-            // );
-
-            // const businessClassSeats = seatListings.filter(
-            //   (seatListing) => seatListing.seatClass === "Business"
-            // );
-            // setBusinessSeats(
-            //   businessClassSeats.map((seatListing) => seatListing.seatNumber)
-            // );
-
-            // const economyClassSeats = seatListings.filter(
-            //   (seatListing) => seatListing.seatClass === "Economy"
-            // );
-            // setEconomySeats(
-            //   economyClassSeats.map((seatListing) => seatListing.seatNumber)
-            // );
-          }
-        });
-    } catch (error) {}
+      axios.get(urlDep).then((response) => {
+        if (response.status === 200) {
+          //first class filters
+          const seatListings = response.data;
+          console.log(typeof seatListings);
+          const filteredSeatListings = seatListings.filter(
+            (listing) => listing.seatClass === "First"
+          );
+          const seatNumbers = filteredSeatListings.map(
+            (listing) => listing.seatNumber
+          );
+          setDepFirstSeats(seatNumbers);
+          console.log(seatNumbers);
+          //business class filters
+          const filteredBusinessSeatListings = seatListings.filter(
+            (listing) => listing.seatClass === "Business"
+          );
+          const businessSeatNumbers = filteredBusinessSeatListings.map(
+            (listing) => listing.seatNumber
+          );
+          console.log(businessSeatNumbers);
+          setDepBusinessSeats(businessSeatNumbers);
+          //economy class filters
+          const filteredEconomySeatListings = seatListings.filter(
+            (listing) => listing.seatClass === "Economy"
+          );
+          const economySeatNumbers = filteredEconomySeatListings.map(
+            (listing) => listing.seatNumber
+          );
+          console.log(economySeatNumbers);
+          setDepEconomySeats(economySeatNumbers);
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
@@ -97,36 +106,6 @@ const SeatSelection = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  //create seats array
-  const [firstSeats, setFirstSeats] = useState([]);
-  const [businessSeats, setBusinessSeats] = useState([]);
-  const [economySeats, setEconomySeats] = useState([]);
-  //math for number of rows
-  const firstNumRows = Math.ceil(firstSeats.length / 2);
-  const businessNumRows = Math.ceil(businessSeats.length / 4);
-  const economyNumRows = Math.ceil(economySeats.length / 6);
-
-  // const fetchSeatListings = async () => {
-  //   try {
-  //     const response = await axios.get("/seatListings/matchingRouteListing", {
-  //       params: {
-  //         planeId: "SQ123",
-  //         routeId: 1,
-  //         departureDatetime: "2023-10-01T07:00:00",
-  //       },
-  //     });
-  //     setSeatListings(response.data);
-  //     console.log(`Number of entries: ${response.data.length}`);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   fetchSeatListings();
-  // }, []);
-  const [option, setOption] = useState("outbound");
 
   const handleChange = (event, newOption) => {
     setOption(newOption);
@@ -209,7 +188,7 @@ const SeatSelection = () => {
                   key={rowIndex}
                   style={{ display: "flex", justifyContent: "space-between" }}
                 >
-                  {firstSeats
+                  {depFirstSeats
                     .slice(rowIndex * 2, rowIndex * 2 + 2)
                     .map((item, columnIndex) => (
                       <SingleSeat
@@ -227,7 +206,7 @@ const SeatSelection = () => {
                 key={rowIndex}
                 style={{ display: "flex", justifyContent: "space-between" }}
               >
-                {businessSeats
+                {depBusinessSeats
                   .slice(rowIndex * 4, rowIndex * 4 + 4)
                   .map((item, columnIndex) => (
                     <SingleSeat
@@ -245,7 +224,7 @@ const SeatSelection = () => {
                   key={rowIndex}
                   style={{ display: "flex", justifyContent: "space-between" }}
                 >
-                  {economySeats
+                  {depEconomySeats
                     .slice(rowIndex * 6, rowIndex * 6 + 6)
                     .map((item, columnIndex) => (
                       <SingleSeat
