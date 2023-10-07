@@ -14,6 +14,7 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 // values for the filter tile
 const filterInfo = {
@@ -27,6 +28,7 @@ const searchLocations = {
 
 // flight search function
 function FlightSearch() {
+  const navigate = useNavigate();
   //dummy code to check if all the data from homepage is brought to flight search screen
   const location = useLocation();
   const data = location.state;
@@ -175,11 +177,13 @@ function FlightSearch() {
   const handleProceedClick = () => {
     alert("Proceeding to the next screen!"); // Temporary action
     //TODO: send the outbound and inbound flight details to the seat selection screen
-    let data = {
+    let seatselectinfo = {
       bookingId: 1,
-      departureFlight: selectedDepartureFlight,
-      returnFlight: selectedReturnFlight,
+      departureFlight: JSON.stringify(selectedDepartureFlight),
+      returnFlight: JSON.stringify(selectedReturnFlight),
     }
+    console.log(seatselectinfo + " is from search");
+    navigate("/seatselection", {state: seatselectinfo});
   };
 
   // for use of min and max price set on the filter tile in filtering the flight info cards rendered on click of the search button

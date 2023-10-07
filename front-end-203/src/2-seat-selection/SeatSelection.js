@@ -12,9 +12,13 @@ import {
 } from "@mui/material";
 import SingleSeat from "./seats/Seat";
 import axios from "axios";
+import { useLocation } from "react-router-dom";
 
 const SeatSelection = () => {
   const apiUrl = process.env.REACT_APP_API_BASE_URL;
+  const location = useLocation();
+  const data = location.state;
+  console.log("this is " + JSON.stringify(data));
 
   //create seats array
   const [firstSeats, setFirstSeats] = useState([
