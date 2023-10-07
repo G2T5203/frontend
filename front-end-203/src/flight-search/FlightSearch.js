@@ -174,7 +174,6 @@ function FlightSearch() {
   // function for actions upon click of proceed to next screen button
   const handleProceedClick = () => {
     alert("Proceeding to the next screen!"); // Temporary action
-    //TODO: send the outbound and inbound flight details to the seat selection screen
     let data = {
       bookingId: 1,
       departureFlight: selectedDepartureFlight,

@@ -108,7 +108,7 @@ const CARD_ELEMENT_OPTIONS = {
   };
 
   return (
-    <Box padding={5} bgcolor="#223662" width="400px" borderRadius={"0.75rem"} marginLeft={"12rem"} marginTop={"4rem"} marginBottom={"4rem"}>
+    <Box padding={5} bgcolor="#223662" width="400px" borderRadius={"1rem"} marginLeft={"12rem"} marginTop={"4rem"} marginBottom={"4rem"}>
         <Typography variant="h5" color={"white"} sx={{fontFamily: "Merriweather Sans"}}>
         Payment Method
       </Typography>

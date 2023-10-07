@@ -101,8 +101,10 @@ const FlightSearchBar = ({
     }
 
     // Construct the URLs with departure and arrival locations
-    const url1 = `http://localhost:8080/routeListings/fullSearch/${departureLocation}/${arrivalLocation}/${year1}/${month1}/${day1}`;
-    const url2 = `http://localhost:8080/routeListings/fullSearch/${arrivalLocation}/${departureLocation}/${year2}/${month2}/${day2}`;
+    const baseURL = process.env.REACT_APP_API_BASE_URL;
+    const url1 = `${baseURL}routeListings/fullSearch/${departureLocation}/${arrivalLocation}/${year1}/${month1}/${day1}`;
+    const url2 = `${baseURL}routeListings/fullSearch/${arrivalLocation}/${departureLocation}/${year2}/${month2}/${day2}`;
+
 
     axios
       .get(url1)
