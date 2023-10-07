@@ -42,6 +42,7 @@ const SeatSelection = () => {
   const [option, setOption] = useState("outbound");
 
   const depdt = departureFlight.departureDatetime.replace(/"/g, "");
+  const retdt = returnFlight.departureDatetime.replace(/"/g, "");
 
   const urlDep =
     apiUrl +
@@ -56,7 +57,7 @@ const SeatSelection = () => {
         if (response.status === 200) {
           //first class filters
           const seatListings = response.data;
-          console.log(typeof seatListings);
+          // console.log(typeof seatListings);
           const filteredSeatListings = seatListings.filter(
             (listing) => listing.seatClass === "First"
           );
@@ -64,7 +65,7 @@ const SeatSelection = () => {
             (listing) => listing.seatNumber
           );
           setDepFirstSeats(seatNumbers);
-          console.log(seatNumbers);
+          // console.log(seatNumbers);
           //business class filters
           const filteredBusinessSeatListings = seatListings.filter(
             (listing) => listing.seatClass === "Business"
@@ -72,7 +73,7 @@ const SeatSelection = () => {
           const businessSeatNumbers = filteredBusinessSeatListings.map(
             (listing) => listing.seatNumber
           );
-          console.log(businessSeatNumbers);
+          // console.log(businessSeatNumbers);
           setDepBusinessSeats(businessSeatNumbers);
           //economy class filters
           const filteredEconomySeatListings = seatListings.filter(
@@ -81,7 +82,7 @@ const SeatSelection = () => {
           const economySeatNumbers = filteredEconomySeatListings.map(
             (listing) => listing.seatNumber
           );
-          console.log(economySeatNumbers);
+          // console.log(economySeatNumbers);
           setDepEconomySeats(economySeatNumbers);
         }
       });
@@ -139,6 +140,7 @@ const SeatSelection = () => {
           if (response.status === 200) {
             updateAuthHeadersFromCurrentUser();
             fetchDepSeatListings();
+            fetchRetSeatListings();
           } else {
             removeAuthToken();
             navigate("/signin");
@@ -228,60 +230,150 @@ const SeatSelection = () => {
               width: "360px",
             }}
           >
-            {/* First class rows */}
-            <Box sx={{}}>
-              {Array.from({ length: firstNumRows }, (_, rowIndex) => (
-                <div
-                  key={rowIndex}
-                  style={{ display: "flex", justifyContent: "space-between" }}
-                >
-                  {depFirstSeats
-                    .slice(rowIndex * 2, rowIndex * 2 + 2)
-                    .map((item, columnIndex) => (
-                      <SingleSeat
-                        key={columnIndex}
-                        label={item}
-                        catagory={"First Class"}
-                      />
-                    ))}
-                </div>
-              ))}
-            </Box>
-            {/* business class rows */}
-            {Array.from({ length: businessNumRows }, (_, rowIndex) => (
-              <div
-                key={rowIndex}
-                style={{ display: "flex", justifyContent: "space-between" }}
-              >
-                {depBusinessSeats
-                  .slice(rowIndex * 4, rowIndex * 4 + 4)
-                  .map((item, columnIndex) => (
-                    <SingleSeat
-                      key={columnIndex}
-                      label={item}
-                      catagory={"Business Class"}
-                    />
-                  ))}
-              </div>
-            ))}
-            {/* Economy class rows */}
             <Box>
-              {Array.from({ length: economyNumRows }, (_, rowIndex) => (
-                <div
-                  key={rowIndex}
-                  style={{ display: "flex", justifyContent: "space-between" }}
-                >
-                  {depEconomySeats
-                    .slice(rowIndex * 6, rowIndex * 6 + 6)
-                    .map((item, columnIndex) => (
-                      <SingleSeat
-                        key={columnIndex}
-                        label={item}
-                        catagory={"Economy Class"}
-                      /> // Pass the item to your pre-made component
+              {option === "outbound" ? (
+                <>
+                  {/* departure flight rows */}
+                  <Box>
+                    {Array.from({ length: firstNumRows }, (_, rowIndex) => (
+                      <div
+                        key={rowIndex}
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          marginBottom: "10px",
+                        }}
+                      >
+                        {depFirstSeats
+                          .slice(rowIndex * 2, rowIndex * 2 + 2)
+                          .map((item, columnIndex) => (
+                            <SingleSeat
+                              key={columnIndex}
+                              label={item}
+                              catagory={"First Class"}
+                            />
+                          ))}
+                      </div>
                     ))}
-                </div>
-              ))}
+                    {Array.from({ length: businessNumRows }, (_, rowIndex) => (
+                      <div
+                        key={rowIndex}
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          marginBottom: "10px",
+                        }}
+                      >
+                        {depBusinessSeats
+                          .slice(rowIndex * 4, rowIndex * 4 + 4)
+                          .map((item, columnIndex) => (
+                            <SingleSeat
+                              key={columnIndex}
+                              label={item}
+                              catagory={"Business Class"}
+                            />
+                          ))}
+                      </div>
+                    ))}
+                    <Box>
+                      {Array.from({ length: economyNumRows }, (_, rowIndex) => (
+                        <div
+                          key={rowIndex}
+                          style={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            marginBottom: "10px",
+                          }}
+                        >
+                          {depEconomySeats
+                            .slice(rowIndex * 6, rowIndex * 6 + 6)
+                            .map((item, columnIndex) => (
+                              <SingleSeat
+                                key={columnIndex}
+                                label={item}
+                                catagory={"Economy Class"}
+                              />
+                            ))}
+                        </div>
+                      ))}
+                    </Box>
+                  </Box>
+                </>
+              ) : (
+                <>
+                  {/* return flight rows */}
+                  <Box>
+                    {Array.from({ length: retFirstNumRows }, (_, rowIndex) => (
+                      <div
+                        key={rowIndex}
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          marginBottom: "10px",
+                        }}
+                      >
+                        {retFirstSeats
+                          .slice(rowIndex * 2, rowIndex * 2 + 2)
+                          .map((item, columnIndex) => (
+                            <SingleSeat
+                              key={columnIndex}
+                              label={item}
+                              catagory={"First Class"}
+                            />
+                          ))}
+                      </div>
+                    ))}
+                    {Array.from(
+                      { length: retBusinessNumRows },
+                      (_, rowIndex) => (
+                        <div
+                          key={rowIndex}
+                          style={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            marginBottom: "10px",
+                          }}
+                        >
+                          {retBusinessSeats
+                            .slice(rowIndex * 4, rowIndex * 4 + 4)
+                            .map((item, columnIndex) => (
+                              <SingleSeat
+                                key={columnIndex}
+                                label={item}
+                                catagory={"Business Class"}
+                              />
+                            ))}
+                        </div>
+                      )
+                    )}
+                    <Box>
+                      {Array.from(
+                        { length: retEconomyNumRows },
+                        (_, rowIndex) => (
+                          <div
+                            key={rowIndex}
+                            style={{
+                              display: "flex",
+                              justifyContent: "space-between",
+                              marginBottom: "10px",
+                            }}
+                          >
+                            {retEconomySeats
+                              .slice(rowIndex * 6, rowIndex * 6 + 6)
+                              .map((item, columnIndex) => (
+                                <SingleSeat
+                                  key={columnIndex}
+                                  label={item}
+                                  catagory={"Economy Class"}
+                                />
+                              ))}
+                          </div>
+                        )
+                      )}
+                    </Box>
+                  </Box>
+                </>
+              )}
             </Box>
           </Box>
         </Box>
