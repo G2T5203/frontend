@@ -13,33 +13,38 @@ import {
 import SingleSeat from "./seats/Seat";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
-import { isAuthenticated, removeAuthToken, updateAuthHeadersFromCurrentUser } from "../auth";
+import {
+  isAuthenticated,
+  removeAuthToken,
+  updateAuthHeadersFromCurrentUser,
+} from "../auth";
 import { useNavigate } from "react-router-dom";
-
 
 const SeatSelection = () => {
   const navigate = useNavigate();
   const apiUrl = process.env.REACT_APP_API_BASE_URL;
   const location = useLocation();
-  console.log(location.state)
+  console.log(location.state);
   let { bookingId, departureFlight, returnFlight } = location.state;
-  console.log(bookingId + " " + departureFlight + " " + returnFlight)
-  console.log(departureFlight.departureDatetime) 
-  
+
+  console.log("this is " + bookingId + " " + departureFlight);
+  const depdt = departureFlight.departureDatetime.replace(/"/g, "");
   console.log(
-    "this is " + bookingId + " " + departureFlight)
-  ;
-    const depdt = departureFlight.departureDatetime.replace(/"/g,"");
-    console.log(depdt + " hehe")
+    departureFlight.planeId +
+      " hehe" +
+      " " +
+      departureFlight.routeId +
+      " " +
+      depdt
+  );
+
+  const urlDep = apiUrl + `seatListings/matchingRouteListing/${departureFlight.planeId}/${departureFlight.routeId}/${depdt}`;
   //create booking departure flight
-  const fetchSeatListings = async () => {
+  const fetchSeatListings = () => {
+    
     try {
       axios
-        .get(apiUrl + "seatListings/matchingRouteListing", {
-          planeId: departureFlight.planeId,
-          routeId: departureFlight.routeId,
-          depatureDateTime: depdt,
-        })
+        .get(urlDep)
         .then((response) => {
           if (response.status === 200) {
             const seatListings = response.data;
@@ -71,36 +76,32 @@ const SeatSelection = () => {
 
   useEffect(() => {
     if (isAuthenticated()) {
-      axios.get(apiUrl + "users/authTest").then((response) => {
-        // TODO: This isn't correctly reporting errors. Postman is 403, but here it's still 200.
-        if (response.status === 200) {
-          updateAuthHeadersFromCurrentUser();
-          fetchSeatListings();
-        } else {
+      axios
+        .get(apiUrl + "users/authTest")
+        .then((response) => {
+          // TODO: This isn't correctly reporting errors. Postman is 403, but here it's still 200.
+          if (response.status === 200) {
+            updateAuthHeadersFromCurrentUser();
+            fetchSeatListings();
+          } else {
+            removeAuthToken();
+            navigate("/signin");
+          }
+        })
+        .catch((error) => {
           removeAuthToken();
-          navigate('/signin');
-        }
-      }).catch((error) => {
-        removeAuthToken();
-        navigate('/signin');
-      })
+          navigate("/signin");
+        });
     } else {
-      navigate('/signin');
+      navigate("/signin");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-
   //create seats array
-  const [firstSeats, setFirstSeats] = useState([
-    
-  ]);
-  const [businessSeats, setBusinessSeats] = useState([
-    
-  ]);
-  const [economySeats, setEconomySeats] = useState([
-    
-  ]);
+  const [firstSeats, setFirstSeats] = useState([]);
+  const [businessSeats, setBusinessSeats] = useState([]);
+  const [economySeats, setEconomySeats] = useState([]);
   //math for number of rows
   const firstNumRows = Math.ceil(firstSeats.length / 2);
   const businessNumRows = Math.ceil(businessSeats.length / 4);
