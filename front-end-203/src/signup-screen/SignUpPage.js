@@ -48,6 +48,7 @@ const isValidDOB = (dob) => {
 };
 
 
+
 export default function SignUpPage() {
   const apiUrl = process.env.REACT_APP_API_BASE_URL;
   const [formData, setFormData] = useState({
@@ -65,6 +66,9 @@ export default function SignUpPage() {
   const navigate = useNavigate();
 
   const [errorMessage, setErrorMessage] = useState("");
+
+  const [confirmPassword, setConfirmPassword] = useState("");
+
 
 
   const handleChange = (e) => {
@@ -102,6 +106,12 @@ export default function SignUpPage() {
       setErrorMessage('Please agree to the terms before signing up.');
       return; // This will exit the function without proceeding to the sign-up process.
     }
+
+    if (formData.password !== confirmPassword) {
+      setErrorMessage("Passwords do not match.");
+      return;
+  }
+  
 
     try {
       // Send a POST request to your backend API endpoint for sign-up
@@ -270,6 +280,19 @@ export default function SignUpPage() {
                     onChange={handleChange}
                   />
                 </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    required
+                    fullWidth
+                    name="confirmPassword"
+                    label="Confirm Password"
+                    type="password"
+                    id="confirmPassword"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                  />
+                </Grid>
+
                 <Grid item xs={12}>
                   <TextField
                     required
