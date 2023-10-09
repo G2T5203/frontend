@@ -10,6 +10,7 @@ import { Stack } from "@mui/material";
 
 const FlightInfoCard = ({
   // parameters
+  flightType,
   imageURL,
   departureAirport,
   departureDate,
@@ -31,6 +32,11 @@ const FlightInfoCard = ({
 
   return (
     <div className="flight-info-card">
+      {/* New Section: Flight Type Header */}
+      <div className="flight-header">
+        {flightType}
+      </div>
+      <div className="flight-content">
       {/* Section 1: Airline Name */}
       <div className="section">
         <Avatar
@@ -92,7 +98,7 @@ const FlightInfoCard = ({
           {arrivalDate}
         </Typography>
 
-        <Typography variant="body1" sx={{ fontFamily: "Merriweather Sans" }}>
+        <Typography variant="body1" sx={{ fontFamily: "Merriweather Sans" }}>.js
           {arrivalTime}
         </Typography>
       </div>
@@ -132,7 +138,7 @@ const FlightInfoCard = ({
       </Button>
       </Stack>
       
-      
+      </div>
       </div>
     </div>
   );

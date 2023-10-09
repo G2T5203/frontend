@@ -3,6 +3,7 @@ import { Button } from "@mui/material";
 import ProgressBar from "../progress-bar/ProgressBar";
 import NavBar from "../nav-bar/NavigationBar";
 import FlightInfoCard from "./flight-info-card/FlightInfoCard";
+import FareSummary from "./fare-summary/FareSummary";
 
 const ReviewDetails = () => {
 
@@ -16,7 +17,7 @@ const ReviewDetails = () => {
   const { departureFlight, returnFlight } = retrievedData;
 
   console.log('Departure Flight:', departureFlight);
-console.log('Return Flight:', returnFlight);
+  console.log('Return Flight:', returnFlight);
 
   return (
     <div>
@@ -41,7 +42,6 @@ console.log('Return Flight:', returnFlight);
             price={departureFlight.basePrice.toFixed(2)}
             flightNumber={departureFlight.planeId}
             bookNowLabel="Selected!"
-            // onSelect={() => resetSelectedDepartureFlight()}  // Assuming resetSelectedDepartureFlight function is available
             seats={departureFlight.availableSeats}
           />
         )}
@@ -59,13 +59,18 @@ console.log('Return Flight:', returnFlight);
             price={returnFlight.basePrice.toFixed(2)}
             flightNumber={returnFlight.planeId}
             bookNowLabel="Selected!"
-            onSelect={() => { } /* Add logic if needed */}
+            onSelect={() => { }}
             seats={returnFlight.availableSeats}
           />
         )}
-
-
       </div>
+
+      <div className="center-container">
+        <FareSummary />
+      </div>
+
+
+
 
       <div
         style={{
