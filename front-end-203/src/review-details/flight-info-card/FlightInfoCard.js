@@ -33,7 +33,7 @@ const FlightInfoCard = ({
   return (
     <div className="flight-info-card">
       {/* New Section: Flight Type Header */}
-      <div className="flight-header">
+      <div className="flight-type-header">
         {flightType}
       </div>
       <div className="flight-content">
@@ -98,7 +98,7 @@ const FlightInfoCard = ({
             {arrivalDate}
           </Typography>
 
-          <Typography variant="body1" sx={{ fontFamily: "Merriweather Sans" }}>.js
+          <Typography variant="body1" sx={{ fontFamily: "Merriweather Sans" }}>
             {arrivalTime}
           </Typography>
         </div>

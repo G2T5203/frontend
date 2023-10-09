@@ -30,6 +30,7 @@ const ReviewDetails = () => {
       <div className="center-container">
         {departureFlight && (
           <FlightInfoCard
+            flightType= "Outbound Flight"
             imageURL="https://graphic.sg/media/pages/gallery/singapore-airlines-logo-1987/3067018395-1599296800/1987-singapore-airlines-logo-240x.png"
             departureAirport={departureFlight.departureLocation}
             departureDate={departureFlight.departureDatetime?.split("T")[0]}
@@ -47,6 +48,7 @@ const ReviewDetails = () => {
         )}
         {returnFlight && (
           <FlightInfoCard
+            flightType= "Return Flight"
             imageURL="https://graphic.sg/media/pages/gallery/singapore-airlines-logo-1987/3067018395-1599296800/1987-singapore-airlines-logo-240x.png"
             departureAirport={returnFlight.departureLocation}
             departureDate={returnFlight.departureDatetime?.split("T")[0]}
