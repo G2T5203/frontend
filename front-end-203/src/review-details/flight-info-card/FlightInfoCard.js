@@ -37,108 +37,76 @@ const FlightInfoCard = ({
         {flightType}
       </div>
       <div className="flight-content">
-      {/* Section 1: Airline Name */}
-      <div className="section">
-        <Avatar
-          src={imageURL}
-          sx={{width: 70, height: 70 , marginLeft: "25px"}}
-        ></Avatar>
-      </div>
-      <div className="section">
-      <Typography
-          variant="body1"
-          fontSize={30}
-          sx={{ fontFamily: "Merriweather Sans",marginTop: "1.25rem"}}
-          
-        >
-          {flightNumber} {/* Display flight number here */}
-        </Typography>
-      </div>
+        {/* Section 1: Airline Name */}
+        <div className="section">
+          <Avatar
+            src={imageURL}
+            sx={{ width: 70, height: 70, marginLeft: "25px" }}
+          ></Avatar>
+        </div>
+        <div className="section">
+          <Typography
+            variant="body1"
+            fontSize={30}
+            sx={{ fontFamily: "Merriweather Sans", marginTop: "1.25rem" }}
 
-      {/* Section 2: Departure Information */}
-      <div className="section">
-        <Typography
-          variant="body1"
-          fontSize={20}
-          sx={{ fontFamily: "Merriweather Sans" }}
-        >
-          {departureAirport}
-        </Typography>
-        <Typography variant="body1" sx={{ fontFamily: "Merriweather Sans" }}>
-          {departureDate}
-        </Typography>
-        <Typography variant="body1" sx={{ fontFamily: "Merriweather Sans" }}>
-          {departureTime}
-        </Typography>
-      </div>
+          >
+            {flightNumber} {/* Display flight number here */}
+          </Typography>
+        </div>
 
-      {/* Section 3: Dotted Line and Plane Logo */}
-      <div className="section">
-        <Stack direction="column" spacing={1} alignItems="center">
+        {/* Section 2: Departure Information */}
+        <div className="section">
+          <Typography
+            variant="body1"
+            fontSize={20}
+            sx={{ fontFamily: "Merriweather Sans" }}
+          >
+            {departureAirport}
+          </Typography>
+          <Typography variant="body1" sx={{ fontFamily: "Merriweather Sans" }}>
+            {departureDate}
+          </Typography>
+          <Typography variant="body1" sx={{ fontFamily: "Merriweather Sans" }}>
+            {departureTime}
+          </Typography>
+        </div>
 
-          <Typography variant="body1" sx={{fontFamily: 'Merriweather Sans'}}>{travelTime}</Typography>
+        {/* Section 3: Dotted Line and Plane Logo */}
+        <div className="section">
+          <Stack direction="column" spacing={1} alignItems="center">
 
-          <Divider className="divider" />
+            <Typography variant="body1" sx={{ fontFamily: 'Merriweather Sans' }}>{travelTime}</Typography>
 
-          <Typography variant="body1" sx={{fontFamily: 'Merriweather Sans'}}>{stops}</Typography>
-        </Stack>
-      </div>
+            <Divider className="divider" />
 
-      {/* Section 4: Arrival Information */}
-      <div className="section">
-        <Typography
-          variant="body1"
-          fontSize={20}
-          sx={{ fontFamily: "Merriweather Sans" }}
-        >
-          {arrivalAirport}
-        </Typography>
+            <Typography variant="body1" sx={{ fontFamily: 'Merriweather Sans' }}>{stops}</Typography>
+          </Stack>
+        </div>
 
-        <Typography variant="body1" sx={{ fontFamily: "Merriweather Sans" }}>
-          {arrivalDate}
-        </Typography>
+        {/* Section 4: Arrival Information */}
+        <div className="section">
+          <Typography
+            variant="body1"
+            fontSize={20}
+            sx={{ fontFamily: "Merriweather Sans" }}
+          >
+            {arrivalAirport}
+          </Typography>
 
-        <Typography variant="body1" sx={{ fontFamily: "Merriweather Sans" }}>.js
-          {arrivalTime}
-        </Typography>
-      </div>
-      
-      <div>
+          <Typography variant="body1" sx={{ fontFamily: "Merriweather Sans" }}>
+            {arrivalDate}
+          </Typography>
 
-      </div>
+          <Typography variant="body1" sx={{ fontFamily: "Merriweather Sans" }}>.js
+            {arrivalTime}
+          </Typography>
+        </div>
 
-      {/* Section 5: Price and Book Now Button */}
-      <div className="price-select-seats">
-      <Stack direction={"column"} spacing={2} alignItems="center">
-      <Typography fontSize={17} sx={{ fontFamily: "Merriweather Sans", textTransform: "none", color: "white"}}>
-          Available Seats: {seats}
-        </Typography>
-        <Typography
-          variant="h6"
-          fontSize={30}
-          sx={{ fontFamily: "Merriweather Sans", color: "white"}}
-        >
-          ${price}
-        </Typography>
+        <div>
 
-        <Button variant="contained"
-        onClick={onSelect}
-        sx={{
-          backgroundColor: "darkorange",
-          color: "white",
-          padding: "5px",
-          "&:hover": {
-            backgroundColor: "orange"
-          }
-        }}
-      >
-        <Typography variant="h6" fontSize={15} sx={{ fontFamily: "Merriweather Sans", textTransform: "none", color: "white"}}>
-          {bookNowLabel}
-        </Typography>
-      </Button>
-      </Stack>
-      
-      </div>
+        </div>
+
       </div>
     </div>
   );
