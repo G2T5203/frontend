@@ -5,6 +5,7 @@ import PassengerForm from "./passenger-form/PassengerForm";
 import NavBar from "../nav-bar/NavigationBar"; // Import the Navbar component
 
 const PassengerDetails = () => {
+  const noGuestSelected = sessionStorage.getItem('noGuestSelected') || "0"; 
   return (
     <div>
       <div className="nav">
@@ -13,7 +14,7 @@ const PassengerDetails = () => {
 
       <ProgressBar currentStep={"Passenger Details"} number={2} />
 
-      <PassengerForm />
+      <PassengerForm numGuests={noGuestSelected} />
 
       <div
         style={{

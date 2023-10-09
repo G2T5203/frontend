@@ -26,7 +26,10 @@ const CompactForm = () => {
   const noGuestOptions = [1, 2, 3, 4, 5];
   const [noGuestSelected, setGuestSelected] = useState("1");
   const noGuestHandleChange = (e) => {
-    setGuestSelected(e.target.value);
+    const updatedValue = e.target.value; 
+    setGuestSelected(updatedValue);
+    sessionStorage.setItem('noGuestSelected', updatedValue);
+
   };
 
   //flying to Options funcs
