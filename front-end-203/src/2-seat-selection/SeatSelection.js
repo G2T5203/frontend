@@ -44,6 +44,12 @@ const SeatSelection = () => {
   const depdt = departureFlight.departureDatetime.replace(/"/g, "");
   const retdt = returnFlight.departureDatetime.replace(/"/g, "");
 
+  //selectedSeatsDep
+  const [selectedSeatsDep, setSelectedSeatsDep] = useState([]);
+  //selectedSeatsRet
+  const [selectedSeatsRet, setSelectedSeatsRet] = useState([]);
+
+
   const urlDep =
     apiUrl +
     `seatListings/matchingRouteListing/${departureFlight.planeId}/${departureFlight.routeId}/${depdt}`;
@@ -156,6 +162,13 @@ const SeatSelection = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const handleClick = (event) => {
+    console.log(event.target.innerText );
+    event.target.catagory = "First Class";
+    event.target.style.backgroundColor = "grey";
+
+  }
+
   const handleChange = (event, newOption) => {
     setOption(newOption);
   };
@@ -251,6 +264,7 @@ const SeatSelection = () => {
                               key={columnIndex}
                               label={item}
                               catagory={"First Class"}
+                              handleOnClick={handleClick}
                             />
                           ))}
                       </div>
@@ -271,6 +285,7 @@ const SeatSelection = () => {
                               key={columnIndex}
                               label={item}
                               catagory={"Business Class"}
+                              handleOnClick={handleClick}
                             />
                           ))}
                       </div>
@@ -292,6 +307,7 @@ const SeatSelection = () => {
                                 key={columnIndex}
                                 label={item}
                                 catagory={"Economy Class"}
+                                handleOnClick={handleClick}
                               />
                             ))}
                         </div>
@@ -319,6 +335,7 @@ const SeatSelection = () => {
                               key={columnIndex}
                               label={item}
                               catagory={"First Class"}
+                                handleOnClick={handleClick}
                             />
                           ))}
                       </div>
@@ -341,6 +358,7 @@ const SeatSelection = () => {
                                 key={columnIndex}
                                 label={item}
                                 catagory={"Business Class"}
+                                handleOnClick={handleClick}
                               />
                             ))}
                         </div>
@@ -365,6 +383,7 @@ const SeatSelection = () => {
                                   key={columnIndex}
                                   label={item}
                                   catagory={"Economy Class"}
+                                handleOnClick={handleClick}
                                 />
                               ))}
                           </div>

@@ -1,7 +1,7 @@
 import { Box, Typography } from '@mui/material';
 import React from 'react';
 
-const SingleSeat = ({label, handleOnClick, catagory}) => {
+const SingleSeat = ({label, catagory, handleOnClick}) => {
     function getColor(catagory){
         switch(catagory){
             case "First Class":
@@ -35,9 +35,14 @@ const SingleSeat = ({label, handleOnClick, catagory}) => {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            margin: "2px"
-         }} onClick={handleOnClick}>
-            <Typography variant="body2" color={'white'}>{label} </Typography>
+            margin: "2px",
+            cursor: "pointer",
+            color: "white",
+            fontSize: "15px",
+            fontFamily: "Roboto"
+         }} onClick={handleOnClick} >
+            {/* <Typography variant="body2" color={'white'} >{label} </Typography> */}
+            {label}
 
 
          </Box>
