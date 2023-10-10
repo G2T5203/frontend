@@ -21,7 +21,21 @@ const PassengerForm = ({ numGuests }) => {
                 </FormControl>
                 <TextField variant="filled" label="First name" style={{ backgroundColor: 'white' }} fullWidth />
                 <TextField variant="filled" label="Last name" style={{ backgroundColor: 'white' }} fullWidth />
-                <TextField variant="filled" label="Seat No." style={{ backgroundColor: 'white' }} fullWidth />
+                <FormControl variant="filled" style={{ backgroundColor: 'white' }} fullWidth>
+                    <InputLabel>Outbound Seat No.</InputLabel>
+                    <Select label="Outbound Seat No." defaultValue="A1"> 
+                    {/* need to change to pull in data from seat selection */}
+                        <MenuItem value={"A1"}>A1</MenuItem>
+                        <MenuItem value={"A2"}>A2</MenuItem>
+                    </Select>
+                </FormControl>
+                <FormControl variant="filled" style={{ backgroundColor: 'white' }} fullWidth>
+                    <InputLabel>Return Seat No.</InputLabel>
+                    <Select label="Return Seat No." defaultValue="A1">
+                        <MenuItem value={"A1"}>A1</MenuItem>
+                        <MenuItem value={"A2"}>A2</MenuItem>
+                    </Select>
+                </FormControl>
             </Box>
         </Box>
     );
