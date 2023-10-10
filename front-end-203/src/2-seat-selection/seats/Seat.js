@@ -1,5 +1,6 @@
 import { Box, Typography } from '@mui/material';
 import React from 'react';
+import "./Seat.css"
 
 const SingleSeat = ({label, catagory, handleOnClick}) => {
     function getColor(catagory){
@@ -28,7 +29,7 @@ const SingleSeat = ({label, catagory, handleOnClick}) => {
     }
     return (
         <>
-         <Box sx={{
+         <Box id={"notSelected"} sx={{
             backgroundColor: getColor(catagory),
             height: "40px" ,
             width: getSize(catagory),

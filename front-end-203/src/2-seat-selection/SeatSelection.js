@@ -147,6 +147,7 @@ const SeatSelection = () => {
             updateAuthHeadersFromCurrentUser();
             fetchDepSeatListings();
             fetchRetSeatListings();
+            
           } else {
             removeAuthToken();
             navigate("/signin");
@@ -159,13 +160,33 @@ const SeatSelection = () => {
     } else {
       navigate("/signin");
     }
+    // selectedSeatsDep.forEach(element => {
+    //    document.getElementByInnerHtml(element).id = "selected"
+    // });
+    // selectedSeatsRet.forEach(element => {
+    //   document.getElementById(element).id = "selected"
+    // });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleClick = (event) => {
-    console.log(event.target.innerText );
-    event.target.catagory = "First Class";
-    event.target.style.backgroundColor = "grey";
+
+  function color() {
+    if (option === "outbound") {
+            selectedSeatsDep.forEach(element => {
+              element = document.getElementById("departure"+element);
+              element.style.backgroundColor = "red";
+            })}
+  }
+
+    const handleClick = (event) => {
+    console.log(event.target.id );
+    if (option === "outbound") {
+      setSelectedSeatsDep([...selectedSeatsDep, event.target.innerText]);
+      event.target.id = "selected"
+    } else {
+      setSelectedSeatsRet((prevSeats) => [...prevSeats, event.target.innerText]);
+      event.target.id = "selected"
+    }
 
   }
 
@@ -248,9 +269,10 @@ const SeatSelection = () => {
                 <>
                   {/* departure flight rows */}
                   <Box>
+                    hi
                     {Array.from({ length: firstNumRows }, (_, rowIndex) => (
                       <div
-                        key={rowIndex}
+                        key={rowIndex+"_dep"}
                         style={{
                           display: "flex",
                           justifyContent: "space-between",
@@ -265,13 +287,14 @@ const SeatSelection = () => {
                               label={item}
                               catagory={"First Class"}
                               handleOnClick={handleClick}
+                              path="departure"
                             />
                           ))}
                       </div>
                     ))}
                     {Array.from({ length: businessNumRows }, (_, rowIndex) => (
                       <div
-                        key={rowIndex}
+                        key={rowIndex+"_dep"}
                         style={{
                           display: "flex",
                           justifyContent: "space-between",
@@ -286,6 +309,7 @@ const SeatSelection = () => {
                               label={item}
                               catagory={"Business Class"}
                               handleOnClick={handleClick}
+                              path={"departure"}
                             />
                           ))}
                       </div>
@@ -293,7 +317,7 @@ const SeatSelection = () => {
                     <Box>
                       {Array.from({ length: economyNumRows }, (_, rowIndex) => (
                         <div
-                          key={rowIndex}
+                          key={rowIndex+"_dep"}
                           style={{
                             display: "flex",
                             justifyContent: "space-between",
@@ -308,6 +332,7 @@ const SeatSelection = () => {
                                 label={item}
                                 catagory={"Economy Class"}
                                 handleOnClick={handleClick}
+                                path={"departure"}
                               />
                             ))}
                         </div>
@@ -319,9 +344,11 @@ const SeatSelection = () => {
                 <>
                   {/* return flight rows */}
                   <Box>
+                    bye
                     {Array.from({ length: retFirstNumRows }, (_, rowIndex) => (
+
                       <div
-                        key={rowIndex}
+                        key={rowIndex+"_ret"}
                         style={{
                           display: "flex",
                           justifyContent: "space-between",
@@ -344,7 +371,7 @@ const SeatSelection = () => {
                       { length: retBusinessNumRows },
                       (_, rowIndex) => (
                         <div
-                          key={rowIndex}
+                          key={rowIndex+"_ret"}
                           style={{
                             display: "flex",
                             justifyContent: "space-between",
@@ -369,7 +396,7 @@ const SeatSelection = () => {
                         { length: retEconomyNumRows },
                         (_, rowIndex) => (
                           <div
-                            key={rowIndex}
+                            key={rowIndex+"_ret"}
                             style={{
                               display: "flex",
                               justifyContent: "space-between",
