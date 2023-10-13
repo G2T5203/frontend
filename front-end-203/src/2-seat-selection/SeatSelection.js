@@ -40,7 +40,7 @@ const SeatSelection = () => {
   const retBusinessNumRows = Math.ceil(retBusinessSeats.length / 4);
   const retEconomyNumRows = Math.ceil(retEconomySeats.length / 6);
   const [option, setOption] = useState("outbound");
-
+  const [depDisabledSeats, setDepDisabledSeats] = useState([]);
   const depdt = departureFlight.departureDatetime.replace(/"/g, "");
   const retdt = returnFlight.departureDatetime.replace(/"/g, "");
 
@@ -90,6 +90,12 @@ const SeatSelection = () => {
           );
           // console.log(economySeatNumbers);
           setDepEconomySeats(economySeatNumbers);
+
+          const disabledSeats = seatListings.filter(
+              (listing) => listing.bookingId !== null
+        );
+          setDepDisabledSeats(disabledSeats);
+          console.log(filteredBusinessSeatListings);
         }
       });
     } catch (error) {
@@ -145,8 +151,11 @@ const SeatSelection = () => {
           // TODO: This isn't correctly reporting errors. Postman is 403, but here it's still 200.
           if (response.status === 200) {
             updateAuthHeadersFromCurrentUser();
-            fetchDepSeatListings();
-            fetchRetSeatListings();
+            if (option === "outbound") {
+              fetchDepSeatListings();
+            } else {
+              fetchRetSeatListings();
+            }
             
           } else {
             removeAuthToken();
@@ -167,22 +176,24 @@ const SeatSelection = () => {
     //   document.getElementById(element).id = "selected"
     // });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [option]);
 
 
-  function color() {
-    if (option === "outbound") {
-            selectedSeatsDep.forEach(element => {
-              element = document.getElementById("departure"+element);
-              element.style.backgroundColor = "red";
-            })}
-  }
+  // function color() {
+  //   if (option === "outbound") {
+  //           selectedSeatsDep.forEach(element => {
+  //             element = document.getElementById("departure"+element);
+  //             element.style.backgroundColor = "red";
+  //           })}
+  // }
 
     const handleClick = (event) => {
     console.log(event.target.id );
     if (option === "outbound") {
       setSelectedSeatsDep([...selectedSeatsDep, event.target.innerText]);
       event.target.id = "selected"
+      //axios call goes below
+
     } else {
       setSelectedSeatsRet((prevSeats) => [...prevSeats, event.target.innerText]);
       event.target.id = "selected"
