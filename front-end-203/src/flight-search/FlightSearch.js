@@ -107,8 +107,10 @@ function FlightSearch() {
 
   // selectedTrip type variable, initialised to trip from homepage, for use to render the return flight info cards if the triptype is 2 way
   // const hasSesarched also used for conditional rendering of return flight section
+  // const pax to store the number of pax, initialised to noGuest value from homepage, changes on search
   const [hasSearched, setHasSearched] = useState(false);
   const [selectedTripType, setSelectedTripType] = useState(trip);
+  const [pax, setPax] = useState(noGuest);
   const handleTripTypeChange = (newTripType) => {
     // for conditional rendering of the return flight info card section
     setSelectedTripType(newTripType);
@@ -120,6 +122,7 @@ function FlightSearch() {
   // for passing into the flight information cards (arrival and departure are not provided as data from fullsearch endpoint)
   const [departureLocation, setDepartureLocation] = useState("");
   const [arrivalLocation, setArrivalLocation] = useState("");
+  
 
   // for expansion control of departure flights collapsable section
   const [isDepartureAccordionExpanded, setDepartureAccordionExpanded] =
@@ -137,12 +140,13 @@ function FlightSearch() {
     returnDate,
     passengerCount
   ) => {
-    // seting departure and arrival location based on input in search bar
+    // seting departure and arrival location based on input in search bar and set pax based on search bar input as well
     console.log("this is dep:" + departureDate);
     console.log("this is ret:" + returnDate);
     console.log("this is depdt:" + depDateObj);
     setDepartureLocation(departureLocation);
     setArrivalLocation(arrivalLocation);
+    setPax(passengerCount);
 
     // for control of expansion of outbound accordion
     setDepartureAccordionExpanded(true);
@@ -164,9 +168,12 @@ function FlightSearch() {
       setSelectedReturnFlight(null); // Reset the selected return flight
       setRecentReturnDate(returnDate); // Update the recent date
     }
-    // print no. of pax
-    console.log("Pax: " + passengerCount);
+    
   };
+
+  // pax printing
+  console.log("number of passengers: " + pax);
+
 
   // constants for the selected departure and arrival flights that will render when the "Select" button is clicked
   const [selectedDepartureFlight, setSelectedDepartureFlight] = useState(null);
