@@ -219,23 +219,45 @@ function FlightSearch() {
           "partySize": 1
       }
       ).then((response) => {
-        if (response.status === 200) {
+        if (response.status === 201) {
          bookingId = response.data.bookingId;
-         console.log("part 1 works now")
+         console.log("booking id is " + bookingId);
+        } else {
+          console.log(response.status)
         }
+        // if there is inbound flight
+        if (selectedReturnFlight != null) {
+          try {
+            axios.put(apiUrl + `bookings/updateInbound/${bookingId}`, {
+              "inboundRouteId": selectedReturnFlight.routeId,
+              "inboundPlaneId": selectedReturnFlight.planeId,
+              "inboundDepartureDatetime": selectedReturnFlight.departureDatetime.replace(/"/g, "")
+            }).then((response) => {
+              if (response.status === 201) {
+                console.log("updated inbound flight")
+              } else {
+                console.log(response.status)
+              }
+            });
+            } catch (error){
+            console.log(error);
+            console.log("failed at axios inbound setting")
+          }
+        }
+        let seatselectinfo = {
+          bookingId: bookingId,
+          departureFlight: selectedDepartureFlight,
+          returnFlight: selectedReturnFlight ,
+        }
+
+        console.log(seatselectinfo.bookingId + " is from search");
+        navigate("/seatselection", {state : seatselectinfo});
       })
     } catch (error) {
       console.log(error);
       console.log("failed at axios p1")
     }
-    let seatselectinfo = {
-      bookingId: bookingId,
-      departureFlight: selectedDepartureFlight,
-      returnFlight: selectedReturnFlight ,
-    }
 
-    console.log(seatselectinfo + " is from search");
-    navigate("/seatselection", {state : seatselectinfo});
   };
 
   // for use of min and max price set on the filter tile in filtering the flight info cards rendered on click of the search button

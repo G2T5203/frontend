@@ -96,6 +96,9 @@ const SeatSelection = () => {
         );
           setDepDisabledSeats(disabledSeats);
           console.log(filteredBusinessSeatListings);
+
+          //check bookingid
+          console.log(bookingId);
         }
       });
     } catch (error) {
