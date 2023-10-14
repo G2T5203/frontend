@@ -92,7 +92,6 @@ function FlightSearch() {
   // eslint-disable-next-line
   const {
     trip,
-    // eslint-disable-next-line no-unused-vars
     noGuest,
     // eslint-disable-next-line no-unused-vars
     flightClass,
@@ -135,7 +134,8 @@ function FlightSearch() {
     departureLocation,
     arrivalLocation,
     departureDate,
-    returnDate
+    returnDate,
+    passengerCount
   ) => {
     // seting departure and arrival location based on input in search bar
     console.log("this is dep:" + departureDate);
@@ -164,6 +164,8 @@ function FlightSearch() {
       setSelectedReturnFlight(null); // Reset the selected return flight
       setRecentReturnDate(returnDate); // Update the recent date
     }
+    // print no. of pax
+    console.log("Pax: " + passengerCount);
   };
 
   // constants for the selected departure and arrival flights that will render when the "Select" button is clicked
@@ -331,6 +333,7 @@ function FlightSearch() {
             flyingFrom={flyingFrom}
             flyingTo={flyingTo}
             trip={trip}
+            noGuest={noGuest}
             departuredt={depDateObj}
             returndt={arrDateObj}
             onSearch={handleSearch}

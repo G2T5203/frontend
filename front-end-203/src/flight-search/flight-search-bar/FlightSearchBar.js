@@ -51,6 +51,13 @@ const FlightSearchBar = ({
   const [tripType, setTripType] = useState(trip);
   const [departureDate, setDepartureDate] = useState(departuredt);
   const [returnDate, setReturnDate] = useState(returndt);
+  const [passengerCount, setPassengerCount] = useState(noGuest);
+
+  const handlePassengerCountChange = (event) => {
+    // Ensure that the input value is a number
+    const inputValue = event.target.value.replace(/\D/g, '');
+    setPassengerCount(inputValue);
+  };
 
   // for handling change of departure and return date when set manually on page
   const handleDepartureDateChange = (date) => {
@@ -66,7 +73,7 @@ const FlightSearchBar = ({
   const handleSearch = () => {
     // calback function to parent component
     if (onSearch) {
-      onSearch(departureLocation, arrivalLocation, departureDate, returnDate);
+      onSearch(departureLocation, arrivalLocation, departureDate, returnDate, passengerCount);
     }
 
     // Printing to console
@@ -198,9 +205,9 @@ const FlightSearchBar = ({
         )}
         onChange={(event, newValue) => setDepartureLocation(newValue)}
         sx={{
-          marginRight: "10px",
-          marginLeft: "10px",
-          width: "250px",
+          marginRight: "5px",
+          marginLeft: "5px",
+          width: "13rem",
           fontFamily: "Merriweather Sans",
           "& input": {
             color: "white", // white input text colour
@@ -237,9 +244,9 @@ const FlightSearchBar = ({
         )}
         onChange={(event, newValue) => setArrivalLocation(newValue)}
         sx={{
-          marginRight: "10px",
-          marginLeft: "10px",
-          width: "250px",
+          marginRight: "5px",
+          marginLeft: "5px",
+          width: "13rem",
           "& input": {
             color: "white", // white input text colour
             fontFamily: "Merriweather Sans",
@@ -271,7 +278,7 @@ const FlightSearchBar = ({
         exclusive
         onChange={handleTripTypeChange}
         aria-label="Trip Type"
-        sx={{ marginRight: "10px", marginLeft: "10px" }}
+        sx={{ marginRight: "5px", marginLeft: "5px" }}
       >
         <ToggleButton
           value="One way"
@@ -333,6 +340,47 @@ const FlightSearchBar = ({
           minDate={departureDate}
         />
       </LocalizationProvider>
+
+      {/* number of pax */}
+      <TextField
+        label="Pax"
+        variant="outlined"
+        type="number"
+        value={passengerCount}
+        onChange={handlePassengerCountChange}
+        sx={{
+          marginRight: "5px",
+          marginLeft: "5px",
+          width: "5rem",
+          "& input": {
+            color: "white", // white input text colour
+            fontFamily: "Merriweather Sans",
+          },
+          "& .MuiInputLabel-root": {
+            color:'white',
+            fontFamily: "Merriweather Sans",
+          },
+          "& .MuiOutlinedInput-root": {
+            "& fieldset": {
+              borderColor: "white", // Default border color
+            },
+            "&:hover fieldset": {
+              borderColor: "white", // Border color on hover
+            },
+            "&.Mui-focused fieldset": {
+              borderColor: "white", // Border color on click/focus
+            },
+            "& .MuiSvgIcon-root": {
+              color: "white", // Color of the dropdown icon
+            },
+            "&::selection": {
+              color: "white", // Color of the text cursor (selection color)
+              background: "transparent", // Background color when text is selected
+            },
+          },
+        }}
+       
+      />
 
       {/*search button*/}
       <Button
