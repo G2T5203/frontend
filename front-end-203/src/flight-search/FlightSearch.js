@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { useState } from "react";
 import NavBar from "../nav-bar/NavigationBar"; // Import the Navbar component
 import Banner from "./banner/Banner";
@@ -15,6 +15,8 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import {isAuthenticated, removeAuthToken, updateAuthHeadersFromCurrentUser, getCurrentUser} from "../auth";
+import axios from "axios";
 
 // values for the filter tile
 const filterInfo = {
@@ -28,10 +30,38 @@ const searchLocations = {
 
 // flight search function
 function FlightSearch() {
+  const apiUrl = process.env.REACT_APP_API_BASE_URL;
   const navigate = useNavigate();
   //dummy code to check if all the data from homepage is brought to flight search screen
   const location = useLocation();
   const data = location.state;
+
+  //authentication
+  useEffect(() => {
+    if (isAuthenticated()) {
+      axios
+          .get(apiUrl + "users/authTest")
+          .then((response) => {
+            // TODO: This isn't correctly reporting errors. Postman is 403, but here it's still 200.
+            if (response.status === 200) {
+              updateAuthHeadersFromCurrentUser();
+            } else {
+              removeAuthToken();
+              navigate("/signin");
+              console.log("made an error at flightSearch 51")
+            }
+          })
+          .catch((error) => {
+            removeAuthToken();
+            navigate("/signin");
+            console.log(error);
+          });
+    } else {
+      navigate("/signin");
+        console.log("made an error at flightSearch 61")
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // printng data from homepage
   console.log("This is data");
@@ -175,13 +205,35 @@ function FlightSearch() {
 
   // function for actions upon click of proceed to next screen button
   const handleProceedClick = () => {
-    alert("Proceeding to the next screen!"); // Temporary action
-    //TODO: send the outbound and inbound flight details to the seat selection screen
+
+    var bookingId;
+    console.log(selectedDepartureFlight.departureDatetime.replace(/"/g, ""))
+    try {
+      axios.post(apiUrl + "bookings/new",
+      {
+        "bookingId": "-1",
+          "username": getCurrentUser().username,
+          "outboundRouteId": selectedDepartureFlight.routeId,
+          "outboundPlaneId": selectedDepartureFlight.planeId,
+          "outboundDepartureDatetime": selectedDepartureFlight.departureDatetime.replace(/"/g, ""),
+          "partySize": 1
+      }
+      ).then((response) => {
+        if (response.status === 200) {
+         bookingId = response.data.bookingId;
+         console.log("part 1 works now")
+        }
+      })
+    } catch (error) {
+      console.log(error);
+      console.log("failed at axios p1")
+    }
     let seatselectinfo = {
-      bookingId: "1",
+      bookingId: bookingId,
       departureFlight: selectedDepartureFlight,
       returnFlight: selectedReturnFlight ,
     }
+
     console.log(seatselectinfo + " is from search");
     navigate("/seatselection", {state : seatselectinfo});
   };

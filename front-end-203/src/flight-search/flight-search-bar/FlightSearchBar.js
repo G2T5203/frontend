@@ -10,6 +10,7 @@ import MyDatePicker from "../date-picker/MyDatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useNavigate } from "react-router-dom";
+import {isAuthenticated, removeAuthToken, updateAuthHeadersFromCurrentUser} from "../../auth";
 
 const FlightSearchBar = ({
   locations,
@@ -29,6 +30,7 @@ const FlightSearchBar = ({
   // eslint-disable-next-line 
   const navigate = useNavigate();
 
+  const apiUrl = process.env.REACT_APP_API_BASE_URL;
   // for handling change in toggle button
   const handleTripTypeChange = (event, newTripType) => {
     setTripType(newTripType);
@@ -58,6 +60,7 @@ const FlightSearchBar = ({
   const handleReturnDateChange = (date) => {
     setReturnDate(date);
   };
+
 
   // for handling click of search button on search bar
   const handleSearch = () => {
@@ -145,7 +148,30 @@ const FlightSearchBar = ({
     // if (flyingTo == null) {
     //   navigate("/");
     // }
-    handleSearch();
+      if (isAuthenticated()) {
+        axios
+            .get(apiUrl + "users/authTest")
+            .then((response) => {
+              // TODO: This isn't correctly reporting errors. Postman is 403, but here it's still 200.
+              if (response.status === 200) {
+                updateAuthHeadersFromCurrentUser();
+                handleSearch()
+              } else {
+                removeAuthToken();
+                navigate("/signin");
+                console.log("failed at flightSearchBar")
+              }
+            })
+            .catch((error) => {
+              console.log("failed at flightSearchBar")
+              removeAuthToken();
+              navigate("/signin");
+            });
+      } else {
+        navigate("/signin");
+        console.log("failed at flightSearchBar")
+      }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
 }, []);
 
