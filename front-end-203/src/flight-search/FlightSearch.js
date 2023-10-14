@@ -487,8 +487,10 @@ function FlightSearch() {
                       } hr ${flight.flightDuration.match(/(\d+)M/)[1]} min`}
                       price={flight.basePrice.toFixed(2)}
                       flightNumber={flight.planeId}
-                      onSelect={() => handleDepartureFlightSelection(flight)}
+                      onSelect={() => pax <= flight.availableSeats && handleDepartureFlightSelection(flight)}
+                      bookNowLabel={pax <= flight.availableSeats ? "Select" : "Unavailable"}
                       seats={flight.availableSeats}
+                      isDisabled={pax > flight.availableSeats}
                     />
                   </div>
                 ))
@@ -605,8 +607,10 @@ function FlightSearch() {
                         } hr ${flight.flightDuration.match(/(\d+)M/)[1]} min`}
                         price={flight.basePrice.toFixed(2)}
                         flightNumber={flight.planeId}
-                        onSelect={() => handleReturnFlightSelection(flight)}
+                        onSelect={() => pax <= flight.availableSeats && handleReturnFlightSelection(flight)}
+                        bookNowLabel={pax <= flight.availableSeats ? "Select" : "Unavailable"}
                         seats={flight.availableSeats}
+                        isDisabled={pax > flight.availableSeats}
                       />
                     </div>
                   ))

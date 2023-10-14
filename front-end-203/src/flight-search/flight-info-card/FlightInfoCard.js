@@ -23,10 +23,16 @@ const FlightInfoCard = ({
   flightNumber,
   onSelect,
   bookNowLabel = "Select",
-  seats
+  seats,
+  isDisabled
+
+  
 }) => {
+  const cardStyle = isDisabled ? { backgroundColor: 'grey' } : {};
+  const buttonProps = isDisabled ? { disabled: true } : { onClick: onSelect };
+  
   return (
-    <div className="flight-info-card">
+    <div className="flight-info-card" style={{ ...cardStyle }}>
       {/* Section 1: Airline Name */}
       <div className="section">
         <Avatar
@@ -111,7 +117,7 @@ const FlightInfoCard = ({
           ${price}
         </Typography>
 
-        <Button variant="contained"
+        <Button variant="contained" {...buttonProps}
         onClick={onSelect}
         sx={{
           backgroundColor: "darkorange",
