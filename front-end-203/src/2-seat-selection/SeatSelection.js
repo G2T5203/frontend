@@ -29,9 +29,10 @@ const SeatSelection = () => {
   const [depFirstSeats, setDepFirstSeats] = useState([]);
   const [depBusinessSeats, setDepBusinessSeats] = useState([]);
   const [depEconomySeats, setDepEconomySeats] = useState([]);
-  const [retFirstSeats, setRetFirstSeats] = useState([]);
-  const [retBusinessSeats, setRetBusinessSeats] = useState([]);
-  const [retEconomySeats, setRetEconomySeats] = useState([]);
+    const [retFirstSeats, setRetFirstSeats] = useState([]);
+    const [retBusinessSeats, setRetBusinessSeats] = useState([]);
+    const [retEconomySeats, setRetEconomySeats] = useState([]);
+
   //math for number of rows
   const firstNumRows = Math.ceil(depFirstSeats.length / 2);
   const businessNumRows = Math.ceil(depBusinessSeats.length / 4);
@@ -42,7 +43,11 @@ const SeatSelection = () => {
   const [option, setOption] = useState("outbound");
   const [depDisabledSeats, setDepDisabledSeats] = useState([]);
   const depdt = departureFlight.departureDatetime.replace(/"/g, "");
-  const retdt = returnFlight.departureDatetime.replace(/"/g, "");
+
+
+  if (returnFlight != null) {
+
+  }
 
   //selectedSeatsDep
   const [selectedSeatsDep, setSelectedSeatsDep] = useState([]);
@@ -53,9 +58,7 @@ const SeatSelection = () => {
   const urlDep =
     apiUrl +
     `seatListings/matchingRouteListing/${departureFlight.planeId}/${departureFlight.routeId}/${depdt}`;
-  const urlRet =
-    apiUrl +
-    `seatListings/matchingRouteListing/${returnFlight.planeId}/${returnFlight.routeId}/${retdt}`;
+
   //create booking departure flight
   const fetchDepSeatListings = () => {
     try {
@@ -106,44 +109,45 @@ const SeatSelection = () => {
     }
   };
 
-  const fetchRetSeatListings = () => {
-    try {
-      axios.get(urlRet).then((response) => {
-        if (response.status === 200) {
-          //first class filters
-          const seatListings = response.data;
-          console.log(typeof seatListings);
-          const filteredSeatListings = seatListings.filter(
-            (listing) => listing.seatClass === "First"
-          );
-          const seatNumbers = filteredSeatListings.map(
-            (listing) => listing.seatNumber
-          );
-          setRetFirstSeats(seatNumbers);
-          console.log(seatNumbers);
-          //business class filters
-          const filteredBusinessSeatListings = seatListings.filter(
-            (listing) => listing.seatClass === "Business"
-          );
-          const businessSeatNumbers = filteredBusinessSeatListings.map(
-            (listing) => listing.seatNumber
-          );
-          setRetBusinessSeats(businessSeatNumbers);
-          console.log(businessSeatNumbers);
-          //economy class filters
-          const filteredEconomySeatListings = seatListings.filter(
-            (listing) => listing.seatClass === "Economy"
-          );
-          const economySeatNumbers = filteredEconomySeatListings.map(
-            (listing) => listing.seatNumber
-          );
-          setRetEconomySeats(economySeatNumbers);
-          console.log(economySeatNumbers);
-        }
-      });
-    } catch (error) {
-      console.log(error);
-    }
+  const fetchRetSeatListings = (urlRet) => {
+      try {
+        axios.get(urlRet).then((response) => {
+          if (response.status === 200) {
+            //first class filters
+            const seatListings = response.data;
+            console.log(typeof seatListings);
+            const filteredSeatListings = seatListings.filter(
+                (listing) => listing.seatClass === "First"
+            );
+            const seatNumbers = filteredSeatListings.map(
+                (listing) => listing.seatNumber
+            );
+            setRetFirstSeats(seatNumbers);
+            console.log(seatNumbers);
+            //business class filters
+            const filteredBusinessSeatListings = seatListings.filter(
+                (listing) => listing.seatClass === "Business"
+            );
+            const businessSeatNumbers = filteredBusinessSeatListings.map(
+                (listing) => listing.seatNumber
+            );
+            setRetBusinessSeats(businessSeatNumbers);
+            console.log(businessSeatNumbers);
+            //economy class filters
+            const filteredEconomySeatListings = seatListings.filter(
+                (listing) => listing.seatClass === "Economy"
+            );
+            const economySeatNumbers = filteredEconomySeatListings.map(
+                (listing) => listing.seatNumber
+            );
+            setRetEconomySeats(economySeatNumbers);
+            console.log(economySeatNumbers);
+          }
+        });
+      } catch (error) {
+        console.log(error);
+      }
+
   };
 
   useEffect(() => {
@@ -157,7 +161,11 @@ const SeatSelection = () => {
             if (option === "outbound") {
               fetchDepSeatListings();
             } else {
-              fetchRetSeatListings();
+              if (returnFlight != null) {
+                const retdt = returnFlight.departureDatetime.replace(/"/g, "");
+                const urlRet = apiUrl + `seatListings/matchingRouteListing/${returnFlight.planeId}/${returnFlight.routeId}/${retdt}`;
+                fetchRetSeatListings(urlRet);
+              }
             }
             
           } else {
@@ -223,7 +231,7 @@ const SeatSelection = () => {
       >
         <Typography variant={"h5"} textAlign={"center"} p={2}>
           Selecting For
-        </Typography>
+        </Typography> {returnFlight != null ? (
         <ToggleButtonGroup
           color="primary"
           value={option}
@@ -232,6 +240,7 @@ const SeatSelection = () => {
           sx={{
             marginX: 3,
           }}
+
         >
           <ToggleButton
             value="outbound"
@@ -251,7 +260,7 @@ const SeatSelection = () => {
           >
             Inbound
           </ToggleButton>
-        </ToggleButtonGroup>
+        </ToggleButtonGroup> ): (<Typography variant={"h4"} textAlign={"center"} p={2}> Outbound </Typography>)}
       </Box>
 
       <Box
