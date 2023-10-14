@@ -29,7 +29,7 @@ const SingleSeat = ({label, catagory, handleOnClick}) => {
     }
     return (
         <>
-         <Box id={"notSelected"} sx={{
+         <Box id={"notSelected"} className={label} sx={{
             backgroundColor: getColor(catagory),
             height: "40px" ,
             width: getSize(catagory),

@@ -2,7 +2,7 @@ import { Box, Divider, Typography } from "@mui/material";
 import React from "react";
 import img from "./img.jpg";
 
-const SeatListing = () => {
+const SeatListing = ({depBookedSeats}) => {
   return (
     <>
       <Box
@@ -59,17 +59,20 @@ const SeatListing = () => {
             alignItems: "flex-start",
           }}
         >
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-between",
-              width: "100%",
-            }}
-          >
-            <Typography color={"white"}> Person A: A1</Typography>
-            <Typography color={"white"}> $100</Typography>
-          </Box>
+            {depBookedSeats.map((item, index) => (
+                <Box
+                    key={index}
+                    sx={{
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                        width: "100%",
+                    }}
+                >
+                    <Typography color={"white"}> {item}</Typography>
+                </Box>
+            ))}
+
           <Box
             sx={{
               display: "flex",
