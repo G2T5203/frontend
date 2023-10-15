@@ -305,7 +305,7 @@ function FlightSearch() {
       arrivalLocation: departureLocation, // opposite for the return flight
     }
   };
-  localStorage.setItem('selectedFlights', JSON.stringify(selectedData));
+  sessionStorage.setItem('selectedFlights', JSON.stringify(selectedData));
   
 
   return (

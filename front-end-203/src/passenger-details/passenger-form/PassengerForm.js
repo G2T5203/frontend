@@ -4,11 +4,11 @@ import { Box, Typography, TextField, Select, MenuItem, FormControl, InputLabel }
 const PassengerForm = ({ numGuests, tripType, onPassengerDataChange }) => {
 
     const [passengers, setPassengers] = useState(Array.from({ length: parseInt(numGuests) }).map(() => ({
-        salutation: 'Mr',
+        salutation: '',
         firstName: '',
         lastName: '',
-        outboundSeat: 'A1',
-        returnSeat: 'A2'
+        outboundSeat: '',
+        returnSeat: '',
     })));
 
     const handleInputChange = (index, field, value) => {
@@ -28,7 +28,10 @@ const PassengerForm = ({ numGuests, tripType, onPassengerDataChange }) => {
             <Box sx={{ display: 'flex', gap: 2, marginBottom: 5 }}>
                 <FormControl variant="filled" style={{ backgroundColor: 'white' }} fullWidth>
                     <InputLabel>Salutation</InputLabel>
-                    <Select label="Salutation" defaultValue="Mr">
+                    <Select label="Salutation" 
+                            value={passengers[index].salutation}
+                            onChange={(e) => handleInputChange(index, 'salutation', e.target.value)}
+                        >
                         <MenuItem value={"Mr"}>Mr</MenuItem>
                         <MenuItem value={"Mrs"}>Mrs</MenuItem>
                         <MenuItem value={"Miss"}>Ms</MenuItem>
@@ -54,7 +57,10 @@ const PassengerForm = ({ numGuests, tripType, onPassengerDataChange }) => {
                     />
                 <FormControl variant="filled" style={{ backgroundColor: 'white' }} fullWidth>
                     <InputLabel>Outbound Seat No.</InputLabel>
-                    <Select label="Outbound Seat No." defaultValue="A1"> 
+                    <Select label="Outbound Seat No." 
+                             value={passengers[index].outboundSeat}
+                             onChange={(e) => handleInputChange(index, 'outboundSeat', e.target.value)}
+                    > 
                     {/* need to change to pull in data from seat selection */}
                         <MenuItem value={"A1"}>A1</MenuItem>
                         <MenuItem value={"A2"}>A2</MenuItem>
@@ -63,7 +69,10 @@ const PassengerForm = ({ numGuests, tripType, onPassengerDataChange }) => {
                 {tripType ==="Return" && (
                     <FormControl variant="filled" style={{ backgroundColor: 'white' }} fullWidth>
                         <InputLabel>Return Seat No.</InputLabel>
-                        <Select label="Return Seat No." defaultValue="A1">
+                        <Select label="Return Seat No." 
+                                value={passengers[index].returnSeat}
+                                onChange={(e) => handleInputChange(index, 'returnSeat', e.target.value)}
+                        >
                             <MenuItem value={"A1"}>A1</MenuItem>
                             <MenuItem value={"A2"}>A2</MenuItem>
                         </Select>

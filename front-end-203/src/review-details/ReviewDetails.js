@@ -8,8 +8,11 @@ import { useNavigate } from "react-router-dom";
 
 const ReviewDetails = () => {
 
-  const retrievedData = JSON.parse(localStorage.getItem('selectedFlights'));
+  const retrievedData = JSON.parse(sessionStorage.getItem('selectedFlights'));
   const passengerData = JSON.parse(sessionStorage.getItem('passengerData'));
+
+  const tripType = sessionStorage.getItem('tripType') || "One way";
+
 
 
   const navigate = useNavigate();
@@ -19,13 +22,12 @@ const ReviewDetails = () => {
     navigate("/payment");
   };
 
+  const { departureFlight, returnFlight } = retrievedData;
 
   if (!retrievedData) {
     // Redirect to FlightSearch or show an error message
     return <div>No flight details found! Please select a flight first.</div>;
   }
-
-  const { departureFlight, returnFlight } = retrievedData;
 
   console.log('Departure Flight:', departureFlight);
   console.log('Return Flight:', returnFlight);
@@ -50,14 +52,11 @@ const ReviewDetails = () => {
             arrivalDate={departureFlight.departureDatetime?.split("T")[0]}
             arrivalTime={departureFlight.departureDatetime?.split("T")[1].substring(0, 5)}
             stops="Direct"
-            travelTime={`${departureFlight.flightDuration.match(/(\d+)H/)[1]} hr ${departureFlight.flightDuration.match(/(\d+)M/)[1]} min`}
-            price={departureFlight.basePrice.toFixed(2)}
+            travelTime={departureFlight.flightDuration && typeof departureFlight.flightDuration === "string" ? `${departureFlight.flightDuration.match(/(\d+)H/)[1]} hr ${departureFlight.flightDuration.match(/(\d+)M/)[1]} min` : ''}
             flightNumber={departureFlight.planeId}
-            bookNowLabel="Selected!"
-            seats={departureFlight.availableSeats}
           />
         )}
-        {returnFlight && (
+        {tripType === "Return" && returnFlight && (
           <FlightInfoCard
             flightType= "Return Flight"
             imageURL="https://graphic.sg/media/pages/gallery/singapore-airlines-logo-1987/3067018395-1599296800/1987-singapore-airlines-logo-240x.png"
@@ -68,18 +67,15 @@ const ReviewDetails = () => {
             arrivalDate={returnFlight.departureDatetime?.split("T")[0]}
             arrivalTime={returnFlight.departureDatetime?.split("T")[1].substring(0, 5)}
             stops="Direct"
-            travelTime={`${returnFlight.flightDuration.match(/(\d+)H/)[1]} hr ${returnFlight.flightDuration.match(/(\d+)M/)[1]} min`}
-            price={returnFlight.basePrice.toFixed(2)}
+            travelTime={returnFlight.flightDuration && typeof returnFlight.flightDuration === "string" ? `${returnFlight.flightDuration.match(/(\d+)H/)[1]} hr ${returnFlight.flightDuration.match(/(\d+)M/)[1]} min` : ''}
             flightNumber={returnFlight.planeId}
-            bookNowLabel="Selected!"
             onSelect={() => { }}
-            seats={returnFlight.availableSeats}
           />
         )}
       </div>
 
       <div className="center-container">
-        <FareSummary />
+        <FareSummary passengers={passengerData} tripType={tripType}/>
       </div>
 
 
