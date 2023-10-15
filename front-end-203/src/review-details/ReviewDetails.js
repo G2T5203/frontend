@@ -4,10 +4,21 @@ import ProgressBar from "../progress-bar/ProgressBar";
 import NavBar from "../nav-bar/NavigationBar";
 import FlightInfoCard from "./flight-info-card/FlightInfoCard";
 import FareSummary from "./fare-summary/FareSummary";
+import { useNavigate } from "react-router-dom";
 
 const ReviewDetails = () => {
 
   const retrievedData = JSON.parse(localStorage.getItem('selectedFlights'));
+  const passengerData = JSON.parse(sessionStorage.getItem('passengerData'));
+
+
+  const navigate = useNavigate();
+
+  const handleProceedToPayment = () => {
+    // Navigate to the payment component
+    navigate("/payment");
+  };
+
 
   if (!retrievedData) {
     // Redirect to FlightSearch or show an error message
@@ -82,7 +93,7 @@ const ReviewDetails = () => {
           height: "25vh",
         }}
       >
-        <Button variant="contained" color="primary">
+        <Button variant="contained" color="primary" onClick={handleProceedToPayment}>
           Proceed to Payment
         </Button>
       </div>

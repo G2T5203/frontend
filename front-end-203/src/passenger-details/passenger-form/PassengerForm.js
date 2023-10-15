@@ -1,7 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Box, Typography, TextField, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
 
-const PassengerForm = ({ numGuests, tripType }) => {
+const PassengerForm = ({ numGuests, tripType, onPassengerDataChange }) => {
+
+    const [passengers, setPassengers] = useState(Array.from({ length: parseInt(numGuests) }).map(() => ({
+        salutation: 'Mr',
+        firstName: '',
+        lastName: '',
+        outboundSeat: 'A1',
+        returnSeat: 'A2'
+    })));
+
+    const handleInputChange = (index, field, value) => {
+        const updatedPassengers = [...passengers];
+        updatedPassengers[index][field] = value;
+        setPassengers(updatedPassengers);
+
+        // inform parent component
+        if (onPassengerDataChange) onPassengerDataChange(updatedPassengers);
+    };
     
     const renderPassengerFields = (index) => (
         <Box key={index}>
@@ -19,8 +36,22 @@ const PassengerForm = ({ numGuests, tripType }) => {
                         <MenuItem value={"Master"}>Master</MenuItem>
                     </Select>
                 </FormControl>
-                <TextField variant="filled" label="First name" style={{ backgroundColor: 'white' }} fullWidth />
-                <TextField variant="filled" label="Last name" style={{ backgroundColor: 'white' }} fullWidth />
+                <TextField 
+                    variant="filled" 
+                    label="First name" 
+                    style={{ backgroundColor: 'white' }} 
+                    fullWidth  
+                    value={passengers[index].firstName}
+                    onChange={(e) => handleInputChange(index, 'firstName', e.target.value)}
+                    />
+                <TextField 
+                    variant="filled" 
+                    label="Last name" 
+                    style={{ backgroundColor: 'white' }} 
+                    fullWidth  
+                    value={passengers[index].lastName}
+                    onChange={(e) => handleInputChange(index, 'lastName', e.target.value)}
+                    />
                 <FormControl variant="filled" style={{ backgroundColor: 'white' }} fullWidth>
                     <InputLabel>Outbound Seat No.</InputLabel>
                     <Select label="Outbound Seat No." defaultValue="A1"> 
