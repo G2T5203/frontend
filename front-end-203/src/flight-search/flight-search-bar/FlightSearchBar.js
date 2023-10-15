@@ -12,6 +12,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useNavigate } from "react-router-dom";
 import {isAuthenticated, removeAuthToken, updateAuthHeadersFromCurrentUser} from "../../auth";
 
+
 const FlightSearchBar = ({
   locations,
   onSearch,
@@ -31,9 +32,28 @@ const FlightSearchBar = ({
   const navigate = useNavigate();
 
   const apiUrl = process.env.REACT_APP_API_BASE_URL;
+
+
+    // all variables initalised to values from home page (departurelocation, arrival location, triptype, departure time, arrival time)
+    const [departureLocation, setDepartureLocation] = useState(flyingFrom);
+    const [arrivalLocation, setArrivalLocation] = useState(flyingTo);
+    const [tripType, setTripType] = useState(trip);
+    const [departureDate, setDepartureDate] = useState(departuredt);
+    const [returnDate, setReturnDate] = useState(returndt);
+    const [passengerCount, setPassengerCount] = useState(noGuest);
+
+    //to set the default tripType if there is no change in toggle
+    sessionStorage.setItem('tripType', tripType);
+   //to set the default pax count if there is no change in pax count box
+    sessionStorage.setItem('noGuestSelected', passengerCount);
+
+
   // for handling change in toggle button
   const handleTripTypeChange = (event, newTripType) => {
     setTripType(newTripType);
+
+    // Save the new trip type to sessionStorage when the toggle is switched
+    sessionStorage.setItem('tripType', newTripType);
     
     // Reset the return date when changing to "One way"
     if (newTripType === "One way") {
@@ -44,19 +64,13 @@ const FlightSearchBar = ({
       onTripTypeChange(newTripType);
   }
 };
-  
-  // all variables initalised to values from home page (departurelocation, arrival location, triptype, departure time, arrival time)
-  const [departureLocation, setDepartureLocation] = useState(flyingFrom);
-  const [arrivalLocation, setArrivalLocation] = useState(flyingTo);
-  const [tripType, setTripType] = useState(trip);
-  const [departureDate, setDepartureDate] = useState(departuredt);
-  const [returnDate, setReturnDate] = useState(returndt);
-  const [passengerCount, setPassengerCount] = useState(noGuest);
 
   const handlePassengerCountChange = (event) => {
     // Ensure that the input value is a number
     const inputValue = event.target.value.replace(/\D/g, '');
     setPassengerCount(inputValue);
+    //set new value if the pax count is changed 
+    sessionStorage.setItem('noGuestSelected', inputValue);
   };
 
   // for handling change of departure and return date when set manually on page
