@@ -28,8 +28,6 @@ const CompactForm = () => {
   const noGuestHandleChange = (e) => {
     const updatedValue = e.target.value; 
     setGuestSelected(updatedValue);
-    sessionStorage.setItem('noGuestSelected', updatedValue);
-
   };
 
   //flying to Options funcs
