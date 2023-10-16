@@ -10,8 +10,10 @@ const PassengerDetails = () => {
     const location = useLocation();
     const {inboundSeats, outboundSeats, noGuest, depFlight, retFlight} = location.state;
     console.log(inboundSeats + " " + outboundSeats + ' ' + noGuest);
-  const noGuestSelected = sessionStorage.getItem('noGuestSelected') || "0"; 
-  const tripType = sessionStorage.getItem('tripType') || "One way"; 
+    const noGuestSelected = noGuest;
+    const tripType = (retFlight === null) ? "One way" : "Return"
+  // const noGuestSelected = sessionStorage.getItem('noGuestSelected') || "0";
+  // const tripType = sessionStorage.getItem('tripType') || "One way";
 
   const navigate = useNavigate();
   const [passengers, setPassengers] = React.useState([]);
