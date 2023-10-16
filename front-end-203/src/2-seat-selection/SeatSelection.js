@@ -25,6 +25,7 @@ const SeatSelection = () => {
   const location = useLocation();
   let { bookingId, departureFlight, returnFlight } = location.state;
   //create seats array
+  const [depAllSeats, setDepAllSeats] = useState([null]); //array of json object
   const [depFirstSeats, setDepFirstSeats] = useState([]);
   const [depBusinessSeats, setDepBusinessSeats] = useState([]);
   const [depEconomySeats, setDepEconomySeats] = useState([]);
@@ -41,6 +42,7 @@ const SeatSelection = () => {
   const retEconomyNumRows = Math.ceil(retEconomySeats.length / 6);
   const [option, setOption] = useState("outbound");
   const [depDisabledSeats, setDepDisabledSeats] = useState([]);
+  const [retDisabledSeats, setRetDisabledSeats] = useState([]);
   const depdt = departureFlight.departureDatetime.replace(/"/g, "").replace(/:/g, "x");
 
 
@@ -64,6 +66,7 @@ const SeatSelection = () => {
         if (response.status === 200) {
           //first class filters
           const seatListings = response.data;
+          setDepAllSeats(seatListings);
           // console.log(typeof seatListings);
           const filteredSeatListings = seatListings.filter(
             (listing) => listing.seatClass === "First"
@@ -99,15 +102,12 @@ const SeatSelection = () => {
               (listing) => listing.seatNumber
           )
           setDepDisabledSeats(disabledSeatNumbers);
-          console.log(disabledSeatNumbers);
+          // console.log(disabledSeatNumbers);
 
           //check bookingid
           console.log(bookingId);
-          //TODO move this func somewhere? this changes the color of the seats
-          depDisabledSeats.forEach(seat => {
-            seat = document.getElementsByClassName(seat);
-            seat[0].id = "selected"
-          })
+
+
         }
       });
     } catch (error) {
@@ -149,6 +149,15 @@ const SeatSelection = () => {
             setRetEconomySeats(economySeatNumbers);
             console.log(economySeatNumbers);
 
+            const disabledSeats = seatListings.filter(
+                (listing) => listing.isBooked === true
+            );
+            const disabledSeatNumbers = disabledSeats.map(
+                (listing) => listing.seatNumber
+            )
+            setRetDisabledSeats(disabledSeatNumbers);
+            // console.log(disabledSeatNumbers);
+
           }
         });
       } catch (error) {
@@ -157,6 +166,23 @@ const SeatSelection = () => {
 
   };
 
+  const disableSeats = (jsonObject) => {
+    jsonObject.forEach(seat => {
+      seat = document.getElementsByClassName(seat);
+      const buttonElement = seat[0];
+      buttonElement.disabled = true;
+      buttonElement.id = "selected";
+    })
+  }
+
+  const selectSeatColor = (seatArray) => {
+    seatArray.forEach(seat => {
+      seat = document.getElementsByClassName(seat);
+      const buttonElement = seat[0];
+      buttonElement.id = "chosen-by-user"
+    })
+  }
+//api calls
   useEffect(() => {
     //TODO: fetchDepSeatListings needs to run again after the html loads
     if (isAuthenticated()) {
@@ -166,9 +192,7 @@ const SeatSelection = () => {
           // TODO: This isn't correctly reporting errors. Postman is 403, but here it's still 200.
           if (response.status === 200) {
             updateAuthHeadersFromCurrentUser();
-            if (option === "outbound") {
               fetchDepSeatListings();
-            } else {
               if (returnFlight != null) {
                 const retdt = returnFlight.departureDatetime.replace(/"/g, "").replace(/:/g, "x");
                 const urlRet = apiUrl + `seatListings/matchingRouteListing/${returnFlight.planeId}/${returnFlight.routeId}/${retdt}`;
@@ -176,7 +200,7 @@ const SeatSelection = () => {
               }
             }
             
-          } else {
+           else {
             removeAuthToken();
             navigate("/signin");
           }
@@ -195,24 +219,38 @@ const SeatSelection = () => {
     //   document.getElementById(element).id = "selected"
     // });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [option,selectedSeatsDep]);
+  }, []);
 
+  //changing of stuff
+  useEffect(() => {
+    if (option === "outbound") {
+      disableSeats(depDisabledSeats)
+    } else {
+      disableSeats(retDisabledSeats)
+    }
 
-  // function color() {
-  //     console.log("hello")
-  //           selectedSeatsDep.forEach(element => {
-  //             element = document.getElementsByClassName(element);
-  //             element.id = "selected";
-  //           })
-  //
-  //   }
+  }, [depDisabledSeats,option]);
+
+  function color(size) {
+      switch (size) {
+        case "200px":
+          return "green"
+        case "80px":
+          return "orange"
+        case "64px":
+          return "blue"
+        default:
+          return "white"
+      }
+
+    }
 
 
     const handleClick = (event) => {
       //TODO cancelling doesnt work yet
-    console.log(event.target.id );
+    console.log(selectedSeatsDep );
     if (option === "outbound") {
-      fetchDepSeatListings()
+      disableSeats(depDisabledSeats);
       if (selectedSeatsDep.includes(event.target.innerText)) {
         setSelectedSeatsDep((prevSeats) => prevSeats.filter((seat) => seat !== event.target.innerText));
         //cancel reservation
@@ -226,7 +264,8 @@ const SeatSelection = () => {
               }).then((response) => {
                 if (response.status === 200) {
                   console.log("successful cancelation")
-                  fetchDepSeatListings();
+                  event.target.id = "NotSelected"
+                  event.target.backgroundColor =  color(event.target.width);
                 } else {
                   console.log(response.status)
                 }
@@ -235,6 +274,8 @@ const SeatSelection = () => {
           console.log(error)
           console.log("failed to cancel")
         }
+
+
       } else {
         //TODO booking works in the backend but sometimes the greying out is too slow
         //axios call goes below
@@ -246,14 +287,14 @@ const SeatSelection = () => {
               "seatNumber": event.target.innerText,
               "bookingId": bookingId
             };
-        console.log(JSON.stringify(payload))
+        // console.log(JSON.stringify(payload))
         try {
           axios.put(apiUrl + "seatListings/bookSeat/reserve", payload)
               .then((response) => {
-                if (response.status === 201) {
+                if (response.status === 200) {
                   console.log("successful reservation")
                   setSelectedSeatsDep([...selectedSeatsDep, event.target.innerText]);
-                  event.target.id = "selected";
+                  event.target.id = "chosen-by-user";
                 } else {
                   console.log(response.status)
                 }
@@ -262,8 +303,9 @@ const SeatSelection = () => {
           console.log("failing at outbound seat reservation")
           console.log(error)
         }
-      }
 
+      }
+      event.target.id = "chosen-by-user"
     } else {
       setSelectedSeatsRet((prevSeats) => [...prevSeats, event.target.innerText]);
       event.target.id = "selected"
@@ -343,7 +385,7 @@ const SeatSelection = () => {
               backgroundColor: "lightGrey",
               padding: "20px",
               borderRadius: "10px",
-              width: "360px",
+              width: "450px",
             }}
           >
             <Box>
@@ -351,7 +393,6 @@ const SeatSelection = () => {
                 <>
                   {/* departure flight rows */}
                   <Box>
-                    hi
                     {Array.from({ length: firstNumRows }, (_, rowIndex) => (
                       <div
                         key={rowIndex+"_dep"}
@@ -367,7 +408,7 @@ const SeatSelection = () => {
                             <SingleSeat
                               key={columnIndex}
                               label={item}
-                              catagory={"First Class"}
+                              category={"First Class"}
                               handleOnClick={handleClick}
                               path="departure"
                             />
@@ -389,7 +430,7 @@ const SeatSelection = () => {
                             <SingleSeat
                               key={columnIndex}
                               label={item}
-                              catagory={"Business Class"}
+                              category={"Business Class"}
                               handleOnClick={handleClick}
                               path={"departure"}
                             />
@@ -412,7 +453,7 @@ const SeatSelection = () => {
                               <SingleSeat
                                 key={columnIndex}
                                 label={item}
-                                catagory={"Economy Class"}
+                                category={"Economy Class"}
                                 handleOnClick={handleClick}
                                 path={"departure"}
                               />
@@ -426,7 +467,6 @@ const SeatSelection = () => {
                 <>
                   {/* return flight rows */}
                   <Box>
-                    bye
                     {Array.from({ length: retFirstNumRows }, (_, rowIndex) => (
 
                       <div
@@ -443,7 +483,7 @@ const SeatSelection = () => {
                             <SingleSeat
                               key={columnIndex}
                               label={item}
-                              catagory={"First Class"}
+                              category={"First Class"}
                                 handleOnClick={handleClick}
                             />
                           ))}
@@ -466,7 +506,7 @@ const SeatSelection = () => {
                               <SingleSeat
                                 key={columnIndex}
                                 label={item}
-                                catagory={"Business Class"}
+                                category={"Business Class"}
                                 handleOnClick={handleClick}
                               />
                             ))}
@@ -491,7 +531,7 @@ const SeatSelection = () => {
                                 <SingleSeat
                                   key={columnIndex}
                                   label={item}
-                                  catagory={"Economy Class"}
+                                  category={"Economy Class"}
                                 handleOnClick={handleClick}
                                 />
                               ))}

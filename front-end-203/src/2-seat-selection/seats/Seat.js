@@ -1,43 +1,42 @@
-import { Box, Typography } from '@mui/material';
+import {Box, Button, Typography} from '@mui/material';
 import React from 'react';
 import "./Seat.css"
 
-const SingleSeat = ({label, catagory, handleOnClick}) => {
-    function getColor(catagory){
-        switch(catagory){
+const SingleSeat = ({label, category, handleOnClick}) => {
+    function getColor(category){
+        switch(category){
             case "First Class":
                 return "green";
             case "Business Class":
-                return "orange";
+                return "red";
             case "Economy Class":
                 return "blue";
             default:
                 return "white";
         }
     }
-    function getSize(catagory){
-        switch(catagory){
+    function getSize(category){
+        switch(category){
             case "First Class":
-                return "165px";
+                return "200px";
             case "Business Class":
-                return "71px";
+                return "80px";
             case "Economy Class":
-                return "40px";
+                return "20px";
             default:
                 return "10px";
         }
     }
     return (
         <>
-         <Box id={"notSelected"} className={label} sx={{
-            backgroundColor: getColor(catagory),
+         <Button id={"notSelected"} className={label} sx={{
+            backgroundColor: getColor(category),
             height: "40px" ,
-            width: getSize(catagory),
+            width: getSize(category),
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
             margin: "2px",
-            cursor: "pointer",
             color: "white",
             fontSize: "15px",
             fontFamily: "Roboto"
@@ -46,7 +45,7 @@ const SingleSeat = ({label, catagory, handleOnClick}) => {
             {label}
 
 
-         </Box>
+         </Button>
         </>
     )
 }
