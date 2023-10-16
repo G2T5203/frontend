@@ -1,9 +1,24 @@
-import { React, } from "react";
-import { Typography, Grid, Paper} from "@mui/material";
+import React from "react";
+import { Typography, Grid, Paper } from "@mui/material";
 import FlightConfirm from "./FlightConfirmationDetails"
 
-export default function BookingSlip() {
-//   const [bookingDetails, setBookingDetails] = useState("");
+export default function BookingSlip({
+  departureTime1,
+  departureLocation1,
+  arrivalTime1,
+  arrivalLocation1,
+  departureTime2,
+  departureLocation2,
+  arrivalTime2,
+  arrivalLocation2,
+  bookingID,
+  passengerName,
+  outboundFlightNumber,
+  inboundFlightNumber,
+  classType,
+  outboundSeat,
+  inboundSeat
+}) {
   return (
     <>
       <Paper
@@ -15,7 +30,6 @@ export default function BookingSlip() {
           overflow: "hidden",
         }}
       >
-        {/* Left 80% section */}
         <Grid
           container
           item
@@ -38,17 +52,15 @@ export default function BookingSlip() {
               alignItems="center"
               sx={{ height: "100%", padding: "16px" }}
             >
-              
-              <FlightConfirm departureTime={"0940"} departureLocation={"SIN"} arrivalTime={"1140"} arrivalLocation={"BKK"}/>
-              <FlightConfirm departureTime={"2100"} departureLocation={"BKK"} arrivalTime={"2300"} arrivalLocation={"SIN"}/>
+              <FlightConfirm departureTime={departureTime1} departureLocation={departureLocation1} arrivalTime={arrivalTime1} arrivalLocation={arrivalLocation1}/>
+              <FlightConfirm departureTime={departureTime2} departureLocation={departureLocation2} arrivalTime={arrivalTime2} arrivalLocation={arrivalLocation2}/>
               <Typography variant="caption" color="white" sx={{textAlign: "center", pl: "60px"}}>
-                Booking ID: 1293201
+                Booking ID: {bookingID}
               </Typography>
             </Grid>
           </div>
         </Grid>
 
-        {/* Right 20% section */}
         <Grid container item xs={4}>
           <Grid
             container
@@ -58,12 +70,13 @@ export default function BookingSlip() {
             alignItems="center"
             sx={{ height: "100%", padding: "16px" , backgroundColor:"#F9AB55"}}
           >
-            <Typography variant="h5" fontFamily={"Merriweather"}>Mr Jared Hong</Typography>
+            <Typography variant="h5" fontFamily={"Merriweather"}>{passengerName}</Typography>
             <div style={{ marginTop: "16px" }}>
-              <Typography variant="body1" fontFamily={"Noto Sans"}>Flight Number: SQ482</Typography>
-              <Typography variant="body1" fontFamily={"Noto Sans"}>Economy Class</Typography>
-              <Typography variant="body1" fontFamily={"Noto Sans"}>Outbound Seat Number: 21B</Typography>
-              <Typography variant="body1" fontFamily={"Noto Sans"}>Inbound Seat Number: 42C</Typography>
+              <Typography variant="body1" fontFamily={"Noto Sans"}>Outbound Flight Number: {outboundFlightNumber}</Typography>
+              <Typography variant="body1" fontFamily={"Noto Sans"}>Inbound Flight Number: {inboundFlightNumber}</Typography>
+              <Typography variant="body1" fontFamily={"Noto Sans"}>{classType}</Typography>
+              <Typography variant="body1" fontFamily={"Noto Sans"}>Outbound Seat Number: {outboundSeat}</Typography>
+              <Typography variant="body1" fontFamily={"Noto Sans"}>Inbound Seat Number: {inboundSeat}</Typography>
             </div>
           </Grid>
         </Grid>
