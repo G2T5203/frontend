@@ -225,7 +225,7 @@ function FlightSearch() {
           "outboundRouteId": selectedDepartureFlight.routeId,
           "outboundPlaneId": selectedDepartureFlight.planeId,
           "outboundDepartureDatetime": selectedDepartureFlight.departureDatetime.replace(/"/g, ""),
-          "partySize": 1
+          "partySize": noGuest
       }
       ).then((response) => {
         if (response.status === 201) {
@@ -257,6 +257,7 @@ function FlightSearch() {
           bookingId: bookingId,
           departureFlight: selectedDepartureFlight,
           returnFlight: selectedReturnFlight ,
+          noGuest: noGuest
         }
         sessionStorage.setItem('bookingId', JSON.stringify(seatselectinfo.bookingId));
 

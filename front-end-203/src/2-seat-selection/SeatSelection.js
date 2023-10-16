@@ -23,7 +23,7 @@ const SeatSelection = () => {
   const navigate = useNavigate();
   const apiUrl = process.env.REACT_APP_API_BASE_URL;
   const location = useLocation();
-  let { bookingId, departureFlight, returnFlight } = location.state;
+  let { bookingId, departureFlight, returnFlight, noGuest } = location.state;
   //create seats array
   const [depAllSeats, setDepAllSeats] = useState([null]); //array of json object
   const [depFirstSeats, setDepFirstSeats] = useState([]);
@@ -32,6 +32,7 @@ const SeatSelection = () => {
     const [retFirstSeats, setRetFirstSeats] = useState([]);
     const [retBusinessSeats, setRetBusinessSeats] = useState([]);
     const [retEconomySeats, setRetEconomySeats] = useState([]);
+
 
   //math for number of rows
   const firstNumRows = Math.ceil(depFirstSeats.length / 2);
@@ -46,8 +47,9 @@ const SeatSelection = () => {
   const depdt = departureFlight.departureDatetime.replace(/"/g, "").replace(/:/g, "x");
 
 
-
-
+  //number of seats left
+  const [depCount, setDepCount] = useState(noGuest);
+  const [retCount, setRetCount] = useState(noGuest);
   //selectedSeatsDep
   const [selectedSeatsDep, setSelectedSeatsDep] = useState([]);
   //selectedSeatsRet
@@ -175,16 +177,9 @@ const SeatSelection = () => {
     })
   }
 
-  const selectSeatColor = (seatArray) => {
-    seatArray.forEach(seat => {
-      seat = document.getElementsByClassName(seat);
-      const buttonElement = seat[0];
-      buttonElement.id = "chosen-by-user"
-    })
-  }
+
 //api calls
   useEffect(() => {
-    //TODO: fetchDepSeatListings needs to run again after the html loads
     if (isAuthenticated()) {
       axios
         .get(apiUrl + "users/authTest")
@@ -247,12 +242,10 @@ const SeatSelection = () => {
 
 
     const handleClick = (event) => {
-      //TODO cancelling doesnt work yet
     console.log(selectedSeatsDep );
     if (option === "outbound") {
-      disableSeats(depDisabledSeats);
       if (selectedSeatsDep.includes(event.target.innerText)) {
-        setSelectedSeatsDep((prevSeats) => prevSeats.filter((seat) => seat !== event.target.innerText));
+
         //cancel reservation
         try{
           axios.put(apiUrl + `seatListings/cancelSeatBooking/${bookingId}`,
@@ -264,8 +257,10 @@ const SeatSelection = () => {
               }).then((response) => {
                 if (response.status === 200) {
                   console.log("successful cancelation")
+                  setSelectedSeatsDep((prevSeats) => prevSeats.filter((seat) => seat !== event.target.innerText));
                   event.target.id = "NotSelected"
                   event.target.backgroundColor =  color(event.target.width);
+                  setDepCount((prevCount) => prevCount + 1);
                 } else {
                   console.log(response.status)
                 }
@@ -277,7 +272,6 @@ const SeatSelection = () => {
 
 
       } else {
-        //TODO booking works in the backend but sometimes the greying out is too slow
         //axios call goes below
         const payload =
             {
@@ -295,6 +289,7 @@ const SeatSelection = () => {
                   console.log("successful reservation")
                   setSelectedSeatsDep([...selectedSeatsDep, event.target.innerText]);
                   event.target.id = "chosen-by-user";
+                  setDepCount((prevCount) => prevCount - 1);
                 } else {
                   console.log(response.status)
                 }
@@ -305,10 +300,65 @@ const SeatSelection = () => {
         }
 
       }
-      event.target.id = "chosen-by-user"
     } else {
-      setSelectedSeatsRet((prevSeats) => [...prevSeats, event.target.innerText]);
-      event.target.id = "selected"
+
+      if (selectedSeatsRet.includes(event.target.innerText)) {
+
+        //cancel reservation
+        try{
+          axios.put(apiUrl + `seatListings/cancelSeatBooking/${bookingId}`,
+              {
+                "planeId": returnFlight.planeId,
+                "routeId": returnFlight.routeId,
+                "departureDatetime": returnFlight.departureDatetime.replace(/"/g, ""),
+                "seatNumber": event.target.innerText
+              }).then((response) => {
+            if (response.status === 200) {
+              console.log("successful cancelation")
+              event.target.id = "NotSelected"
+              event.target.backgroundColor =  color(event.target.width);
+              setSelectedSeatsRet((prevSeats) => prevSeats.filter((seat) => seat !== event.target.innerText));
+              setRetCount((prevCount) => prevCount + 1);
+            } else {
+              console.log(response.status)
+            }
+          })
+        } catch (error) {
+          console.log(error)
+          console.log("failed to cancel")
+        }
+
+
+      } else {
+        //axios call goes below
+        const payload =
+            {
+              "planeId": returnFlight.planeId,
+              "routeId": returnFlight.routeId,
+              "departureDatetime": returnFlight.departureDatetime.replace(/"/g, ""),
+              "seatNumber": event.target.innerText,
+              "bookingId": bookingId
+            };
+        // console.log(JSON.stringify(payload))
+        try {
+          axios.put(apiUrl + "seatListings/bookSeat/reserve", payload)
+              .then((response) => {
+                if (response.status === 200) {
+                  console.log("successful reservation")
+                  setSelectedSeatsRet([...selectedSeatsRet, event.target.innerText]);
+                  event.target.id = "chosen-by-user";
+
+                  setRetCount((prevCount) => prevCount - 1);
+                } else {
+                  console.log(response.status)
+                }
+              })
+        } catch (error) {
+          console.log("failing at outbound seat reservation")
+          console.log(error)
+        }
+
+      }
     }
 
   }
@@ -462,6 +512,10 @@ const SeatSelection = () => {
                       ))}
                     </Box>
                   </Box>
+                  <Box>
+                    {/*//TODO styling for this*/}
+                    <Typography variant={"body1"}> OutBound Seats Remaining: {depCount}</Typography>
+                  </Box>
                 </>
               ) : (
                 <>
@@ -539,6 +593,10 @@ const SeatSelection = () => {
                         )
                       )}
                     </Box>
+                  </Box>
+                  <Box>
+                    {/*//TODO styling for this*/}
+                    <Typography variant={"body1"}> InBound Seats Remaining: {retCount}</Typography>
                   </Box>
                 </>
               )}
