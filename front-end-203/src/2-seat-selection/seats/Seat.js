@@ -6,9 +6,9 @@ const SingleSeat = ({label, category, handleOnClick}) => {
     function getColor(category){
         switch(category){
             case "First Class":
-                return "green";
+                return "blue";
             case "Business Class":
-                return "red";
+                return "blue";
             case "Economy Class":
                 return "blue";
             default:
@@ -30,7 +30,7 @@ const SingleSeat = ({label, category, handleOnClick}) => {
     return (
         <>
          <Button id={"notSelected"} className={label} sx={{
-            backgroundColor: getColor(category),
+            backgroundColor: "rgba(37, 78, 158, 1)",
             height: "40px" ,
             width: getSize(category),
             display: "flex",

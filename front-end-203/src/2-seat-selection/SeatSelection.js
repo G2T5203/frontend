@@ -252,6 +252,7 @@ const SeatSelection = () => {
       navigate("/passengerdetails", {state: data});
     }
 
+    //blocker for seating
     const handleClick = (event) => {
     console.log(selectedSeatsDep );
     if (option === "outbound") {
