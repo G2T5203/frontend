@@ -245,9 +245,10 @@ const SeatSelection = () => {
       const data = {
           "outboundSeats": selectedSeatsDep,
           "inboundSeats": selectedSeatsRet,
-          "noGuest": noGuest,
+          "numGuest": noGuest,
           "departureFlight": departureFlight,
-          "returnFlight": returnFlight
+          "returnFlight": returnFlight,
+          "bookingId": bookingId
       }
       navigate("/passengerdetails", {state: data});
     }

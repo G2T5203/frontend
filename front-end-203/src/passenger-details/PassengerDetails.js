@@ -8,9 +8,9 @@ import {useLocation, useNavigate} from "react-router-dom";
 
 const PassengerDetails = () => {
     const location = useLocation();
-    const {inboundSeats, outboundSeats, noGuest, depFlight, retFlight} = location.state;
-    console.log(inboundSeats + " " + outboundSeats + ' ' + noGuest);
-    const noGuestSelected = noGuest;
+    const {inboundSeats, outboundSeats, numGuest, depFlight, retFlight, bookingId} = location.state;
+    console.log(inboundSeats + " " + outboundSeats + ' ' + numGuest);
+    const numGuestSelected = numGuest;
     const tripType = (retFlight === null) ? "One way" : "Return"
   // const noGuestSelected = sessionStorage.getItem('noGuestSelected') || "0";
   // const tripType = sessionStorage.getItem('tripType') || "One way";
