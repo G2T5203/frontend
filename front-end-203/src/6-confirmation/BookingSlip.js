@@ -3,14 +3,14 @@ import { Typography, Grid, Paper } from "@mui/material";
 import FlightConfirm from "./FlightConfirmationDetails"
 
 export default function BookingSlip({
-  departureTime1,
-  departureLocation1,
-  arrivalTime1,
-  arrivalLocation1,
-  departureTime2,
-  departureLocation2,
-  arrivalTime2,
-  arrivalLocation2,
+  outboundDepartureTime,
+  outboundDepartureLocation,
+  outboundArrivalTime,
+  outboundArrivalLocation,
+  inboundDepartureTime,
+  inboundDepartureLocation,
+  inboundArrivalTime,
+  inboundArrivalLocation,
   bookingID,
   passengerName,
   outboundFlightNumber,
@@ -52,8 +52,8 @@ export default function BookingSlip({
               alignItems="center"
               sx={{ height: "100%", padding: "16px" }}
             >
-              <FlightConfirm departureTime={departureTime1} departureLocation={departureLocation1} arrivalTime={arrivalTime1} arrivalLocation={arrivalLocation1}/>
-              <FlightConfirm departureTime={departureTime2} departureLocation={departureLocation2} arrivalTime={arrivalTime2} arrivalLocation={arrivalLocation2}/>
+              <FlightConfirm departureTime={outboundDepartureTime} departureLocation={outboundDepartureLocation} arrivalTime={outboundArrivalTime} arrivalLocation={outboundArrivalLocation}/>
+              <FlightConfirm departureTime={inboundDepartureTime} departureLocation={inboundDepartureLocation} arrivalTime={inboundArrivalTime} arrivalLocation={inboundArrivalLocation}/>
               <Typography variant="caption" color="white" sx={{textAlign: "center", pl: "60px"}}>
                 Booking ID: {bookingID}
               </Typography>

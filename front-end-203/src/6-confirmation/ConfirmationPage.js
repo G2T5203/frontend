@@ -59,14 +59,14 @@ const ConfirmationPage = () => {
             <Box mb={4} key={index}> {/* mb is for margin-bottom */}
             <BookingSlip
               key={index}
-              departureTime1={retrievedData.departureFlight.departureDatetime?.split("T")[0]}  // You'll need to adjust these according to how you've stored them
-              departureLocation1={retrievedData.departureFlight.departureLocation}
-              arrivalTime1={retrievedData.departureFlight.departureDatetime?.split("T")[0]}
-              arrivalLocation1={retrievedData.departureFlight.arrivalLocation}
-              departureTime2={retrievedData.returnFlight.departureDatetime?.split("T")[0]}
-              departureLocation2={retrievedData.returnFlight.departureLocation}
-              arrivalTime2={retrievedData.returnFlight.departureDatetime?.split("T")[0]}
-              arrivalLocation2={retrievedData.returnFlight.arrivalLocation}
+              outboundDepartureTime={retrievedData.departureFlight.departureDatetime?.split("T")[0]}  // You'll need to adjust these according to how you've stored them
+              outboundDepartureLocation={retrievedData.departureFlight.departureLocation}
+              outboundArrivalTime={retrievedData.departureFlight.departureDatetime?.split("T")[0]}
+              outboundArrivalLocation={retrievedData.departureFlight.arrivalLocation}
+              inboundDepartureTime={retrievedData.returnFlight.departureDatetime?.split("T")[0]}
+              inboundDepartureLocation={retrievedData.returnFlight.departureLocation}
+              inboundArrivalTime={retrievedData.returnFlight.departureDatetime?.split("T")[0]}
+              inboundArrivalLocation={retrievedData.returnFlight.arrivalLocation}
               bookingID={bookingId}
               passengerName={passenger.salutation + " " + passenger.firstName + " " + passenger.lastName}  // Assumes 'name' is a field in each object in passengerData
               inboundFlightNumber ={retrievedData.departureFlight.planeId}
