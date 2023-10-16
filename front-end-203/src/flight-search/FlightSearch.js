@@ -258,6 +258,7 @@ function FlightSearch() {
           departureFlight: selectedDepartureFlight,
           returnFlight: selectedReturnFlight ,
         }
+        sessionStorage.setItem('bookingId', JSON.stringify(seatselectinfo.bookingId));
 
         console.log(seatselectinfo.bookingId + " is from search");
         navigate("/seatselection", {state : seatselectinfo});
