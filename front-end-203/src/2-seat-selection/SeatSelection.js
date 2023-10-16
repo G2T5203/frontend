@@ -246,6 +246,8 @@ const SeatSelection = () => {
           "outboundSeats": selectedSeatsDep,
           "inboundSeats": selectedSeatsRet,
           "noGuest": noGuest,
+          "departureFlight": departureFlight,
+          "returnFlight": returnFlight
       }
       navigate("/reviewdetails", {state: data});
     }

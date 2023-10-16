@@ -8,7 +8,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 
 const ReviewDetails = () => {
     const location = useLocation();
-    const {inboundSeats, outboundSeats, noGuest} = location.state;
+    const {inboundSeats, outboundSeats, noGuest, depFlight, retFlight} = location.state;
     console.log(inboundSeats + " " + outboundSeats + ' ' + noGuest);
   const retrievedData = JSON.parse(sessionStorage.getItem('selectedFlights'));
   const passengerData = JSON.parse(sessionStorage.getItem('passengerData'));
