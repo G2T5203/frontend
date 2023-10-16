@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import {
   CardNumberElement,
@@ -12,9 +13,18 @@ import { Button, Box, TextField, Typography } from "@mui/material";
 import { ThemeProvider, createTheme } from "@mui/material";
 
 
+
+
+
   
 
 function PaymentForm() {
+  const navigate = useNavigate();
+
+  const handleProceedToPayment = () => {
+    // Navigate to the confirmation component
+    navigate("/confirmation");
+  };
 
     const [hasText, setHasText] = useState(false);
 
@@ -181,6 +191,7 @@ const CARD_ELEMENT_OPTIONS = {
             backgroundColor: '#FF9B00',  // replace with your desired color
           }
         }}
+        onClick={handleProceedToPayment}
       >
         Confirm and pay
       </Button>
