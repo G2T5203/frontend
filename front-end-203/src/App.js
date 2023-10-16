@@ -7,7 +7,7 @@ import SignIn from "./signin-screen/SignInPage";
 import SignUp from "./signup-screen/SignUpPage";
 
 //Booking screens
-import ConfirmationPage from "./6-confirmation/ComfirmationPage";
+import ConfirmationPage from "./6-confirmation/ConfirmationPage";
 import PassengerDetails from "./passenger-details/PassengerDetails";
 import SeatSelection from "./2-seat-selection/SeatSelection";
 import PaymentPage from "./5-payment/PaymentPage";

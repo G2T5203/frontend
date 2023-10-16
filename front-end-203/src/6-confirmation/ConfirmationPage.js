@@ -54,7 +54,30 @@ const ConfirmationPage = () => {
         </Button>
       </Box>
       <Container>
-        <BookingSlip />
+      {
+          passengerData && passengerData.map((passenger, index) => (
+            <Box mb={4} key={index}> {/* mb is for margin-bottom */}
+            <BookingSlip
+              key={index}
+              departureTime1={retrievedData.departureFlight.departureDatetime?.split("T")[0]}  // You'll need to adjust these according to how you've stored them
+              departureLocation1={retrievedData.departureFlight.departureLocation}
+              arrivalTime1={retrievedData.departureFlight.departureDatetime?.split("T")[0]}
+              arrivalLocation1={retrievedData.departureFlight.arrivalLocation}
+              departureTime2={retrievedData.returnFlight.departureDatetime?.split("T")[0]}
+              departureLocation2={retrievedData.returnFlight.departureLocation}
+              arrivalTime2={retrievedData.returnFlight.departureDatetime?.split("T")[0]}
+              arrivalLocation2={retrievedData.returnFlight.arrivalLocation}
+              bookingID={bookingId}
+              passengerName={passenger.salutation + " " + passenger.firstName + " " + passenger.lastName}  // Assumes 'name' is a field in each object in passengerData
+              inboundFlightNumber ={retrievedData.departureFlight.planeId}
+              outboundFlightNumber={retrievedData.departureFlight.planeId}  // Adjust this as well
+              classType={retrievedData.classType}  // Adjust this as well
+              outboundSeat={passenger.outboundSeat}  // Assumes 'outboundSeat' is a field in each object in passengerData
+              inboundSeat={passenger.returnSeat}  // Assumes 'inboundSeat' is a field in each object in passengerData
+            />
+            </Box>
+          ))
+        }
       </Container>
       <Box
         sx={{
