@@ -3,6 +3,7 @@ import { Card, CardContent, Typography, Box } from '@mui/material';
 import { Rating } from '@mui/lab';
 import styled from 'styled-components';
 import { Divider } from '@mui/material';
+import { Table, TableHead, TableBody, TableRow, TableCell } from '@mui/material';
 
 const ImageWrapper = styled.div`
   flex-shrink: 0;
@@ -75,31 +76,33 @@ const BookingSummary = () => {
           Your booking is protected by WingIt
         </Typography>
         <CustomDivider/>
-        
-        <h3>Fare Summary</h3>
-          
-          <table>
-              <thead>
-                  <tr>
-                      <th>Passengers' Name:</th>
-                      <th>Seat Number:</th>
-                      <th>Price:</th>
-                  </tr>
-              </thead>
-              <tbody>
-                  {Array.isArray(passengerData) && passengerData.map((passenger, index) => (
-                      <tr key={index}>
-                          <td>{`${passenger.salutation} ${passenger.firstName} ${passenger.lastName}`}</td>
-                          <td>
-                              {`Outbound: ${passenger.outboundSeat}`}
-                              {tripType === "Return" && `, Return: ${passenger.returnSeat}`}
-                          </td>
-                          <td>{`$${fixedFare}`}</td>
-                      </tr>
-                  ))}
-              </tbody>
-          </table>
-        <CustomDivider/>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell sx={{ color: 'white' }}>Passengers' Name</TableCell>
+            <TableCell sx={{ color: 'white' }}>Seat Number</TableCell>
+            <TableCell sx={{ color: 'white' }}>Price</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {Array.isArray(passengerData) && passengerData.map((passenger, index) => (
+            <TableRow key={index}>
+              <TableCell sx={{ color: 'white' }}>{`${passenger.salutation} ${passenger.firstName} ${passenger.lastName}`}</TableCell>
+              <TableCell sx={{ color: 'white' }}>
+                {`Outbound: ${passenger.outboundSeat}`}
+                {tripType === "Return" && `, Return: ${passenger.returnSeat}`}
+              </TableCell>
+              <TableCell sx={{ color: 'white' }}>{`$${fixedFare}`}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+      <Typography sx={{color: 'white',
+       margin: '1rem', 
+       fontFamily:'Merriweather Sans',
+       display: 'flex',
+       justifyContent: 'center'}}>Total Price: {totalFare}</Typography>
+      <CustomDivider></CustomDivider>
       </CardContent>
     </CustomCard>
   );
