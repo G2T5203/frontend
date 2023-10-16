@@ -240,6 +240,15 @@ const SeatSelection = () => {
 
     }
 
+    const handleToPassengerDetails = (event) => {
+      console.log("navigating to passenger details");
+      const data = {
+          "outboundSeats": selectedSeatsDep,
+          "inboundSeats": selectedSeatsRet,
+          "noGuest": noGuest,
+      }
+      navigate("/reviewdetails", {state: data});
+    }
 
     const handleClick = (event) => {
     console.log(selectedSeatsDep );
@@ -606,7 +615,7 @@ const SeatSelection = () => {
         <Box>
           {/*TODO include return seats as well*/}
           <SeatListing depBookedSeats={selectedSeatsDep}/>
-          <Button fullWidth variant="contained" m={2}>
+          <Button fullWidth variant="contained" m={2} onClick={handleToPassengerDetails}>
             To passenger details
           </Button>
         </Box>

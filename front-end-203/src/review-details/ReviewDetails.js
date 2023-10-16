@@ -4,10 +4,12 @@ import ProgressBar from "../progress-bar/ProgressBar";
 import NavBar from "../nav-bar/NavigationBar";
 import FlightInfoCard from "./flight-info-card/FlightInfoCard";
 import FareSummary from "./fare-summary/FareSummary";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const ReviewDetails = () => {
-
+    const location = useLocation();
+    const {inboundSeats, outboundSeats, noGuest} = location.state;
+    console.log(inboundSeats + " " + outboundSeats + ' ' + noGuest);
   const retrievedData = JSON.parse(sessionStorage.getItem('selectedFlights'));
   const passengerData = JSON.parse(sessionStorage.getItem('passengerData'));
 
