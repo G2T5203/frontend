@@ -15,6 +15,7 @@ const ReviewDetails = () => {
 
 
 
+
   const navigate = useNavigate();
 
   const handleProceedToPayment = () => {

@@ -42,6 +42,17 @@ const CustomRating = styled(Rating)`
 `;
 
 const BookingSummary = () => {
+
+  //just using fixed price for now
+  const fixedFare = 100;
+
+  // Calculate the total fare
+  const tripType = sessionStorage.getItem('tripType') || "One way";
+  const passengerData = JSON.parse(sessionStorage.getItem('passengerData'));
+  const totalFare = Array.isArray(passengerData) ? passengerData.length * fixedFare : 0;
+  console.log(passengerData);
+  console.log(totalFare)
+
   return (
     <CustomCard>
       <CardContent>
@@ -64,22 +75,30 @@ const BookingSummary = () => {
           Your booking is protected by WingIt
         </Typography>
         <CustomDivider/>
-        <Typography variant="h6" sx={{color: 'white', fontFamily: "Merriweather Sans", marginTop: '1rem'}}>Seats Selected</Typography>
-        <Box display="flex" justifyContent="space-between" marginTop="16px">
+        
+        <h3>Fare Summary</h3>
           
-          <Typography variant="h6" sx={{color: 'white'}}>A1</Typography>
-          <Typography variant="h6" sx={{color: 'white', fontFamily: "Merriweather Sans"}}>100</Typography>
-        </Box>
-        <Box display="flex" justifyContent="space-between">
-        <Typography variant="h6" sx={{color: 'white'}}>A2</Typography>
-          <Typography variant="body1">&nbsp;</Typography>
-          <Typography variant="h6" sx={{color: 'white', fontFamily: "Merriweather Sans", marginBottom: '1rem'}}>100</Typography>
-        </Box>
-        <CustomDivider/>
-        <Box display="flex" justifyContent="space-between" marginTop="16px" marginBottom={"16px"}>
-          <Typography variant="h5" sx={{color: 'white', fontFamily: "Merriweather Sans"}}>Total</Typography>
-          <Typography variant="h5" sx={{color: 'white', fontFamily: "Merriweather Sans"}}>$200</Typography>
-        </Box>
+          <table>
+              <thead>
+                  <tr>
+                      <th>Passengers' Name:</th>
+                      <th>Seat Number:</th>
+                      <th>Price:</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  {Array.isArray(passengerData) && passengerData.map((passenger, index) => (
+                      <tr key={index}>
+                          <td>{`${passenger.salutation} ${passenger.firstName} ${passenger.lastName}`}</td>
+                          <td>
+                              {`Outbound: ${passenger.outboundSeat}`}
+                              {tripType === "Return" && `, Return: ${passenger.returnSeat}`}
+                          </td>
+                          <td>{`$${fixedFare}`}</td>
+                      </tr>
+                  ))}
+              </tbody>
+          </table>
         <CustomDivider/>
       </CardContent>
     </CustomCard>

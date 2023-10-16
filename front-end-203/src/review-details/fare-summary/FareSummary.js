@@ -9,6 +9,7 @@ const FareSummary = ({ passengers, tripType }) => {
     // Calculate the total fare
     const totalFare = Array.isArray(passengers) ? passengers.length * fixedFare : 0;
 
+
     return (
       <div className="fare-summary">
           <h3>Fare Summary</h3>

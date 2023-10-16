@@ -25,6 +25,7 @@ function PaymentForm() {
     // Navigate to the confirmation component
     navigate("/confirmation");
   };
+  
 
     const [hasText, setHasText] = useState(false);
 
