@@ -252,10 +252,14 @@ const SeatSelection = () => {
       navigate("/passengerdetails", {state: data});
     }
 
-    //blocker for seating
+    //TODO: blocker for seating, stop seats from changing back to black
     const handleClick = (event) => {
     console.log(selectedSeatsDep );
     if (option === "outbound") {
+        if (depCount === 0) {
+            alert("You have selected Maximum Outbound Seats");
+            return;
+        }
       if (selectedSeatsDep.includes(event.target.innerText)) {
 
         //cancel reservation
@@ -313,7 +317,10 @@ const SeatSelection = () => {
 
       }
     } else {
-
+        if (retCount === 0) {
+            alert("You have selected Maximum Inbound Seats");
+            return;
+        }
       if (selectedSeatsRet.includes(event.target.innerText)) {
 
         //cancel reservation

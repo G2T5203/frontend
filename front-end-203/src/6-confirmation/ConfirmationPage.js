@@ -4,6 +4,8 @@ import { Box, Container, Typography, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 import { getCurrentUser } from "../auth.js";
+import ProgressBar from "../progress-bar/ProgressBar";
+import NavigationBar from "../nav-bar/NavigationBar";
 
 const ConfirmationPage = () => {
   const retrievedData = JSON.parse(sessionStorage.getItem('selectedFlights'));
@@ -30,6 +32,10 @@ const ConfirmationPage = () => {
     }
   return (
     <>
+        <div>
+            <NavigationBar />
+        </div>
+        <ProgressBar currentStep={"Confirmation"} number={5} />
       <Box
         sx={{
           display: "flex",
