@@ -3,10 +3,13 @@ import { Button } from "@mui/material";
 import ProgressBar from "../progress-bar/ProgressBar";
 import PassengerForm from "./passenger-form/PassengerForm";
 import NavBar from "../nav-bar/NavigationBar"; // Import the Navbar component
-import { useNavigate } from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 
 
 const PassengerDetails = () => {
+    const location = useLocation();
+    const {inboundSeats, outboundSeats, noGuest, depFlight, retFlight} = location.state;
+    console.log(inboundSeats + " " + outboundSeats + ' ' + noGuest);
   const noGuestSelected = sessionStorage.getItem('noGuestSelected') || "0"; 
   const tripType = sessionStorage.getItem('tripType') || "One way"; 
 

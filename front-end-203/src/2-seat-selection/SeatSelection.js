@@ -25,7 +25,7 @@ const SeatSelection = () => {
   const location = useLocation();
   let { bookingId, departureFlight, returnFlight, noGuest } = location.state;
   //create seats array
-  const [depAllSeats, setDepAllSeats] = useState([null]); //array of json object
+  // const [depAllSeats, setDepAllSeats] = useState([null]); //array of json object
   const [depFirstSeats, setDepFirstSeats] = useState([]);
   const [depBusinessSeats, setDepBusinessSeats] = useState([]);
   const [depEconomySeats, setDepEconomySeats] = useState([]);
@@ -68,7 +68,7 @@ const SeatSelection = () => {
         if (response.status === 200) {
           //first class filters
           const seatListings = response.data;
-          setDepAllSeats(seatListings);
+          // setDepAllSeats(seatListings);
           // console.log(typeof seatListings);
           const filteredSeatListings = seatListings.filter(
             (listing) => listing.seatClass === "First"
@@ -224,7 +224,7 @@ const SeatSelection = () => {
       disableSeats(retDisabledSeats)
     }
 
-  }, [depDisabledSeats,option]);
+  }, [depDisabledSeats,option, retDisabledSeats]);
 
   function color(size) {
       switch (size) {
@@ -249,7 +249,7 @@ const SeatSelection = () => {
           "departureFlight": departureFlight,
           "returnFlight": returnFlight
       }
-      navigate("/reviewdetails", {state: data});
+      navigate("/passengerdetails", {state: data});
     }
 
     const handleClick = (event) => {
