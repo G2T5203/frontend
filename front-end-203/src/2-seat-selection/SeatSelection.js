@@ -23,7 +23,7 @@ const SeatSelection = () => {
   const navigate = useNavigate();
   const apiUrl = process.env.REACT_APP_API_BASE_URL;
   const location = useLocation();
-  let { bookingId, departureFlight, returnFlight, noGuest } = location.state;
+  let { bookingId, departureFlight, returnFlight, numGuest } = location.state;
   //create seats array
   // const [depAllSeats, setDepAllSeats] = useState([null]); //array of json object
   const [depFirstSeats, setDepFirstSeats] = useState([]);
@@ -48,8 +48,8 @@ const SeatSelection = () => {
 
 
   //number of seats left
-  const [depCount, setDepCount] = useState(noGuest);
-  const [retCount, setRetCount] = useState(noGuest);
+  const [depCount, setDepCount] = useState(numGuest);
+  const [retCount, setRetCount] = useState(numGuest);
   //selectedSeatsDep
   const [selectedSeatsDep, setSelectedSeatsDep] = useState([]);
   //selectedSeatsRet
@@ -245,7 +245,7 @@ const SeatSelection = () => {
       const data = {
           "outboundSeats": selectedSeatsDep,
           "inboundSeats": selectedSeatsRet,
-          "numGuest": noGuest,
+          "numGuest": numGuest,
           "departureFlight": departureFlight,
           "returnFlight": returnFlight,
           "bookingId": bookingId
