@@ -252,7 +252,7 @@ const SeatSelection = () => {
       navigate("/passengerdetails", {state: data});
     }
 
-    //TODO: blocker for seating, stop seats from changing back to black
+    //TODO: stop seats from changing back to black
     const handleClick = (event) => {
     console.log(selectedSeatsDep );
     if (option === "outbound") {
