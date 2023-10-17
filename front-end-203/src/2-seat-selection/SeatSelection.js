@@ -98,7 +98,7 @@ const SeatSelection = () => {
           setDepEconomySeats(economySeatNumbers);
 
           const disabledSeats = seatListings.filter(
-              (listing) => listing.isBooked === true
+              (listing) => listing.isBooked === true && !(listing.seatNumber in selectedSeatsDep)
         );
           const disabledSeatNumbers = disabledSeats.map(
               (listing) => listing.seatNumber
@@ -152,7 +152,7 @@ const SeatSelection = () => {
             console.log(economySeatNumbers);
 
             const disabledSeats = seatListings.filter(
-                (listing) => listing.isBooked === true
+                (listing) => listing.isBooked === true && !(listing.seatNumber in selectedSeatsRet)
             );
             const disabledSeatNumbers = disabledSeats.map(
                 (listing) => listing.seatNumber
@@ -216,15 +216,25 @@ const SeatSelection = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const colourSelected = (jsonObject) => {
+      jsonObject.forEach(seat => {
+          seat = document.getElementsByClassName(seat);
+          const buttonElement = seat[0];
+          buttonElement.id = "chosen-by-user";
+      })
+  }
+
   //changing of stuff
   useEffect(() => {
     if (option === "outbound") {
-      disableSeats(depDisabledSeats)
+      disableSeats(depDisabledSeats);
+      colourSelected(selectedSeatsDep);
     } else {
-      disableSeats(retDisabledSeats)
+      disableSeats(retDisabledSeats);
+      colourSelected(selectedSeatsRet);
     }
 
-  }, [depDisabledSeats,option, retDisabledSeats]);
+  }, [depDisabledSeats, option, retDisabledSeats]);
 
   function color(size) {
       switch (size) {
@@ -255,7 +265,7 @@ const SeatSelection = () => {
 
     //TODO: stop seats from changing back to black
     const handleClick = (event) => {
-    console.log(selectedSeatsDep );
+    console.log(retCount + " " + depCount );
     if (option === "outbound") {
         if (depCount === 0) {
             alert("You have selected Maximum Outbound Seats");
