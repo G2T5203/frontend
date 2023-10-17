@@ -465,7 +465,7 @@ const SeatSelection = () => {
               backgroundColor: "lightGrey",
               padding: "20px",
               borderRadius: "10px",
-              width: "450px",
+              width: "500px",
             }}
           >
             <Box>

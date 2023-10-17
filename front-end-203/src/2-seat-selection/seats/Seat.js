@@ -18,9 +18,9 @@ const SingleSeat = ({label, category, handleOnClick}) => {
     function getSize(category){
         switch(category){
             case "First Class":
-                return "200px";
+                return "235px";
             case "Business Class":
-                return "80px";
+                return "105px";
             case "Economy Class":
                 return "20px";
             default:
