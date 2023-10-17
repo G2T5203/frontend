@@ -2,7 +2,7 @@ import { Box, Divider, Typography } from "@mui/material";
 import React from "react";
 import img from "./img.jpg";
 
-const SeatListing = ({depBookedSeats}) => {
+const SeatListing = ({bookedSeatsDep, bookedSeatsRet}) => {
   return (
     <>
       <Box
@@ -59,7 +59,8 @@ const SeatListing = ({depBookedSeats}) => {
             alignItems: "flex-start",
           }}
         >
-            {depBookedSeats.map((item, index) => (
+            <Typography variant={"body1"} color={"white"} fontWeight={"bold"} fontFamily={"Noto Sans"}>OutBound Seats</Typography>
+            {bookedSeatsDep.map((item, index) => (
                 <Box
                     key={index}
                     sx={{
@@ -72,18 +73,23 @@ const SeatListing = ({depBookedSeats}) => {
                     <Typography color={"white"}> {item}</Typography>
                 </Box>
             ))}
+            {bookedSeatsRet != null ? (<>
+            <Typography variant={"body1"} color={"white"} fontWeight={"bold"} fontFamily={"Noto Sans"}>Inbound Seats</Typography>
+            {bookedSeatsRet.map((item, index) => (
+                <Box
+                    key={index}
+                    sx={{
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                        width: "100%",
+                    }}
+                >
+                    <Typography color={"white"}> {item}</Typography>
+                </Box>
+            ))} </>) : (<Typography>No inbound</Typography>)}
 
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-between",
-              width: "100%",
-            }}
-          >
-            <Typography color={"white"}> Person B: A2</Typography>
-            <Typography color={"white"}> $100</Typography>
-          </Box>
+
         </Box>
 
         <Divider color={"grey"} sx={{ marginY: 2 }} />
@@ -98,8 +104,7 @@ const SeatListing = ({depBookedSeats}) => {
               height: "50px",
             }}
           >
-            <Typography color={"white"}> Total</Typography>
-            <Typography color={"white"}> $200</Typography>
+
           </Box>
         </Box>
       </Box>

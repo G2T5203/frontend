@@ -265,9 +265,8 @@ const SeatSelection = () => {
 
     //TODO: stop seats from changing back to black
     const handleClick = (event) => {
-    console.log(retCount + " " + depCount );
     if (option === "outbound") {
-        if (depCount === 0) {
+        if ((event.target.id !== "chosen-by-user") && depCount === 0) {
             alert("You have selected Maximum Outbound Seats");
             return;
         }
@@ -328,7 +327,7 @@ const SeatSelection = () => {
 
       }
     } else {
-        if (retCount === 0) {
+        if (retCount === 0 && (event.target.id !== "chosen-by-user")) {
             alert("You have selected Maximum Inbound Seats");
             return;
         }
@@ -635,7 +634,12 @@ const SeatSelection = () => {
         </Box>
         <Box>
           {/*TODO include return seats as well*/}
-          <SeatListing depBookedSeats={selectedSeatsDep}/>
+            {selectedSeatsRet === null ?
+                (<SeatListing bookedSeatsDep={selectedSeatsDep} bookedSeatsRet={null}/>) : (
+                    <>
+                <SeatListing bookedSeatsDep={selectedSeatsDep} bookedSeatsRet={selectedSeatsRet}/>
+                </>)
+          }
           <Button fullWidth variant="contained" m={2} onClick={handleToPassengerDetails}>
             To passenger details
           </Button>
