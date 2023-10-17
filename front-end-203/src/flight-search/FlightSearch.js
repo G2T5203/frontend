@@ -217,42 +217,33 @@ function FlightSearch() {
 
     var bookingId;
     console.log(selectedDepartureFlight.departureDatetime.replace(/"/g, ""))
+    const payload = (selectedReturnFlight === null) ? {
+    "bookingId": "-1",
+        "username": getCurrentUser().username,
+        "outboundRouteId": selectedDepartureFlight.routeId,
+        "outboundPlaneId": selectedDepartureFlight.planeId,
+        "outboundDepartureDatetime": selectedDepartureFlight.departureDatetime.replace(/"/g, ""),
+        "partySize": noGuest
+  } : {
+      "bookingId": "-1",
+      "username": getCurrentUser().username,
+      "outboundRouteId": selectedDepartureFlight.routeId,
+      "outboundPlaneId": selectedDepartureFlight.planeId,
+      "outboundDepartureDatetime": selectedDepartureFlight.departureDatetime.replace(/"/g, ""),
+      "partySize": noGuest,
+      "inboundRouteId": selectedReturnFlight.routeId,
+      "inboundPlaneId": selectedReturnFlight.planeId,
+      "inboundDepartureDatetime": selectedReturnFlight.departureDatetime.replace(/"/g, "")
+    }
     try {
-      axios.post(apiUrl + "bookings/new",
-      {
-        "bookingId": "-1",
-          "username": getCurrentUser().username,
-          "outboundRouteId": selectedDepartureFlight.routeId,
-          "outboundPlaneId": selectedDepartureFlight.planeId,
-          "outboundDepartureDatetime": selectedDepartureFlight.departureDatetime.replace(/"/g, ""),
-          "partySize": noGuest
-      }
-      ).then((response) => {
+      axios.post(apiUrl + "bookings/new", payload).then((response) => {
         if (response.status === 201) {
          bookingId = response.data.bookingId;
          console.log("booking id is " + bookingId);
         } else {
           console.log(response.status)
         }
-        // if there is inbound flight
-        if (selectedReturnFlight != null) {
-          try {
-            axios.put(apiUrl + `bookings/updateInbound/${bookingId}`, {
-              "inboundRouteId": selectedReturnFlight.routeId,
-              "inboundPlaneId": selectedReturnFlight.planeId,
-              "inboundDepartureDatetime": selectedReturnFlight.departureDatetime.replace(/"/g, "")
-            }).then((response) => {
-              if (response.status === 201) {
-                console.log("updated inbound flight")
-              } else {
-                console.log(response.status)
-              }
-            });
-            } catch (error){
-            console.log(error);
-            console.log("failed at axios inbound setting")
-          }
-        }
+
         let seatselectinfo = {
           bookingId: bookingId,
           departureFlight: selectedDepartureFlight,

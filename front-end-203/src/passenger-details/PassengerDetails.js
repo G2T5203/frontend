@@ -39,7 +39,7 @@ const handleProceedToReview = () => {
 
       <ProgressBar currentStep={"Passenger Details"} number={2} />
 
-      <PassengerForm numGuests={noGuestSelected} tripType={tripType} onPassengerDataChange={handlePassengerDataChange}/>
+      <PassengerForm numGuests={numGuestSelected} tripType={tripType} onPassengerDataChange={handlePassengerDataChange}/>
 
       <div
         style={{
