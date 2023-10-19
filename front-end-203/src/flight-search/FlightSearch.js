@@ -340,14 +340,14 @@ function FlightSearch() {
           />
         </div>
       </div>
-      {/* Container for FilterTile */}
+      {/* Container for FilterTile
       <div className="filter-container">
         <FilterTile
           airlines={filterInfo.airlines}
           onPriceChange={handlePriceChange}
           onFlightTimeChange={handleFlightTime}
         />
-      </div>
+      </div> */}
       <div className="proceed-button-container">
         <Button
           variant="contained"
