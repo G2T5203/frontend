@@ -11,20 +11,30 @@ import {
 
 import { Button, Box, TextField, Typography } from "@mui/material";
 import { ThemeProvider, createTheme } from "@mui/material";
+import axios from "axios";
 
-
-
-
-
-  
 
 function PaymentForm() {
   const navigate = useNavigate();
+  const bookingId = sessionStorage.getItem('bookingId')
 
   const handleProceedToPayment = () => {
     // Navigate to the confirmation component
+    const apiUrl = process.env.REACT_APP_API_BASE_URL;
+    console.log("This is booking id: " + bookingId)
+  const url1 = apiUrl + `bookings/markAsPaid/${bookingId}`;  // The endpoint you're sending the request to
+
+  axios.put(url1)
+    .then(response => {
+      console.log('Data updated successfully hehe:', response.data);
+    })
+    .catch(error => {
+      console.error('Error updating data:', error);
+    });
     navigate("/confirmation");
   };
+
+  
   
 
     const [hasText, setHasText] = useState(false);
