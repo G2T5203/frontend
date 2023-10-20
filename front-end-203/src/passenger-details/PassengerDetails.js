@@ -8,12 +8,12 @@ import {useLocation, useNavigate} from "react-router-dom";
 
 const PassengerDetails = () => {
     const location = useLocation();
-    const {inboundSeats, outboundSeats, numGuest, depFlight, retFlight, bookingId} = location.state;
+    const {inboundSeats, outboundSeats, numGuest, departureFlight, returnFlight, bookingId} = location.state;
     console.log(inboundSeats + " " + outboundSeats + ' ' + numGuest);
     const numGuestSelected = numGuest;
-    // const tripType = (!retFlight) ? "One way" : "Return";
+    const tripType = (returnFlight === null) ? "One way" : "Return";
   // const noGuestSelected = sessionStorage.getItem('noGuestSelected') || "0";
-  const tripType = sessionStorage.getItem('tripType') || "One way";
+  // const tripType = sessionStorage.getItem('tripType') || "One way";
 
   const navigate = useNavigate();
   const [passengers, setPassengers] = React.useState([]);
@@ -25,10 +25,16 @@ const PassengerDetails = () => {
 const handleProceedToReview = () => {
   // Save to sessionStorage
   sessionStorage.setItem('passengerData', JSON.stringify(passengers));
+  console.log("navigating to review details");
 
-  // Navigate to the ReviewDetails component
-  navigate("/reviewdetails");
-};
+  const data = {
+    "numGuest": numGuest,
+    "departureFlight": departureFlight,
+    "returnFlight": returnFlight,
+    "bookingId": bookingId
+}
+    navigate("/reviewdetails", {state: data});
+}
 
   
   return (

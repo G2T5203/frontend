@@ -11,12 +11,13 @@ const ReviewDetails = () => {
   const retrievedData = JSON.parse(sessionStorage.getItem('selectedFlights'));
   const passengerData = JSON.parse(sessionStorage.getItem('passengerData'));
 
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const tripType = sessionStorage.getItem('tripType') || "One way";
 
+  const {bookingId} = location.state;
 
-
-
-  const navigate = useNavigate();
 
   const handleProceedToPayment = () => {
     // Navigate to the payment component
@@ -76,7 +77,7 @@ const ReviewDetails = () => {
       </div>
 
       <div className="center-container">
-        <FareSummary passengers={passengerData} tripType={tripType}/>
+        <FareSummary passengers={passengerData} tripType={tripType} bookingId={bookingId}/>
       </div>
 
 

@@ -1,13 +1,30 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';  
 import './FareSummary.css'
 
-const FareSummary = ({ passengers, tripType }) => {
+const FareSummary = ({ passengers, tripType, bookingId }) => {
 
-    //just using fixed price for now
-    const fixedFare = 100;
+    const [totalChargedPrice, setTotalChargedPrice] = useState(0);
+    const apiUrl = process.env.REACT_APP_API_BASE_URL;
 
-    // Calculate the total fare
-    const totalFare = Array.isArray(passengers) ? passengers.length * fixedFare : 0;
+    useEffect(() => {
+        const fetchChargedPrice = async () => {
+            try {
+                const url1 = apiUrl + `bookings/calculateChargedPrice/${bookingId}`; 
+                const response = await axios.put(url1);
+                setTotalChargedPrice(response.data.totalChargedPrice);
+                console.log('Response from backend:', response.data);
+
+            } catch (error) {
+                console.error("Failed to fetch charged price:", error);
+            }
+        };
+
+        fetchChargedPrice();
+    }, []);
+
+    console.log('Total Charged Price:', totalChargedPrice);
+
 
 
     return (
@@ -30,14 +47,14 @@ const FareSummary = ({ passengers, tripType }) => {
                               {`Outbound: ${passenger.outboundSeat}`}
                               {tripType === "Return" && `, Return: ${passenger.returnSeat}`}
                           </td>
-                          <td>{`$${fixedFare}`}</td>
+                          <td>{`$${(totalChargedPrice.toFixed(2))}`}</td>
                       </tr>
                   ))}
               </tbody>
           </table>
   
           <div className="subtotal">
-              <strong>Total Fare: </strong>${totalFare}
+              <strong>Total Fare: </strong>${totalChargedPrice.toFixed(2)}
           </div>
       </div>
   );
