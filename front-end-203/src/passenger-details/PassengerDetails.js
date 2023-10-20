@@ -11,9 +11,9 @@ const PassengerDetails = () => {
     const {inboundSeats, outboundSeats, numGuest, depFlight, retFlight, bookingId} = location.state;
     console.log(inboundSeats + " " + outboundSeats + ' ' + numGuest);
     const numGuestSelected = numGuest;
-    const tripType = (retFlight === null) ? "One way" : "Return"
+    // const tripType = (!retFlight) ? "One way" : "Return";
   // const noGuestSelected = sessionStorage.getItem('noGuestSelected') || "0";
-  // const tripType = sessionStorage.getItem('tripType') || "One way";
+  const tripType = sessionStorage.getItem('tripType') || "One way";
 
   const navigate = useNavigate();
   const [passengers, setPassengers] = React.useState([]);
@@ -39,7 +39,7 @@ const handleProceedToReview = () => {
 
       <ProgressBar currentStep={"Passenger Details"} number={2} />
 
-      <PassengerForm numGuests={numGuestSelected} tripType={tripType} onPassengerDataChange={handlePassengerDataChange}/>
+      <PassengerForm numGuests={numGuestSelected} tripType={tripType} outboundSeats={outboundSeats} inboundSeats={inboundSeats} onPassengerDataChange={handlePassengerDataChange}/>
 
       <div
         style={{

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Box, Typography, TextField, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
 
-const PassengerForm = ({ numGuests, tripType, onPassengerDataChange }) => {
+const PassengerForm = ({ numGuests, tripType, outboundSeats, inboundSeats, onPassengerDataChange }) => {
 
     const [passengers, setPassengers] = useState(Array.from({ length: parseInt(numGuests) }).map(() => ({
         salutation: '',
@@ -62,8 +62,9 @@ const PassengerForm = ({ numGuests, tripType, onPassengerDataChange }) => {
                              onChange={(e) => handleInputChange(index, 'outboundSeat', e.target.value)}
                     > 
                     {/* need to change to pull in data from seat selection */}
-                        <MenuItem value={"A1"}>A1</MenuItem>
-                        <MenuItem value={"A2"}>A2</MenuItem>
+                    {outboundSeats.map(seat => (
+                        <MenuItem key={seat} value={seat}>{seat}</MenuItem>
+                    ))}
                     </Select>
                 </FormControl>
                 {tripType ==="Return" && (
