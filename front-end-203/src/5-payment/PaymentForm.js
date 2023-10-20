@@ -12,6 +12,7 @@ import {
 import { Button, Box, TextField, Typography } from "@mui/material";
 import { ThemeProvider, createTheme } from "@mui/material";
 import axios from "axios";
+import { getCurrentUser } from "../auth";
 
 
 function PaymentForm() {
@@ -24,6 +25,7 @@ function PaymentForm() {
     console.log("This is booking id: " + bookingId)
   const url1 = apiUrl + `bookings/markAsPaid/${bookingId}`;  // The endpoint you're sending the request to
 
+  // put request to backend for updating markAsPaid to true
   axios.put(url1)
     .then(response => {
       console.log('Data updated successfully hehe:', response.data);
@@ -32,10 +34,21 @@ function PaymentForm() {
       console.error('Error updating data:', error);
     });
     navigate("/confirmation");
-  };
 
-  
-  
+    const username = getCurrentUser().username;
+
+    // just to display bookings of the user to verify that the markAsPaid is set to true on click of the confirm and pay button
+    const url2 = apiUrl + `bookings/${username}`
+    console.log("This is username hehe: " + username);
+    axios.get(url2)
+    .then(response => {
+      console.log('This is booking data', response.data);
+    })
+    .catch(error => {
+      console.error('Error getting booking data:', error);
+    });
+   
+  };
 
     const [hasText, setHasText] = useState(false);
 
