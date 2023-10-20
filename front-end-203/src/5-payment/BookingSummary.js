@@ -1,9 +1,10 @@
-import React from 'react';
-import { Card, CardContent, Typography, Box } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';  import { Card, CardContent, Typography, Box } from '@mui/material';
 import { Rating } from '@mui/lab';
 import styled from 'styled-components';
 import { Divider } from '@mui/material';
 import { Table, TableHead, TableBody, TableRow, TableCell } from '@mui/material';
+
 
 const ImageWrapper = styled.div`
   flex-shrink: 0;
@@ -51,6 +52,29 @@ const BookingSummary = () => {
   const tripType = sessionStorage.getItem('tripType') || "One way";
   const passengerData = JSON.parse(sessionStorage.getItem('passengerData'));
   const totalFare = Array.isArray(passengerData) ? passengerData.length * fixedFare : 0;
+  const [totalChargedPrice, setTotalChargedPrice] = useState(0);
+  const apiUrl = process.env.REACT_APP_API_BASE_URL;
+
+  const bookingId = sessionStorage.getItem('bookingId')
+
+
+
+  useEffect(() => {
+    const fetchChargedPrice = async () => {
+        try {
+            const url1 = apiUrl + `bookings/calculateChargedPrice/${bookingId}`; 
+            const response = await axios.put(url1);
+            setTotalChargedPrice(response.data.totalChargedPrice);
+            console.log('Response from backend:', response.data);
+
+        } catch (error) {
+            console.error("Failed to fetch charged price:", error);
+        }
+    };
+
+    fetchChargedPrice();
+}, []);
+
   console.log(passengerData);
   console.log(totalFare)
 
@@ -101,7 +125,7 @@ const BookingSummary = () => {
        margin: '1rem', 
        fontFamily:'Merriweather Sans',
        display: 'flex',
-       justifyContent: 'center'}}>Total Price: {totalFare}</Typography>
+       justifyContent: 'center'}}>Total Price: {totalChargedPrice}</Typography>
       <CustomDivider></CustomDivider>
       </CardContent>
     </CustomCard>
