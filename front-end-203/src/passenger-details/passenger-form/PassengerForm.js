@@ -74,8 +74,9 @@ const PassengerForm = ({ numGuests, tripType, outboundSeats, inboundSeats, onPas
                                 value={passengers[index].returnSeat}
                                 onChange={(e) => handleInputChange(index, 'returnSeat', e.target.value)}
                         >
-                            <MenuItem value={"A1"}>A1</MenuItem>
-                            <MenuItem value={"A2"}>A2</MenuItem>
+                            {inboundSeats.map(seat => (
+                        <MenuItem key={seat} value={seat}>{seat}</MenuItem>
+                    ))}
                         </Select>
                     </FormControl>
                 )}
