@@ -5,6 +5,22 @@ import { useNavigate } from "react-router-dom";
 import { isAuthenticated, removeAuthToken, updateAuthHeadersFromCurrentUser } from '../../auth';
 
 const FareSummary = ({ passengers, tripType, bookingId }) => {
+  const retrievedData = JSON.parse(sessionStorage.getItem('selectedFlights'));
+  const passengerData = JSON.parse(sessionStorage.getItem('passengerData'));
+  console.log("This is passsengers")
+  console.log(passengers);
+
+  console.log("This is tripType")
+  console.log(tripType);
+
+  console.log("This is booking ID")
+  console.log(bookingId);
+
+  console.log("This is retrieved data")
+  console.log(retrievedData)
+  console.log("This is passenger data")
+  console.log(passengerData)
+
 
     const [totalChargedPrice, setTotalChargedPrice] = useState(0);
     const apiUrl = process.env.REACT_APP_API_BASE_URL;
@@ -32,6 +48,42 @@ const FareSummary = ({ passengers, tripType, bookingId }) => {
             };
     
             fetchChargedPrice();
+
+            // Set occupant to reserved seat for each passenger
+            passengers.forEach(passenger => {
+              const payload1 = {
+                  "planeId": retrievedData.departureFlight.planeId,
+                  "routeId": retrievedData.departureFlight.routeId,
+                  "departureDatetime": retrievedData.departureFlight.departureDatetime,
+                  "seatNumber": passenger.outboundSeat,
+                  "bookingId": bookingId,
+                  "occupantName": `${passenger.firstName} ${passenger.lastName}`
+              };
+              axios.put(apiUrl + 'seatListings/bookSeat/setOccupant', payload1)
+                  .then(res => {
+                      console.log('Set occupant dep success:', res.data);
+                  })
+                  .catch(error => {
+                      console.error('Failed to set dep occupant:', error);
+                  });
+                  if (tripType === "Return") {
+                  const payload2 = {
+                    "planeId": retrievedData.returnFlight.planeId, 
+                    "routeId": retrievedData.returnFlight.routeId, 
+                    "departureDatetime": retrievedData.returnFlight.departureDatetime,
+                    "seatNumber": passenger.inboundSeat,
+                    "bookingId": bookingId,
+                    "occupantName": `${passenger.firstName} ${passenger.lastName}`
+                };
+                axios.put(apiUrl + 'seatListings/bookSeat/setOccupant', payload2)
+                    .then(res => {
+                        console.log('Set occupant ret success:', res.data);
+                    })
+                    .catch(error => {
+                        console.error('Failed to set ret occupant:', error);
+                    });
+                  }
+          });
             } else {
               removeAuthToken();
               navigate("/signin");
