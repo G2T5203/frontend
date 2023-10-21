@@ -4,6 +4,8 @@ import { Rating } from '@mui/lab';
 import styled from 'styled-components';
 import { Divider } from '@mui/material';
 import { Table, TableHead, TableBody, TableRow, TableCell } from '@mui/material';
+import { isAuthenticated, updateAuthHeadersFromCurrentUser, removeAuthToken } from '../auth';
+import { useNavigate } from 'react-router-dom';
 
 
 const ImageWrapper = styled.div`
@@ -47,6 +49,7 @@ const BookingSummary = () => {
 
   //just using fixed price for now
   const fixedFare = 100;
+  const navigate = useNavigate();
 
   // Calculate the total fare
   const tripType = sessionStorage.getItem('tripType') || "One way";
@@ -59,21 +62,45 @@ const BookingSummary = () => {
 
 
 
+  //authentication + api call
   useEffect(() => {
-    const fetchChargedPrice = async () => {
-        try {
-            const url1 = apiUrl + `bookings/calculateChargedPrice/${bookingId}`; 
-            const response = await axios.put(url1);
-            setTotalChargedPrice(response.data.totalChargedPrice);
-            console.log('Response from backend:', response.data);
-
-        } catch (error) {
-            console.error("Failed to fetch charged price:", error);
-        }
-    };
-
-    fetchChargedPrice();
-}, []);
+    if (isAuthenticated()) {
+      axios
+          .get(apiUrl + "users/authTest")
+          .then((response) => {
+            // TODO: This isn't correctly reporting errors. Postman is 403, but here it's still 200.
+            if (response.status === 200) {
+              updateAuthHeadersFromCurrentUser();
+              const fetchChargedPrice = async () => {
+                try {
+                    const url1 = apiUrl + `bookings/calculateChargedPrice/${bookingId}`; 
+                    const response = await axios.put(url1);
+                    setTotalChargedPrice(response.data.totalChargedPrice);
+                    console.log('Response from backend:', response.data);
+    
+                } catch (error) {
+                    console.error("Failed to fetch charged price:", error);
+                }
+            };
+    
+            fetchChargedPrice();
+            } else {
+              removeAuthToken();
+              navigate("/signin");
+              console.log("made an error at flightSearch 51")
+            }
+          })
+          .catch((error) => {
+            removeAuthToken();
+            navigate("/signin");
+            console.log(error);
+          });
+    } else {
+      navigate("/signin");
+        console.log("made an error at flightSearch 61")
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   console.log(passengerData);
   console.log(totalFare)
@@ -125,7 +152,7 @@ const BookingSummary = () => {
        margin: '1rem', 
        fontFamily:'Merriweather Sans',
        display: 'flex',
-       justifyContent: 'center'}}>Total Price: {totalChargedPrice}</Typography>
+       justifyContent: 'center'}}>Total Price: {totalChargedPrice.toFixed(2)}</Typography>
       <CustomDivider></CustomDivider>
       </CardContent>
     </CustomCard>

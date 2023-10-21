@@ -75,7 +75,7 @@ const ConfirmationPage = () => {
               inboundArrivalLocation={retrievedData.returnFlight.arrivalLocation}
               bookingID={bookingId}
               passengerName={passenger.salutation + " " + passenger.firstName + " " + passenger.lastName}  // Assumes 'name' is a field in each object in passengerData
-              inboundFlightNumber ={retrievedData.departureFlight.planeId}
+              inboundFlightNumber ={retrievedData.returnFlight.planeId}
               outboundFlightNumber={retrievedData.departureFlight.planeId}  // Adjust this as well
               classType={retrievedData.classType}  // Adjust this as well
               outboundSeat={passenger.outboundSeat}  // Assumes 'outboundSeat' is a field in each object in passengerData
