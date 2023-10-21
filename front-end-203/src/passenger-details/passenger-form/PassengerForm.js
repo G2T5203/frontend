@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, Typography, TextField, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
 
 const PassengerForm = ({ numGuests, tripType, outboundSeats, inboundSeats, onPassengerDataChange }) => {
@@ -11,10 +11,36 @@ const PassengerForm = ({ numGuests, tripType, outboundSeats, inboundSeats, onPas
         returnSeat: '',
     })));
 
+    const [selectedOutboundSeats, setSelectedOutboundSeats] = useState([]);
+    const [selectedInboundSeats, setSelectedInboundSeats] = useState([]);
+
+
+    useEffect(() => {
+        setSelectedOutboundSeats(passengers.map(p => p.outboundSeat));
+        setSelectedInboundSeats(passengers.map(p => p.returnSeat));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     const handleInputChange = (index, field, value) => {
         const updatedPassengers = [...passengers];
         updatedPassengers[index][field] = value;
         setPassengers(updatedPassengers);
+
+        if (field === 'outboundSeat') {
+            setSelectedOutboundSeats(prevSeats => {
+                const newSeats = [...prevSeats];
+                newSeats[index] = value;
+                return newSeats;
+            });
+        }
+    
+        if (tripType === "Return" && field === 'returnSeat') {
+            setSelectedInboundSeats(prevSeats => {
+                const newSeats = [...prevSeats];
+                newSeats[index] = value;
+                return newSeats;
+            });
+        }
 
         // inform parent component
         if (onPassengerDataChange) onPassengerDataChange(updatedPassengers);
@@ -61,10 +87,10 @@ const PassengerForm = ({ numGuests, tripType, outboundSeats, inboundSeats, onPas
                              value={passengers[index].outboundSeat}
                              onChange={(e) => handleInputChange(index, 'outboundSeat', e.target.value)}
                     > 
-                    {/* need to change to pull in data from seat selection */}
-                    {outboundSeats.map(seat => (
-                        <MenuItem key={seat} value={seat}>{seat}</MenuItem>
-                    ))}
+                    {/*filter out seats that have been selected */}
+                    {outboundSeats.filter(seat => !selectedOutboundSeats.includes(seat) || seat === passengers[index].outboundSeat).map(seat => (
+                <MenuItem key={seat} value={seat}>{seat}</MenuItem>
+            ))}
                     </Select>
                 </FormControl>
                 {tripType ==="Return" && (
@@ -74,7 +100,7 @@ const PassengerForm = ({ numGuests, tripType, outboundSeats, inboundSeats, onPas
                                 value={passengers[index].returnSeat}
                                 onChange={(e) => handleInputChange(index, 'returnSeat', e.target.value)}
                         >
-                            {inboundSeats.map(seat => (
+                            {inboundSeats.filter(seat => !selectedInboundSeats.includes(seat) || seat === passengers[index].returnSeat).map(seat => (
                         <MenuItem key={seat} value={seat}>{seat}</MenuItem>
                     ))}
                         </Select>
