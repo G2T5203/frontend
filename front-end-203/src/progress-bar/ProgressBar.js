@@ -1,7 +1,8 @@
 import React from "react";
 import { Box, Typography, Stepper, StepLabel, Step } from "@mui/material";
+import Timer from "./Timer.js"
 
-const ProgressBar = ({ currentStep, number }) => {
+const ProgressBar = ({ currentStep, number, deadline }) => {
   const steps = [
     "Flights",
     "Seat Selection",
@@ -10,6 +11,10 @@ const ProgressBar = ({ currentStep, number }) => {
     "Payment",
     "Confirmation",
   ];
+
+  console.log(deadline + "from prog")
+
+
   return (
     <>
       <Box
@@ -40,7 +45,11 @@ const ProgressBar = ({ currentStep, number }) => {
           >
             {currentStep}
           </Typography>
+            <div>
+                <Timer deadline={deadline}/>
+            </div>
         </Box>
+
       </Box>
       <Box
         sx={{ borderBottom: 1, borderColor: "divider", marginBottom: "20px" }}

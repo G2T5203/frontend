@@ -23,7 +23,7 @@ const SeatSelection = () => {
   const navigate = useNavigate();
   const apiUrl = process.env.REACT_APP_API_BASE_URL;
   const location = useLocation();
-  let { bookingId, departureFlight, returnFlight, numGuest } = location.state;
+  let { bookingId, departureFlight, returnFlight, numGuest, startTime } = location.state;
   //create seats array
   // const [depAllSeats, setDepAllSeats] = useState([null]); //array of json object
   const [depFirstSeats, setDepFirstSeats] = useState([]);
@@ -32,7 +32,6 @@ const SeatSelection = () => {
     const [retFirstSeats, setRetFirstSeats] = useState([]);
     const [retBusinessSeats, setRetBusinessSeats] = useState([]);
     const [retEconomySeats, setRetEconomySeats] = useState([]);
-
 
   //math for number of rows
   const firstNumRows = Math.ceil(depFirstSeats.length / 2);
@@ -55,7 +54,11 @@ const SeatSelection = () => {
   //selectedSeatsRet
   const [selectedSeatsRet, setSelectedSeatsRet] = useState([]);
 
+  //put deadline
+    const newTime = new Date(startTime);
+    const endTime =  new Date(newTime.getTime() + 15*60000);
 
+console.log(newTime + "\n" + endTime)
   const urlDep =
     apiUrl +
     `seatListings/matchingRouteListing/${departureFlight.planeId}/${departureFlight.routeId}/${depdt}`;
@@ -400,7 +403,9 @@ const SeatSelection = () => {
       <div>
         <NavigationBar />
       </div>
-      <ProgressBar currentStep={"Seat Selection"} number={1} />
+
+      <ProgressBar currentStep={"Seat Selection"} number={1} deadline={endTime} />
+
       <Box
         sx={{
           justifyContent: "center",

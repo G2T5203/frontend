@@ -216,6 +216,7 @@ function FlightSearch() {
   const handleProceedClick = () => {
 
     var bookingId;
+    var startTime;
     console.log(selectedDepartureFlight.departureDatetime.replace(/"/g, ""))
     const payload = (selectedReturnFlight === null) ? {
     "bookingId": "-1",
@@ -239,7 +240,8 @@ function FlightSearch() {
       axios.post(apiUrl + "bookings/new", payload).then((response) => {
         if (response.status === 201) {
          bookingId = response.data.bookingId;
-         console.log("booking id is " + bookingId);
+         startTime = response.data.startBookingDatetime;
+         console.log(response.data);
         } else {
           console.log(response.status)
         }
@@ -248,11 +250,12 @@ function FlightSearch() {
           bookingId: bookingId,
           departureFlight: selectedDepartureFlight,
           returnFlight: selectedReturnFlight ,
-          numGuest: noGuest
+          numGuest: noGuest,
+          startTime: startTime,
         }
         sessionStorage.setItem('bookingId', JSON.stringify(seatselectinfo.bookingId));
 
-        console.log(seatselectinfo.bookingId + " is from search");
+        console.log(seatselectinfo.startTime + " is from search");
         navigate("/seatselection", {state : seatselectinfo});
       })
     } catch (error) {

@@ -59,7 +59,7 @@ const FareSummary = ({ passengers, tripType, bookingId }) => {
                   "bookingId": bookingId,
                   "occupantName": `${passenger.firstName} ${passenger.lastName}`
               };
-              axios.put(apiUrl + 'seatListings/bookSeat/setOccupant', payload1)
+              axios.put(apiUrl + `seatListings/bookSeat/setOccupant/${bookingId}`, payload1)
                   .then(res => {
                       console.log('Set occupant dep success:', res.data);
                   })
@@ -75,7 +75,7 @@ const FareSummary = ({ passengers, tripType, bookingId }) => {
                     "bookingId": bookingId,
                     "occupantName": `${passenger.firstName} ${passenger.lastName}`
                 };
-                axios.put(apiUrl + 'seatListings/bookSeat/setOccupant', payload2)
+                axios.put(apiUrl + `seatListings/bookSeat/setOccupant/${bookingId}`, payload2)
                     .then(res => {
                         console.log('Set occupant ret success:', res.data);
                     })
