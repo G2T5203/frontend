@@ -240,7 +240,7 @@ console.log(newTime + "\n" + endTime)
       colourSelected(selectedSeatsRet);
     }
 
-  }, [depDisabledSeats, option, retDisabledSeats]);
+  }, [depDisabledSeats, option, retDisabledSeats, selectedSeatsRet, selectedSeatsDep]);
 
   function color(size) {
       switch (size) {

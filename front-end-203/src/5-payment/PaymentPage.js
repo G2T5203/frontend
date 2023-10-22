@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import ProgressBar from "../progress-bar/ProgressBar";
 import NavigationBar from "../nav-bar/NavigationBar";
 import { loadStripe } from '@stripe/stripe-js';
@@ -9,10 +9,10 @@ import BookingSummary from "./BookingSummary";
 import "./PaymentPage.css";
 
 const PaymentPage = () => {
-    const navigate = useNavigate();
-    const handleClickReturn = (e) => {
-        navigate("/");
-    }
+    // const navigate = useNavigate();
+    // const handleClickReturn = (e) => {
+    //     navigate("/");
+    // }
     const stripePromise = loadStripe('YOUR_PUBLISHABLE_KEY_HERE');
     
     return (
