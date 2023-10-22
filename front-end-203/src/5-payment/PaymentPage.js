@@ -18,7 +18,7 @@ const PaymentPage = () => {
     return (
         <>
             <NavigationBar />
-            <ProgressBar currentStep={"Payment"} number={4} />
+            <ProgressBar currentStep={"Payment"} number={4} deadline={new Date(sessionStorage.getItem('endTime'))} />
 
             <div className="payment-content">
                 <div className="payment-form">

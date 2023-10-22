@@ -36,6 +36,7 @@ const handleProceedToReview = () => {
     navigate("/reviewdetails", {state: data});
 }
 
+
   
   return (
     <div>
@@ -43,7 +44,7 @@ const handleProceedToReview = () => {
         <NavBar />
       </div>
 
-      <ProgressBar currentStep={"Passenger Details"} number={2} />
+      <ProgressBar currentStep={"Passenger Details"} number={2} deadline={new Date(sessionStorage.getItem('endTime'))}/>
 
       <PassengerForm numGuests={numGuestSelected} tripType={tripType} outboundSeats={outboundSeats} inboundSeats={inboundSeats} onPassengerDataChange={handlePassengerDataChange}/>
 

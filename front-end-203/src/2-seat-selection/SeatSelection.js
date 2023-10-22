@@ -58,6 +58,9 @@ const SeatSelection = () => {
     const newTime = new Date(startTime);
     const endTime =  new Date(newTime.getTime() + 15*60000);
 
+    // for transfer of time to other screens
+    sessionStorage.setItem('endTime', endTime.toString());
+
 console.log(newTime + "\n" + endTime)
   const urlDep =
     apiUrl +

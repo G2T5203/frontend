@@ -35,7 +35,7 @@ const ConfirmationPage = () => {
         <div>
             <NavigationBar />
         </div>
-        <ProgressBar currentStep={"Confirmation"} number={5} />
+        <ProgressBar currentStep={"Confirmation"} number={5} deadline={new Date(sessionStorage.getItem('endTime'))} />
       <Box
         sx={{
           display: "flex",

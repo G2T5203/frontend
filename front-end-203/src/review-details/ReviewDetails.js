@@ -40,7 +40,7 @@ const ReviewDetails = () => {
         <NavBar />
       </div>
 
-      <ProgressBar currentStep={"Review Details"} number={3} />
+      <ProgressBar currentStep={"Review Details"} number={3} deadline={new Date(sessionStorage.getItem('endTime'))} />
 
       <div className="center-container">
         {departureFlight && (
