@@ -30,7 +30,7 @@ export const Timer = ({deadline}) => {
         <Grid container className="timer" spacing={2}>
             {timeUnits.map(({ label, divisor }) => (
                 <Grid key={label} item xs={6} sm={3}>
-                    <Box display="flex" flexDirection="column" alignItems="center">
+                    <Box display="flex" flexDirection="column" alignItems="flex-end" paddingLeft={"70px"}>
                         <Typography variant="h4" style={{ color: "white" }}>
                             {`${Math.floor((time / divisor) % 60)}`.padStart(2, "0")}
                         </Typography>
