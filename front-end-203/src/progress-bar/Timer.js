@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import {Box, Grid, Typography} from "@mui/material";
 
 const SECOND = 1000;
 const MINUTE = SECOND * 60;
@@ -20,22 +21,26 @@ export const Timer = ({deadline}) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    const timeUnits = [
+        { label: "Minutes", divisor: MINUTE },
+        { label: "Seconds", divisor: SECOND },
+    ];
+
     return (
-        <div className="timer">
-            {Object.entries({
-                Days: time / DAY,
-                Hours: (time / HOUR) % 24,
-                Minutes: (time / MINUTE) % 60,
-                Seconds: (time / SECOND) % 60,
-            }).map(([label, value]) => (
-                <div key={label} className="col-4">
-                    <div className="box">
-                        <p>{`${Math.floor(value)}`.padStart(2, "0")}</p>
-                        <span className="text">{label}</span>
-                    </div>
-                </div>
+        <Grid container className="timer" spacing={2}>
+            {timeUnits.map(({ label, divisor }) => (
+                <Grid key={label} item xs={6} sm={3}>
+                    <Box display="flex" flexDirection="column" alignItems="center">
+                        <Typography variant="h4" style={{ color: "white" }}>
+                            {`${Math.floor((time / divisor) % 60)}`.padStart(2, "0")}
+                        </Typography>
+                        <Typography variant="body1" color="white">
+                            {label}
+                        </Typography>
+                    </Box>
+                </Grid>
             ))}
-        </div>
+        </Grid>
     );
 };
 
