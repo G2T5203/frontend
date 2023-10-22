@@ -1,6 +1,6 @@
 import React from "react";
 import { Typography, Grid, Paper } from "@mui/material";
-import FlightConfirm from "./FlightConfirmationDetails"
+import FlightConfirm from "./FlightConfirmationDetails";
 
 export default function BookingSlip({
   outboundDepartureTime,
@@ -17,7 +17,7 @@ export default function BookingSlip({
   inboundFlightNumber,
   classType,
   outboundSeat,
-  inboundSeat
+  inboundSeat,
 }) {
   return (
     <>
@@ -52,9 +52,28 @@ export default function BookingSlip({
               alignItems="center"
               sx={{ height: "100%", padding: "16px" }}
             >
-              <FlightConfirm departureTime={outboundDepartureTime} departureLocation={outboundDepartureLocation} arrivalTime={outboundArrivalTime} arrivalLocation={outboundArrivalLocation}/>
-              <FlightConfirm departureTime={inboundDepartureTime} departureLocation={inboundDepartureLocation} arrivalTime={inboundArrivalTime} arrivalLocation={inboundArrivalLocation}/>
-              <Typography variant="caption" color="white" sx={{textAlign: "center", pl: "60px"}}>
+              <FlightConfirm
+                departureTime={outboundDepartureTime}
+                departureLocation={outboundDepartureLocation}
+                arrivalTime={outboundArrivalTime}
+                arrivalLocation={outboundArrivalLocation}
+              />
+              {inboundDepartureTime &&
+                inboundDepartureLocation &&
+                inboundArrivalTime &&
+                inboundArrivalLocation && (
+                  <FlightConfirm
+                    departureTime={inboundDepartureTime}
+                    departureLocation={inboundDepartureLocation}
+                    arrivalTime={inboundArrivalTime}
+                    arrivalLocation={inboundArrivalLocation}
+                  />
+                )}
+              <Typography
+                variant="caption"
+                color="white"
+                sx={{ textAlign: "center", pl: "60px" }}
+              >
                 Booking ID: {bookingID}
               </Typography>
             </Grid>
@@ -68,15 +87,30 @@ export default function BookingSlip({
             direction="column"
             justifyContent="space-between"
             alignItems="center"
-            sx={{ height: "100%", padding: "16px" , backgroundColor:"#F9AB55"}}
+            sx={{ height: "100%", padding: "16px", backgroundColor: "#F9AB55" }}
           >
-            <Typography variant="h5" fontFamily={"Merriweather"}>{passengerName}</Typography>
+            <Typography variant="h5" fontFamily={"Merriweather"}>
+              {passengerName}
+            </Typography>
             <div style={{ marginTop: "16px" }}>
-              <Typography variant="body1" fontFamily={"Noto Sans"}>Outbound Flight Number: {outboundFlightNumber}</Typography>
-              <Typography variant="body1" fontFamily={"Noto Sans"}>Inbound Flight Number: {inboundFlightNumber}</Typography>
-              <Typography variant="body1" fontFamily={"Noto Sans"}>{classType}</Typography>
-              <Typography variant="body1" fontFamily={"Noto Sans"}>Outbound Seat Number: {outboundSeat}</Typography>
-              <Typography variant="body1" fontFamily={"Noto Sans"}>Inbound Seat Number: {inboundSeat}</Typography>
+              <Typography variant="body1" fontFamily={"Noto Sans"}>
+                Outbound Flight Number: {outboundFlightNumber}
+              </Typography>
+              <Typography variant="body1" fontFamily={"Noto Sans"}>
+                {classType}
+              </Typography>
+              <Typography variant="body1" fontFamily={"Noto Sans"}>
+                Outbound Seat Number: {outboundSeat}
+              </Typography>
+              {inboundDepartureTime && (
+                  <Typography variant="body1" fontFamily={"Noto Sans"}>
+                    Inbound Flight Number: {inboundFlightNumber}
+                  </Typography>
+                ) && (
+                  <Typography variant="body1" fontFamily={"Noto Sans"}>
+                    Inbound Seat Number: {inboundSeat}
+                  </Typography>
+                )}
             </div>
           </Grid>
         </Grid>
