@@ -10,6 +10,8 @@ import MyDatePicker from "../date-picker/MyDatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useNavigate } from "react-router-dom";
+import {isAuthenticated, removeAuthToken, updateAuthHeadersFromCurrentUser} from "../../auth";
+
 
 const FlightSearchBar = ({
   locations,
@@ -23,27 +25,53 @@ const FlightSearchBar = ({
   returndt,
   onFetchDepartureData,
   onFetchReturnData,
+  onTripTypeChange,
 }) => {
   //navigate set up 
   // eslint-disable-next-line 
   const navigate = useNavigate();
 
+  const apiUrl = process.env.REACT_APP_API_BASE_URL;
+
+
+    // all variables initalised to values from home page (departurelocation, arrival location, triptype, departure time, arrival time)
+    const [departureLocation, setDepartureLocation] = useState(flyingFrom);
+    const [arrivalLocation, setArrivalLocation] = useState(flyingTo);
+    const [tripType, setTripType] = useState(trip);
+    const [departureDate, setDepartureDate] = useState(departuredt);
+    const [returnDate, setReturnDate] = useState(returndt);
+    const [passengerCount, setPassengerCount] = useState(noGuest);
+
+    //to set the default tripType if there is no change in toggle
+    sessionStorage.setItem('tripType', tripType);
+   //to set the default pax count if there is no change in pax count box
+    sessionStorage.setItem('noGuestSelected', passengerCount);
+
+
   // for handling change in toggle button
   const handleTripTypeChange = (event, newTripType) => {
     setTripType(newTripType);
+
+    // Save the new trip type to sessionStorage when the toggle is switched
+    sessionStorage.setItem('tripType', newTripType);
     
     // Reset the return date when changing to "One way"
     if (newTripType === "One way") {
         setReturnDate(null);
     }
+    // used in the render of return flight info cards in flightsearch
+    if (onTripTypeChange) {
+      onTripTypeChange(newTripType);
+  }
 };
-  
-  // all variables initalised to values from home page (departurelocation, arrival location, triptype, departure time, arrival time)
-  const [departureLocation, setDepartureLocation] = useState(flyingFrom);
-  const [arrivalLocation, setArrivalLocation] = useState(flyingTo);
-  const [tripType, setTripType] = useState(trip);
-  const [departureDate, setDepartureDate] = useState(departuredt);
-  const [returnDate, setReturnDate] = useState(returndt);
+
+  const handlePassengerCountChange = (event) => {
+    // Ensure that the input value is a number
+    const inputValue = event.target.value.replace(/\D/g, '');
+    setPassengerCount(inputValue);
+    //set new value if the pax count is changed 
+    sessionStorage.setItem('noGuestSelected', inputValue);
+  };
 
   // for handling change of departure and return date when set manually on page
   const handleDepartureDateChange = (date) => {
@@ -54,11 +82,12 @@ const FlightSearchBar = ({
     setReturnDate(date);
   };
 
+
   // for handling click of search button on search bar
   const handleSearch = () => {
     // calback function to parent component
     if (onSearch) {
-      onSearch(departureLocation, arrivalLocation, departureDate, returnDate);
+      onSearch(departureLocation, arrivalLocation, departureDate, returnDate, passengerCount);
     }
 
     // Printing to console
@@ -96,8 +125,10 @@ const FlightSearchBar = ({
     }
 
     // Construct the URLs with departure and arrival locations
-    const url1 = `http://localhost:8080/routeListings/fullSearch/${departureLocation}/${arrivalLocation}/${year1}/${month1}/${day1}`;
-    const url2 = `http://localhost:8080/routeListings/fullSearch/${arrivalLocation}/${departureLocation}/${year2}/${month2}/${day2}`;
+    const baseURL = process.env.REACT_APP_API_BASE_URL;
+    const url1 = `${baseURL}routeListings/fullSearch/${departureLocation}/${arrivalLocation}/${year1}/${month1}/${day1}`;
+    const url2 = `${baseURL}routeListings/fullSearch/${arrivalLocation}/${departureLocation}/${year2}/${month2}/${day2}`;
+
 
     axios
       .get(url1)
@@ -138,7 +169,30 @@ const FlightSearchBar = ({
     // if (flyingTo == null) {
     //   navigate("/");
     // }
-    handleSearch();
+      if (isAuthenticated()) {
+        axios
+            .get(apiUrl + "users/authTest")
+            .then((response) => {
+              // TODO: This isn't correctly reporting errors. Postman is 403, but here it's still 200.
+              if (response.status === 200) {
+                updateAuthHeadersFromCurrentUser();
+                handleSearch()
+              } else {
+                removeAuthToken();
+                navigate("/signin");
+                console.log("failed at flightSearchBar")
+              }
+            })
+            .catch((error) => {
+              console.log("failed at flightSearchBar")
+              removeAuthToken();
+              navigate("/signin");
+            });
+      } else {
+        navigate("/signin");
+        console.log("failed at flightSearchBar")
+      }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
 }, []);
 
@@ -165,9 +219,9 @@ const FlightSearchBar = ({
         )}
         onChange={(event, newValue) => setDepartureLocation(newValue)}
         sx={{
-          marginRight: "10px",
-          marginLeft: "10px",
-          width: "250px",
+          marginRight: "5px",
+          marginLeft: "5px",
+          width: "13rem",
           fontFamily: "Merriweather Sans",
           "& input": {
             color: "white", // white input text colour
@@ -204,9 +258,9 @@ const FlightSearchBar = ({
         )}
         onChange={(event, newValue) => setArrivalLocation(newValue)}
         sx={{
-          marginRight: "10px",
-          marginLeft: "10px",
-          width: "250px",
+          marginRight: "5px",
+          marginLeft: "5px",
+          width: "13rem",
           "& input": {
             color: "white", // white input text colour
             fontFamily: "Merriweather Sans",
@@ -238,7 +292,7 @@ const FlightSearchBar = ({
         exclusive
         onChange={handleTripTypeChange}
         aria-label="Trip Type"
-        sx={{ marginRight: "10px", marginLeft: "10px" }}
+        sx={{ marginRight: "5px", marginLeft: "5px" }}
       >
         <ToggleButton
           value="One way"
@@ -300,6 +354,47 @@ const FlightSearchBar = ({
           minDate={departureDate}
         />
       </LocalizationProvider>
+
+      {/* number of pax */}
+      <TextField
+        label="Pax"
+        variant="outlined"
+        type="number"
+        value={passengerCount}
+        onChange={handlePassengerCountChange}
+        sx={{
+          marginRight: "5px",
+          marginLeft: "5px",
+          width: "5rem",
+          "& input": {
+            color: "white", // white input text colour
+            fontFamily: "Merriweather Sans",
+          },
+          "& .MuiInputLabel-root": {
+            color:'white',
+            fontFamily: "Merriweather Sans",
+          },
+          "& .MuiOutlinedInput-root": {
+            "& fieldset": {
+              borderColor: "white", // Default border color
+            },
+            "&:hover fieldset": {
+              borderColor: "white", // Border color on hover
+            },
+            "&.Mui-focused fieldset": {
+              borderColor: "white", // Border color on click/focus
+            },
+            "& .MuiSvgIcon-root": {
+              color: "white", // Color of the dropdown icon
+            },
+            "&::selection": {
+              color: "white", // Color of the text cursor (selection color)
+              background: "transparent", // Background color when text is selected
+            },
+          },
+        }}
+       
+      />
 
       {/*search button*/}
       <Button

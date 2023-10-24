@@ -19,11 +19,17 @@ body, html {
   margin-top: 2rem;
   overflow: hidden;
 }
-
+.filter-container {
+  position: absolute; /* positioned right below the banner */
+  right: 0;          /* Flush to the right */
+  left: auto;       /* Reset any left value */
+  z-index: 1;
+  /* Removed margin-left and margin-top as they are not needed with this setup */
+}
 .text {
   position: absolute;
   z-index: 3;
-  bottom: 8rem;
+  bottom: 9rem;
   left: 2rem;
 }
 
@@ -37,46 +43,21 @@ body, html {
   box-sizing: border-box;
 }
 
-.departure-flight-info-container-scrollable {
-  position: absolute;
-  left: 4rem;
-  max-height: 41rem;
-  overflow-y: scroll;
-  padding: 2rem;
-  width: 60rem;
-  box-sizing: border-box;
+.accordion-container {
+  margin-top: 4rem;
+  position: relative;
+  left: 4rem;  /* Assuming the banner height is around 200px. Adjust as needed. */
+  max-width: 60rem; /* Same width as the flight info containers */
   z-index: 1;
-  margin-top: 2rem;
-  margin-right: 2rem;
 }
 
-.return-flight-info-container-scrollable {
-  position: absolute;
-  left: 4rem;
-  max-height: 41rem;
-  overflow-y: scroll;
-  padding: 2rem;
-  width: 60rem;
-  box-sizing: border-box;
-  z-index: 1;
-  margin-top: 25rem;
-  margin-right: 2rem;
+
+
+.proceed-button-container {
+  position:absolute;
+  right: 4rem;
+  top:55rem;
 }
 
-.filter-container {
-  position: absolute;
-  right: 6rem;
-  /* Position below the banner */
-  margin-top: 4rem; /* Adjust this value as needed */
-  z-index: 1;
-  margin-left: 2rem;
 
-  /* You can add more styles for the filter container here */
-}
 
-/* Media query for responsive layout */
-@media (max-width: 768px) {
-  .filter-container {
-    margin-right: 20px;
-  }
-}
