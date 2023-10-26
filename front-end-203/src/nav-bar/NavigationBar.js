@@ -14,9 +14,9 @@ const NavigationBar = () => {
     navigate("/signin");
   };
 
-  const handleBookings = (e) => {
-      navigate("/bookinghistory")
-  }
+  // const handleBookings = (e) => {
+  //     navigate("/bookinghistory")
+  // }
 
   return isAuthenticated() ? (
     <div className="navbar">
@@ -25,7 +25,7 @@ const NavigationBar = () => {
 
       {/* Navigation Buttons with hover effect */}
       <NavButton text="Book Flights" />
-      <NavButton text="My Bookings" handleClick={handleBookings()}/>
+      <NavButton text="My Bookings"/>
       {/* Profile Icon */}
       <ProfileIcon />
     </div>
