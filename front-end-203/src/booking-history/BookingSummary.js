@@ -55,10 +55,10 @@ const BookingSummary = () => {
                             <TableCell>Passenger Name</TableCell>
                             <TableCell>Seat Number</TableCell>
                         </TableRow>
-                        {Object.entries(booking.outboundSeatNumbers || {}).map(([seat, name]) => (
+                        {Object.entries(booking.outboundSeatNumbers || {}).map(([name, seat]) => (
                             <TableRow key={seat}>
-                                <TableCell>{seat}</TableCell>
                                 <TableCell>{name}</TableCell>
+                                <TableCell>{seat}</TableCell>
                             </TableRow>
                         ))}
                     </Table>
@@ -84,10 +84,10 @@ const BookingSummary = () => {
                                     <TableCell>Passenger Name</TableCell>
                                     <TableCell>Seat Number</TableCell>
                                 </TableRow>
-                                {Object.entries(booking.inboundSeatNumbers).map(([seat, name]) => (
+                                {Object.entries(booking.inboundSeatNumbers).map(([name, seat]) => (
                                     <TableRow key={seat}>
-                                        <TableCell>{seat}</TableCell>
                                         <TableCell>{name}</TableCell>
+                                        <TableCell>{seat}</TableCell>
                                     </TableRow>
                                 ))}
                             </Table>

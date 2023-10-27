@@ -4,6 +4,7 @@ import ProgressBar from "../progress-bar/ProgressBar";
 import NavBar from "../nav-bar/NavigationBar";
 import { useNavigate, useLocation } from "react-router-dom";
 import BookingSummary from "./BookingSummary";
+import Banner from "./Banner";
 
 
 
@@ -18,7 +19,7 @@ const BookingHistory = () => {
         <NavBar />
       </div>
 
-      <ProgressBar currentStep={"Booking History "} number={3}  />
+      <Banner currentStep={"Booking History "} />
 
       <BookingSummary />
 
