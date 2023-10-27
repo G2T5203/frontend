@@ -17,7 +17,7 @@ const BookingHistory = () => {
         <NavBar />
       </div>
 
-      <ProgressBar currentStep={"Booking History "} number={3} deadline={new Date(sessionStorage.getItem('endTime'))} />
+      <ProgressBar currentStep={"Booking History "} number={3}  />
 
       <BookingSummary />
 
