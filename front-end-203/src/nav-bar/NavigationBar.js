@@ -25,7 +25,7 @@ const NavigationBar = () => {
 
       {/* Navigation Buttons with hover effect */}
       <NavButton text="Book Flights" />
-      <NavButton text="My Bookings"/>
+      <NavButton text="My Bookings" handleClick={handleBookings}/>
       {/* Profile Icon */}
       <ProfileIcon />
     </div>
