@@ -14,9 +14,9 @@ const NavigationBar = () => {
     navigate("/signin");
   };
 
-  // const handleBookings = (e) => {
-  //     navigate("/bookinghistory")
-  // }
+  const handleBookings = (e) => {
+      navigate("/bookinghistory")
+  }
 
   return isAuthenticated() ? (
     <div className="navbar">

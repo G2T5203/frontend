@@ -3,8 +3,12 @@ import { Button } from "@mui/material";
 import ProgressBar from "../progress-bar/ProgressBar";
 import NavBar from "../nav-bar/NavigationBar";
 import { useNavigate, useLocation } from "react-router-dom";
+import BookingSummary from "./booking-summary/BookingSummary";
+
 
 const BookingHistory = () => {
+
+    
 
   
   return (
@@ -14,6 +18,8 @@ const BookingHistory = () => {
       </div>
 
       <ProgressBar currentStep={"Booking History "} number={3} deadline={new Date(sessionStorage.getItem('endTime'))} />
+
+      <BookingSummary />
 
       </div>
   );
