@@ -37,9 +37,18 @@ const BookingSummary = () => {
                     <Typography variant="subtitle1" align="center" style={{ color: 'black' }}>
                         Booking ID: {booking.bookingId}
                     </Typography>
-
+                    <Divider style={{ margin: '16px 0' }} />
                     <Typography variant="body2">
                         Outbound Flight
+                    </Typography>
+                    <Typography variant="body2" style={{ marginBottom: '8px', color: 'black' }}>
+                        Date: {
+                            new Date(booking.outboundDepartureDatetime).toLocaleDateString('en-GB', {
+                                day: '2-digit',
+                                month: '2-digit',
+                                year: 'numeric'
+                            })
+                        }
                     </Typography>
                     <Table size="small">
                         <TableRow>
@@ -56,8 +65,19 @@ const BookingSummary = () => {
 
                     {booking.inboundSeatNumbers && Object.keys(booking.inboundSeatNumbers).length > 0 && (
                         <>
+
+                            <Divider style={{ margin: '16px 0' }} />
                             <Typography variant="body2" style={{ marginTop: '16px' }}>
                                 Return Flight
+                            </Typography>
+                            <Typography variant="body2" style={{ marginBottom: '8px', color: 'black' }}>
+                                Date: {
+                                    new Date(booking.inboundDepartureDatetime).toLocaleDateString('en-GB', {
+                                        day: '2-digit',
+                                        month: '2-digit',
+                                        year: 'numeric'
+                                    })
+                                }
                             </Typography>
                             <Table size="small">
                                 <TableRow>
