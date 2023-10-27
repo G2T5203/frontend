@@ -8,7 +8,7 @@ import {
 } from "../auth";
 
 const BookingSummary = () => {
-    const [bookings, setBookings] = useState([]); // New state to hold the list of bookings
+    const [bookings, setBookings] = useState([]);
     const apiUrl = process.env.REACT_APP_API_BASE_URL;
     const username = getCurrentUser().username;
 
@@ -17,7 +17,7 @@ const BookingSummary = () => {
             updateAuthHeadersFromCurrentUser();
             axios.get(apiUrl + `bookings/${username}`)
                 .then(response => {
-                    setBookings(response.data); 
+                    setBookings(response.data);
                     console.log("Retrieved bookings:", response.data);
                 })
                 .catch(error => {
@@ -37,14 +37,14 @@ const BookingSummary = () => {
                     <Typography variant="subtitle1" align="center" style={{ color: 'black' }}>
                         Booking ID: {booking.bookingId}
                     </Typography>
+
                     <Typography variant="body2">
-                        Outbound Departure: {booking.outboundDepartureDatetime}
+                        Outbound Flight
                     </Typography>
-        
                     <Table size="small">
                         <TableRow>
-                            <TableCell>Seat Number</TableCell>
                             <TableCell>Passenger Name</TableCell>
+                            <TableCell>Seat Number</TableCell>
                         </TableRow>
                         {Object.entries(booking.outboundSeatNumbers || {}).map(([seat, name]) => (
                             <TableRow key={seat}>
@@ -53,8 +53,29 @@ const BookingSummary = () => {
                             </TableRow>
                         ))}
                     </Table>
+
+                    {booking.inboundSeatNumbers && Object.keys(booking.inboundSeatNumbers).length > 0 && (
+                        <>
+                            <Typography variant="body2" style={{ marginTop: '16px' }}>
+                                Return Flight
+                            </Typography>
+                            <Table size="small">
+                                <TableRow>
+                                    <TableCell>Passenger Name</TableCell>
+                                    <TableCell>Seat Number</TableCell>
+                                </TableRow>
+                                {Object.entries(booking.inboundSeatNumbers).map(([seat, name]) => (
+                                    <TableRow key={seat}>
+                                        <TableCell>{seat}</TableCell>
+                                        <TableCell>{name}</TableCell>
+                                    </TableRow>
+                                ))}
+                            </Table>
+                        </>
+                    )}
                 </Paper>
             ))}
+
         </Box>
     );
 };
