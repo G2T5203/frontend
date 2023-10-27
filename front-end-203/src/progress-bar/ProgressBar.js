@@ -52,7 +52,9 @@ const ProgressBar = ({ currentStep, number, deadline }) => {
                         </Typography>
                     </div>
                     <div>
-                        <Timer deadline={deadline} />
+                        {(number < 4) ? (
+                        <Timer deadline={deadline} />) : (<Typography></Typography>)
+                    }
                     </div>
                 </Box>
             </Box>
