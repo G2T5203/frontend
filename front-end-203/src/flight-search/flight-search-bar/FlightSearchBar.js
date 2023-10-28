@@ -169,29 +169,30 @@ const FlightSearchBar = ({
     // if (flyingTo == null) {
     //   navigate("/");
     // }
-      if (isAuthenticated()) {
-        axios
-            .get(apiUrl + "users/authTest")
-            .then((response) => {
-              // TODO: This isn't correctly reporting errors. Postman is 403, but here it's still 200.
-              if (response.status === 200) {
-                updateAuthHeadersFromCurrentUser();
-                handleSearch()
-              } else {
-                removeAuthToken();
-                navigate("/signin");
-                console.log("failed at flightSearchBar")
-              }
-            })
-            .catch((error) => {
-              console.log("failed at flightSearchBar")
-              removeAuthToken();
-              navigate("/signin");
-            });
-      } else {
-        navigate("/signin");
-        console.log("failed at flightSearchBar")
-      }
+      // if (isAuthenticated()) {
+      //   axios
+      //       .get(apiUrl + "users/authTest")
+      //       .then((response) => {
+      //         // TODO: This isn't correctly reporting errors. Postman is 403, but here it's still 200.
+      //         if (response.status === 200) {
+      //           updateAuthHeadersFromCurrentUser();
+      //           handleSearch()
+      //         } else {
+      //           removeAuthToken();
+      //           navigate("/signin");
+      //           console.log("failed at flightSearchBar")
+      //         }
+      //       })
+      //       .catch((error) => {
+      //         console.log("failed at flightSearchBar")
+      //         removeAuthToken();
+      //         navigate("/signin");
+      //       });
+      // } else {
+      //   navigate("/signin");
+      //   console.log("failed at flightSearchBar")
+      // }
+      handleSearch()
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
 }, []);
