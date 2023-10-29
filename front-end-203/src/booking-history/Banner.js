@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Typography, Stepper, StepLabel, Step } from "@mui/material";
+import { Box, Typography} from "@mui/material";
 
 const Banner = ({ currentStep }) => {
   
