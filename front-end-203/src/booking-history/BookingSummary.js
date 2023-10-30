@@ -24,6 +24,7 @@ const BookingSummary = () => {
                     console.error("Failed to fetch bookings:", error);
                 });
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
