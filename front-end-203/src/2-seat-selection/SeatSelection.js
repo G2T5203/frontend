@@ -257,6 +257,13 @@ console.log(newTime + "\n" + endTime)
     }
 
     const handleToPassengerDetails = (event) => {
+      if (depCount !== 0 ) {
+          alert("Please select all seats before proceeding")
+          return;
+      } else if (returnFlight != null && retCount !== 0) {
+          alert("Please select all seats before proceeding")
+          return;
+      }
       console.log("navigating to passenger details");
       const data = {
           "outboundSeats": selectedSeatsDep,
