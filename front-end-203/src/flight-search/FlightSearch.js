@@ -22,7 +22,7 @@ import {
   getCurrentUser,
 } from "../auth";
 import axios from "axios";
-
+let back = true;
 // values for the filter tile
 const filterInfo = {
   airlines: ["Singapore Airlines", "Qatar Airways", "Air India", "Emirates"],
@@ -40,6 +40,9 @@ function FlightSearch() {
   //dummy code to check if all the data from homepage is brought to flight search screen
   const location = useLocation();
   const data = location.state;
+
+  
+
 
   // //authentication
   // useEffect(() => {
@@ -98,17 +101,21 @@ function FlightSearch() {
   const {
     trip,
     noGuest,
-    // eslint-disable-next-line no-unused-vars
     flightClass,
     flyingFrom,
     flyingTo,
     departuredt,
     returndt,
-  } = location.state;
+  } = location.state || {};
 
   // Remove the enclosing quotes and convert to Day.js object
-  const depDateObj = dayjs(departuredt.replace(/"/g, ""));
-  const arrDateObj = dayjs(returndt.replace(/"/g, ""));
+  const depDateObj =
+    departuredt && departuredt.replace
+      ? dayjs(departuredt.replace(/"/g, ""))
+      : null;
+
+  const arrDateObj =
+    returndt && returndt.replace ? dayjs(returndt.replace(/"/g, "")) : null;
 
   // selectedTrip type variable, initialised to trip from homepage, for use to render the return flight info cards if the triptype is 2 way
   // const hasSesarched also used for conditional rendering of return flight section
@@ -116,6 +123,7 @@ function FlightSearch() {
   const [hasSearched, setHasSearched] = useState(false);
   const [selectedTripType, setSelectedTripType] = useState(trip);
   const [pax, setPax] = useState(noGuest);
+
   const handleTripTypeChange = (newTripType) => {
     // for conditional rendering of the return flight info card section
     setSelectedTripType(newTripType);
@@ -241,7 +249,7 @@ function FlightSearch() {
                         /"/g,
                         ""
                       ),
-                    partySize: noGuest,
+                    partySize: pax,
                   }
                 : {
                     bookingId: "-1",
@@ -253,7 +261,7 @@ function FlightSearch() {
                         /"/g,
                         ""
                       ),
-                    partySize: noGuest,
+                    partySize: pax,
                     inboundRouteId: selectedReturnFlight.routeId,
                     inboundPlaneId: selectedReturnFlight.planeId,
                     inboundDepartureDatetime:
@@ -273,7 +281,7 @@ function FlightSearch() {
                   bookingId: bookingId,
                   departureFlight: selectedDepartureFlight,
                   returnFlight: selectedReturnFlight,
-                  numGuest: noGuest,
+                  numGuest: pax,
                   startTime: startTime,
                 };
                 sessionStorage.setItem(
@@ -300,6 +308,34 @@ function FlightSearch() {
           console.log(error);
         });
     } else {
+      sessionStorage.setItem("redirectAfterLogin", "/flightsearch");
+      sessionStorage.setItem(
+        "flightSearchState",
+        JSON.stringify({
+          selectedTripType,
+          pax,
+          departureLocation,
+          arrivalLocation,
+          hasSearched,
+          selectedDepartureFlight,
+          selectedReturnFlight,
+          recentDepartureDate,
+          recentReturnDate,
+        })
+      );
+      console.log("p selectedTripType:", selectedTripType);
+      console.log("p pax:", pax);
+      console.log("p departureLocation:", departureLocation);
+      console.log("p arrivalLocation:", arrivalLocation);
+      console.log("p hasSearched:", hasSearched);
+      console.log("p selectedDepartureFlight:", selectedDepartureFlight);
+      console.log("p selectedReturnFlight:", selectedReturnFlight);
+      console.log("p recentDepartureDate:", recentDepartureDate);
+      console.log("p recentReturnDate:", recentReturnDate);
+
+      
+      sessionStorage.setItem("second", true);
+
       navigate("/signin");
       console.log("made an error at flightSearch 61");
     }
