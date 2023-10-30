@@ -47,7 +47,9 @@ export default function SignInPage() {
     };
     setAuthToken(jwtResponse.data, adminUser);
 
-    navigate('/');
+    // navigate to flightsearch if user already was at flight search, else homepage
+    navigate(sessionStorage.getItem('redirectAfterLogin'));
+    sessionStorage.removeItem('redirectAfterLogin')
   }
 
   const handleSubmit = async (e) => {
