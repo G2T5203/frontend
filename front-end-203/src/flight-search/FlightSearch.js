@@ -525,23 +525,23 @@ function FlightSearch() {
               </div>
             ) : (
               departureFlightData
-                .filter(
-                  (flight) =>
-                    flight.basePrice >= minPrice &&
-                    flight.basePrice <= maxPrice &&
-                    parseInt(
-                      flight.departureDatetime
-                        .split("T")[1]
-                        .substring(0, 5)
-                        .split(":")[0]
-                    ) >= low &&
-                    parseInt(
-                      flight.departureDatetime
-                        .split("T")[1]
-                        .substring(0, 5)
-                        .split(":")[0]
-                    ) <= high
-                )
+                // .filter(
+                //   (flight) =>
+                //     flight.basePrice >= minPrice &&
+                //     flight.basePrice <= maxPrice &&
+                //     parseInt(
+                //       flight.departureDatetime
+                //         .split("T")[1]
+                //         .substring(0, 5)
+                //         .split(":")[0]
+                //     ) >= low &&
+                //     parseInt(
+                //       flight.departureDatetime
+                //         .split("T")[1]
+                //         .substring(0, 5)
+                //         .split(":")[0]
+                //     ) <= high
+                // )
                 .map((flight, index) => (
                   <div key={index} style={{ marginBottom: "10px" }}>
                     <FlightInfoCard
@@ -650,23 +650,23 @@ function FlightSearch() {
                 </div>
               ) : (
                 returnFlightData
-                  .filter(
-                    (flight) =>
-                      flight.basePrice >= minPrice &&
-                      flight.basePrice <= maxPrice &&
-                      parseInt(
-                        flight.departureDatetime
-                          .split("T")[1]
-                          .substring(0, 5)
-                          .split(":")[0]
-                      ) >= low &&
-                      parseInt(
-                        flight.departureDatetime
-                          .split("T")[1]
-                          .substring(0, 5)
-                          .split(":")[0]
-                      ) <= high
-                  )
+                  // .filter(
+                  //   (flight) =>
+                  //     flight.basePrice >= minPrice &&
+                  //     flight.basePrice <= maxPrice &&
+                  //     parseInt(
+                  //       flight.departureDatetime
+                  //         .split("T")[1]
+                  //         .substring(0, 5)
+                  //         .split(":")[0]
+                  //     ) >= low &&
+                  //     parseInt(
+                  //       flight.departureDatetime
+                  //         .split("T")[1]
+                  //         .substring(0, 5)
+                  //         .split(":")[0]
+                  //     ) <= high
+                  // )
                   .map((flight, index) => (
                     <div key={index} style={{ marginBottom: "10px" }}>
                       <FlightInfoCard

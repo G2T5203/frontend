@@ -83,12 +83,12 @@ const FlightSearchBar = ({
   }
   
   // all variables initalised to values from home page (departurelocation, arrival location, triptype, departure time, arrival time)
-  const [departureLocation, setDepartureLocation] = useState(storedDepartureLocation ? storedDepartureLocation : flyingFrom);
-  const [arrivalLocation, setArrivalLocation] = useState(storedArrivalLocation ? storedArrivalLocation : flyingTo);
-  const [tripType, setTripType] = useState(storedSelectedTripType ? storedSelectedTripType : trip);
-  const [departureDate, setDepartureDate] = useState(departuredt);
-  const [returnDate, setReturnDate] = useState(returndt);
-  const [passengerCount, setPassengerCount] = useState(storedPax ? storedPax : noGuest);
+  const [departureLocation, setDepartureLocation] = useState(flyingFrom ? flyingFrom : storedDepartureLocation);
+  const [arrivalLocation, setArrivalLocation] = useState(flyingTo ? flyingTo : storedArrivalLocation);
+  const [tripType, setTripType] = useState(trip ? trip : storedSelectedTripType);
+  const [departureDate, setDepartureDate] = useState(departuredt ? departuredt :  dayjs(storedRecentDepartureDate.replace(/"/g, "")));
+  const [returnDate, setReturnDate] = useState(returndt ? returndt : dayjs(storedRecentReturnDate.replace(/"/g, "")));
+  const [passengerCount, setPassengerCount] = useState(noGuest ? noGuest : storedPax);
 
   //to set the default tripType if there is no change in toggle
   sessionStorage.setItem("tripType", tripType);
