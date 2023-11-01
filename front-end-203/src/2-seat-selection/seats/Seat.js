@@ -3,18 +3,7 @@ import React from 'react';
 import "./Seat.css"
 
 const SingleSeat = ({label, category, handleOnClick}) => {
-    function getColor(category){
-        switch(category){
-            case "First Class":
-                return "blue";
-            case "Business Class":
-                return "blue";
-            case "Economy Class":
-                return "blue";
-            default:
-                return "white";
-        }
-    }
+
     function getSize(category){
         switch(category){
             case "First Class":

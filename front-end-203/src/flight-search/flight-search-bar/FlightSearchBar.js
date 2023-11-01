@@ -10,11 +10,6 @@ import MyDatePicker from "../date-picker/MyDatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useNavigate } from "react-router-dom";
-import {
-  isAuthenticated,
-  removeAuthToken,
-  updateAuthHeadersFromCurrentUser,
-} from "../../auth";
 import dayjs from "dayjs";
 
 const FlightSearchBar = ({
@@ -35,7 +30,7 @@ const FlightSearchBar = ({
   // eslint-disable-next-line
   const navigate = useNavigate();
 
-  const apiUrl = process.env.REACT_APP_API_BASE_URL;
+  // const apiUrl = process.env.REACT_APP_API_BASE_URL;
 
   // create storage variables
 

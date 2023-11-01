@@ -5,8 +5,8 @@ import {
   CardNumberElement,
   CardExpiryElement,
   CardCvcElement,
-  useStripe,
-  useElements,
+  // useStripe,
+  // useElements,
 } from "@stripe/react-stripe-js";
 
 import { Button, Box, TextField, Typography } from "@mui/material";
@@ -167,31 +167,29 @@ function PaymentForm() {
       },
     },
   });
-  const stripe = useStripe();
-  const elements = useElements();
+  // const stripe = useStripe();
+  // const elements = useElements();
+  //
 
-  const [error, setError] = React.useState(null);
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    if (!stripe || !elements) {
-      return;
-    }
-
-    const cardNumberElement = elements.getElement(CardNumberElement);
-    const { error, paymentMethod } = await stripe.createPaymentMethod({
-      type: "card",
-      card: cardNumberElement,
-    });
-
-    if (error) {
-      setError(error.message);
-    } else {
-      console.log(paymentMethod);
-      setError(null); // Clear any errors if payment method is created successfully
-    }
-  };
+  // const handleSubmit = async (event) => {
+  //   event.preventDefault();
+  //
+  //   if (!stripe || !elements) {
+  //     return;
+  //   }
+  //
+  //   const cardNumberElement = elements.getElement(CardNumberElement);
+  //   const { error, paymentMethod } = await stripe.createPaymentMethod({
+  //     type: "card",
+  //     card: cardNumberElement,
+  //   });
+  //
+  //   if (error) {
+  //     console.log(error)
+  //   } else {
+  //     console.log(paymentMethod);
+  //   }
+  // };
 
   return (
     <Box

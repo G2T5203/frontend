@@ -1,11 +1,11 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useState } from "react";
 import NavBar from "../nav-bar/NavigationBar"; // Import the Navbar component
 import Banner from "./banner/Banner";
 import "./FlightSearch.css";
 import { Typography } from "@mui/material";
 import FlightInfoCard from "./flight-info-card/FlightInfoCard";
-import FilterTile from "./filter-tile/FilterTile";
+// import FilterTile from "./filter-tile/FilterTile";
 import FlightSearchBar from "./flight-search-bar/FlightSearchBar";
 import { useLocation } from "react-router-dom";
 import dayjs from "dayjs";
@@ -22,11 +22,11 @@ import {
   getCurrentUser,
 } from "../auth";
 import axios from "axios";
-let back = true;
+// let back = true;
 // values for the filter tile
-const filterInfo = {
-  airlines: ["Singapore Airlines", "Qatar Airways", "Air India", "Emirates"],
-};
+// const filterInfo = {
+//   airlines: ["Singapore Airlines", "Qatar Airways", "Air India", "Emirates"],
+// };
 
 // values for the 2 location dropdowns
 const searchLocations = {
@@ -108,6 +108,7 @@ function FlightSearch() {
     returndt,
   } = location.state || {};
 
+  console.log(flightClass);
   // Remove the enclosing quotes and convert to Day.js object
   const depDateObj =
     departuredt && departuredt.replace
@@ -352,19 +353,19 @@ function FlightSearch() {
   const [potentialMaxPrice, setPotentialMaxPrice] = useState(Infinity);
 
   // when price changes but search button is not clicked
-  const handlePriceChange = (min, max) => {
-    setPotentialMinPrice(min);
-    setPotentialMaxPrice(max);
-  };
+  // const handlePriceChange = (min, max) => {
+  //   setPotentialMinPrice(min);
+  //   setPotentialMaxPrice(max);
+  // };
 
   // for time filter: declare 2 variables high and low for lower and upper limit
-  const [low, setLow] = useState(0);
-  const [high, setHigh] = useState(24);
+  const low = useState(0);
+  const high = useState(24);
 
-  const handleFlightTime = (time) => {
-    setLow(time[0]);
-    setHigh(time[1]);
-  };
+  // const handleFlightTime = (time) => {
+  //   setLow(time[0]);
+  //   setHigh(time[1]);
+  // };
   console.log("this is low: " + low);
   console.log("this is high: " + high);
 
