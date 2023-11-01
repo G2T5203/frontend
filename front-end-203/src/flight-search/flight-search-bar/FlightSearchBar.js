@@ -10,6 +10,7 @@ import MyDatePicker from "../date-picker/MyDatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useNavigate } from "react-router-dom";
+import dayjs from "dayjs";
 
 const FlightSearchBar = ({
   locations,
@@ -23,27 +24,104 @@ const FlightSearchBar = ({
   returndt,
   onFetchDepartureData,
   onFetchReturnData,
+  onTripTypeChange,
 }) => {
-  //navigate set up 
-  // eslint-disable-next-line 
+  //navigate set up
+  // eslint-disable-next-line
   const navigate = useNavigate();
+
+  // const apiUrl = process.env.REACT_APP_API_BASE_URL;
+
+  // create storage variables
+
+  let storedSelectedTripType = null;
+  let storedPax = null;
+  let storedDepartureLocation = null;
+  let storedArrivalLocation = null;
+  let storedHasSearched = null;
+  let storedSelectedDepartureFlight = null;
+  let storedSelectedReturnFlight = null;
+  let storedRecentDepartureDate = null;
+  let storedRecentReturnDate = null;
+
+  const storedFlightSearchState = sessionStorage.getItem("flightSearchState");
+  if (storedFlightSearchState) {
+    const {
+      selectedTripType,
+      pax,
+      departureLocation,
+      arrivalLocation,
+      hasSearched,
+      selectedDepartureFlight,
+      selectedReturnFlight,
+      recentDepartureDate,
+      recentReturnDate,
+    } = JSON.parse(storedFlightSearchState);
+
+    // assign stored values from session storage to storage variables
+
+    storedSelectedTripType = selectedTripType;
+    storedPax = pax;
+    storedDepartureLocation = departureLocation;
+    storedArrivalLocation = arrivalLocation;
+    storedHasSearched = hasSearched;
+    storedSelectedDepartureFlight = selectedDepartureFlight;
+    storedSelectedReturnFlight = selectedReturnFlight;
+    storedRecentDepartureDate = recentDepartureDate;
+    storedRecentReturnDate = recentReturnDate;
+
+    console.log("2 selectedTripType:", storedSelectedTripType);
+    console.log("2 pax:", storedPax);
+    console.log("2 departureLocation:", storedDepartureLocation);
+    console.log("2 arrivalLocation:", storedArrivalLocation);
+    console.log("2 hasSearched:", storedHasSearched);
+    console.log("2 selectedDepartureFlight:", storedSelectedDepartureFlight);
+    console.log("2 selectedReturnFlight:", storedSelectedReturnFlight);
+    console.log("2 recentDepartureDate:", storedRecentDepartureDate);
+    console.log("2 recentReturnDate:", storedRecentReturnDate);
+
+  }
+  
+  // all variables initalised to values from home page (departurelocation, arrival location, triptype, departure time, arrival time)
+  const [departureLocation, setDepartureLocation] = useState(storedDepartureLocation ? storedDepartureLocation : flyingFrom);
+  const [arrivalLocation, setArrivalLocation] = useState(storedArrivalLocation ? storedArrivalLocation : flyingTo);
+  const [tripType, setTripType] = useState(storedSelectedTripType ? storedSelectedTripType : trip);
+  const [departureDate, setDepartureDate] = useState(departuredt);
+  const [returnDate, setReturnDate] = useState(returndt);
+  const [passengerCount, setPassengerCount] = useState(storedPax ? storedPax : noGuest);
+
+  //to set the default tripType if there is no change in toggle
+  sessionStorage.setItem("tripType", tripType);
+  //to set the default pax count if there is no change in pax count box
+  sessionStorage.setItem("noGuestSelected", passengerCount);
 
   // for handling change in toggle button
   const handleTripTypeChange = (event, newTripType) => {
     setTripType(newTripType);
-    
+
+    // Save the new trip type to sessionStorage when the toggle is switched
+    sessionStorage.setItem("tripType", newTripType);
+
     // Reset the return date when changing to "One way"
     if (newTripType === "One way") {
-        setReturnDate(null);
+      setReturnDate(null);
     }
-};
-  
-  // all variables initalised to values from home page (departurelocation, arrival location, triptype, departure time, arrival time)
-  const [departureLocation, setDepartureLocation] = useState(flyingFrom);
-  const [arrivalLocation, setArrivalLocation] = useState(flyingTo);
-  const [tripType, setTripType] = useState(trip);
-  const [departureDate, setDepartureDate] = useState(departuredt);
-  const [returnDate, setReturnDate] = useState(returndt);
+    // used in the render of return flight info cards in flightsearch
+    if (onTripTypeChange) {
+      onTripTypeChange(newTripType);
+    }
+  };
+
+  const handlePassengerCountChange = (event) => {
+    // Ensure that the input value is a number
+    const inputValue = event.target.value.replace(/\D/g, "");
+    if (inputValue < 1 || inputValue > 5) {
+      return;
+    }
+    setPassengerCount(inputValue);
+    //set new value if the pax count is changed
+    sessionStorage.setItem("noGuestSelected", inputValue);
+  };
 
   // for handling change of departure and return date when set manually on page
   const handleDepartureDateChange = (date) => {
@@ -56,9 +134,16 @@ const FlightSearchBar = ({
 
   // for handling click of search button on search bar
   const handleSearch = () => {
+
     // calback function to parent component
     if (onSearch) {
-      onSearch(departureLocation, arrivalLocation, departureDate, returnDate);
+      onSearch(
+        departureLocation,
+        arrivalLocation,
+        departureDate,
+        returnDate,
+        passengerCount
+      );
     }
 
     // Printing to console
@@ -74,38 +159,65 @@ const FlightSearchBar = ({
     //     return; // Exit the function early.
     // }
 
-
     // extract year, month and date from departure date object
-    const year1 = departureDate.$y;
-    const month1 = departureDate.$M+1;
-    const day1 = departureDate.$D;
-    console.log(year1)
-    console.log(month1);
-    console.log(day1)
+    
+    // Retrieve the flightSearchState from sessionStorage
+    let storedFlightSearchState = sessionStorage.getItem("flightSearchState");
 
+    // to store and manipulate departure date value and return date value
+    let currDepDate = departureDate;
+    let currRetDate = returnDate;
+
+    if (storedFlightSearchState) {
+      let { recentDepartureDate, recentReturnDate } = JSON.parse(
+        storedFlightSearchState
+      );
+
+      // Use the stored dates if the current departureDate or returnDate is null or undefined
+      if (!departureDate) {
+        currDepDate = dayjs(recentDepartureDate);
+      }
+
+      if (!returnDate) {
+        currRetDate = dayjs(recentReturnDate);
+      }
+    }
+
+    let year1 = null;
+    let month1 = null;
+    let day1 = null;
+    if (currDepDate != null) {
+    year1 = currDepDate.$y;
+    month1 = currDepDate.$M + 1;
+    day1 = currDepDate.$D;
+    console.log(year1);
+    console.log(month1);
+    console.log(day1);
+    }
 
     let year2 = null;
     let month2 = null;
     let day2 = null;
 
     // if null, dont do returnDate.$y, it throws error.
-    if (returnDate != null) {
-      year2 = returnDate.$y;
-      month2 = returnDate.$M + 1;
-      day2 = returnDate.$D;
+    if (currRetDate != null) {
+      year2 = currRetDate.$y;
+      month2 = currRetDate.$M + 1;
+      day2 = currRetDate.$D;
     }
 
     // Construct the URLs with departure and arrival locations
-    const url1 = `http://localhost:8080/routeListings/fullSearch/${departureLocation}/${arrivalLocation}/${year1}/${month1}/${day1}`;
-    const url2 = `http://localhost:8080/routeListings/fullSearch/${arrivalLocation}/${departureLocation}/${year2}/${month2}/${day2}`;
+    const baseURL = process.env.REACT_APP_API_BASE_URL;
+    const url1 = `${baseURL}routeListings/fullSearch/${departureLocation}/${arrivalLocation}/${year1}/${month1}/${day1}`;
+    const url2 = `${baseURL}routeListings/fullSearch/${arrivalLocation}/${departureLocation}/${year2}/${month2}/${day2}`;
 
     axios
       .get(url1)
       .then((response1) => {
         onFetchDepartureData(response1.data);
-        console.log("This is response from backend:")
-        console.log(response1.data)
-        console.log(response1.status)
+        console.log("This is response from backend:");
+        console.log(response1.data);
+        console.log(response1.status);
 
         // If tripType is "Return", fetch the return data, otherwise send null
         if (tripType === "Return") {
@@ -138,9 +250,33 @@ const FlightSearchBar = ({
     // if (flyingTo == null) {
     //   navigate("/");
     // }
+    // if (isAuthenticated()) {
+    //   axios
+    //       .get(apiUrl + "users/authTest")
+    //       .then((response) => {
+    //         // TODO: This isn't correctly reporting errors. Postman is 403, but here it's still 200.
+    //         if (response.status === 200) {
+    //           updateAuthHeadersFromCurrentUser();
+    //           handleSearch()
+    //         } else {
+    //           removeAuthToken();
+    //           navigate("/signin");
+    //           console.log("failed at flightSearchBar")
+    //         }
+    //       })
+    //       .catch((error) => {
+    //         console.log("failed at flightSearchBar")
+    //         removeAuthToken();
+    //         navigate("/signin");
+    //       });
+    // } else {
+    //   navigate("/signin");
+    //   console.log("failed at flightSearchBar")
+    // }
     handleSearch();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-}, []);
+  }, []);
 
   return (
     <Box
@@ -165,9 +301,9 @@ const FlightSearchBar = ({
         )}
         onChange={(event, newValue) => setDepartureLocation(newValue)}
         sx={{
-          marginRight: "10px",
-          marginLeft: "10px",
-          width: "250px",
+          marginRight: "5px",
+          marginLeft: "5px",
+          width: "13rem",
           fontFamily: "Merriweather Sans",
           "& input": {
             color: "white", // white input text colour
@@ -204,9 +340,9 @@ const FlightSearchBar = ({
         )}
         onChange={(event, newValue) => setArrivalLocation(newValue)}
         sx={{
-          marginRight: "10px",
-          marginLeft: "10px",
-          width: "250px",
+          marginRight: "5px",
+          marginLeft: "5px",
+          width: "13rem",
           "& input": {
             color: "white", // white input text colour
             fontFamily: "Merriweather Sans",
@@ -238,7 +374,7 @@ const FlightSearchBar = ({
         exclusive
         onChange={handleTripTypeChange}
         aria-label="Trip Type"
-        sx={{ marginRight: "10px", marginLeft: "10px" }}
+        sx={{ marginRight: "5px", marginLeft: "5px" }}
       >
         <ToggleButton
           value="One way"
@@ -300,6 +436,47 @@ const FlightSearchBar = ({
           minDate={departureDate}
         />
       </LocalizationProvider>
+
+      {/* number of pax */}
+      <TextField
+        label="Pax"
+        variant="outlined"
+        type="number"
+        value={passengerCount}
+        onChange={handlePassengerCountChange}
+        inputProps={{ min: 1, max: 5 }}
+        sx={{
+          marginRight: "5px",
+          marginLeft: "5px",
+          width: "5rem",
+          "& input": {
+            color: "white", // white input text colour
+            fontFamily: "Merriweather Sans",
+          },
+          "& .MuiInputLabel-root": {
+            color: "white",
+            fontFamily: "Merriweather Sans",
+          },
+          "& .MuiOutlinedInput-root": {
+            "& fieldset": {
+              borderColor: "white", // Default border color
+            },
+            "&:hover fieldset": {
+              borderColor: "white", // Border color on hover
+            },
+            "&.Mui-focused fieldset": {
+              borderColor: "white", // Border color on click/focus
+            },
+            "& .MuiSvgIcon-root": {
+              color: "white", // Color of the dropdown icon
+            },
+            "&::selection": {
+              color: "white", // Color of the text cursor (selection color)
+              background: "transparent", // Background color when text is selected
+            },
+          },
+        }}
+      />
 
       {/*search button*/}
       <Button

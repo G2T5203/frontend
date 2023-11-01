@@ -6,6 +6,8 @@ import "./FlightInfoCard.css"; // Import the CSS file
 import { Avatar } from "@mui/material";
 import { Stack } from "@mui/material";
 
+
+
 const FlightInfoCard = ({
   // parameters
   imageURL,
@@ -19,9 +21,18 @@ const FlightInfoCard = ({
   travelTime,
   price,
   flightNumber,
+  onSelect,
+  bookNowLabel = "Select",
+  seats,
+  isDisabled
+
+  
 }) => {
+  const cardStyle = isDisabled ? { backgroundColor: 'grey' } : {};
+  const buttonProps = isDisabled ? { disabled: true } : { onClick: onSelect };
+  
   return (
-    <div className="flight-info-card">
+    <div className="flight-info-card" style={{ ...cardStyle }}>
       {/* Section 1: Airline Name */}
       <div className="section">
         <Avatar
@@ -87,37 +98,43 @@ const FlightInfoCard = ({
           {arrivalTime}
         </Typography>
       </div>
+      
+      <div>
+
+      </div>
 
       {/* Section 5: Price and Book Now Button */}
-      <div className="section">
+      <div className="price-select-seats">
+      <Stack direction={"column"} spacing={2} alignItems="center">
+      <Typography fontSize={17} sx={{ fontFamily: "Merriweather Sans", textTransform: "none", color: "white"}}>
+          Available Seats: {seats}
+        </Typography>
         <Typography
           variant="h6"
           fontSize={30}
-          sx={{ fontFamily: "Merriweather Sans" }}
+          sx={{ fontFamily: "Merriweather Sans", color: "white"}}
         >
           ${price}
         </Typography>
 
-        <Button
-          variant="contained"
-          sx={{
-            backgroundColor: "darkorange",
-            color: "white",
-            padding: "5px",
-            "&:hover": {
-              backgroundColor: "orange", // Change background color on hover
-            },
-          }}
-        >
-          <Typography
-            variant="h6"
-            fontSize={15}
-            sx={{ fontFamily: "Merriweather Sans", textTransform: "none",}}
-          >
-            Book Now
-          </Typography>
-
-        </Button>
+        <Button variant="contained" {...buttonProps}
+        onClick={onSelect}
+        sx={{
+          backgroundColor: "darkorange",
+          color: "white",
+          padding: "5px",
+          "&:hover": {
+            backgroundColor: "orange"
+          }
+        }}
+      >
+        <Typography variant="h6" fontSize={15} sx={{ fontFamily: "Merriweather Sans", textTransform: "none", color: "white"}}>
+          {bookNowLabel}
+        </Typography>
+      </Button>
+      </Stack>
+      
+      
       </div>
     </div>
   );
