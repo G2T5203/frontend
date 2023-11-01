@@ -5,6 +5,7 @@ import HomePage from "./homepage/HomePage";
 import FlightSearch from "./flight-search/FlightSearch";
 import SignIn from "./signin-screen/SignInPage";
 import SignUp from "./signup-screen/SignUpPage";
+import BookingHistory from "./booking-history/BookingHistory"
 
 //Booking screens
 import ConfirmationPage from "./6-confirmation/ConfirmationPage";
@@ -30,6 +31,7 @@ function App() {
         <Route path="/flightsearch" element={<FlightSearch />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
+        <Route path="/bookinghistory" element={<BookingHistory />} />
 
         {/* Booking pages */}
         <Route path="/confirmation" element={<ConfirmationPage />} />

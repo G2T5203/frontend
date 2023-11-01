@@ -257,6 +257,13 @@ console.log(newTime + "\n" + endTime)
     }
 
     const handleToPassengerDetails = (event) => {
+      if (depCount !== 0 ) {
+          alert("Please select all seats before proceeding")
+          return;
+      } else if (returnFlight != null && retCount !== 0) {
+          alert("Please select all seats before proceeding")
+          return;
+      }
       console.log("navigating to passenger details");
       const data = {
           "outboundSeats": selectedSeatsDep,
@@ -551,7 +558,7 @@ console.log(newTime + "\n" + endTime)
                   </Box>
                   <Box>
                     {/*//TODO styling for this*/}
-                    <Typography variant={"body1"}> OutBound Seats Remaining: {depCount}</Typography>
+                    <Typography variant={"body1"}> OutBound Seats Left To Select: {depCount}</Typography>
                   </Box>
                 </>
               ) : (
@@ -633,7 +640,7 @@ console.log(newTime + "\n" + endTime)
                   </Box>
                   <Box>
                     {/*//TODO styling for this*/}
-                    <Typography variant={"body1"}> InBound Seats Remaining: {retCount}</Typography>
+                    <Typography variant={"body1"}> InBound Seats Left To Select: {retCount}</Typography>
                   </Box>
                 </>
               )}

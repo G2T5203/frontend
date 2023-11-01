@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import NavBar from "../nav-bar/NavigationBar"; // Import the Navbar component
 import Banner from "./banner/Banner";
@@ -15,9 +15,14 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import {isAuthenticated, removeAuthToken, updateAuthHeadersFromCurrentUser, getCurrentUser} from "../auth";
+import {
+  isAuthenticated,
+  removeAuthToken,
+  updateAuthHeadersFromCurrentUser,
+  getCurrentUser,
+} from "../auth";
 import axios from "axios";
-
+let back = true;
 // values for the filter tile
 const filterInfo = {
   airlines: ["Singapore Airlines", "Qatar Airways", "Air India", "Emirates"],
@@ -36,32 +41,35 @@ function FlightSearch() {
   const location = useLocation();
   const data = location.state;
 
-  //authentication
-  useEffect(() => {
-    if (isAuthenticated()) {
-      axios
-          .get(apiUrl + "users/authTest")
-          .then((response) => {
-            // TODO: This isn't correctly reporting errors. Postman is 403, but here it's still 200.
-            if (response.status === 200) {
-              updateAuthHeadersFromCurrentUser();
-            } else {
-              removeAuthToken();
-              navigate("/signin");
-              console.log("made an error at flightSearch 51")
-            }
-          })
-          .catch((error) => {
-            removeAuthToken();
-            navigate("/signin");
-            console.log(error);
-          });
-    } else {
-      navigate("/signin");
-        console.log("made an error at flightSearch 61")
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  
+
+
+  // //authentication
+  // useEffect(() => {
+  //   if (isAuthenticated()) {
+  //     axios
+  //         .get(apiUrl + "users/authTest")
+  //         .then((response) => {
+  //           // TODO: This isn't correctly reporting errors. Postman is 403, but here it's still 200.
+  //           if (response.status === 200) {
+  //             updateAuthHeadersFromCurrentUser();
+  //           } else {
+  //             removeAuthToken();
+  //             navigate("/signin");
+  //             console.log("made an error at flightSearch 51")
+  //           }
+  //         })
+  //         .catch((error) => {
+  //           removeAuthToken();
+  //           navigate("/signin");
+  //           console.log(error);
+  //         });
+  //   } else {
+  //     navigate("/signin");
+  //       console.log("made an error at flightSearch 61")
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
   // printng data from homepage
   console.log("This is data");
@@ -93,17 +101,21 @@ function FlightSearch() {
   const {
     trip,
     noGuest,
-    // eslint-disable-next-line no-unused-vars
     flightClass,
     flyingFrom,
     flyingTo,
     departuredt,
     returndt,
-  } = location.state;
+  } = location.state || {};
 
   // Remove the enclosing quotes and convert to Day.js object
-  const depDateObj = dayjs(departuredt.replace(/"/g, ""));
-  const arrDateObj = dayjs(returndt.replace(/"/g, ""));
+  const depDateObj =
+    departuredt && departuredt.replace
+      ? dayjs(departuredt.replace(/"/g, ""))
+      : null;
+
+  const arrDateObj =
+    returndt && returndt.replace ? dayjs(returndt.replace(/"/g, "")) : null;
 
   // selectedTrip type variable, initialised to trip from homepage, for use to render the return flight info cards if the triptype is 2 way
   // const hasSesarched also used for conditional rendering of return flight section
@@ -111,6 +123,7 @@ function FlightSearch() {
   const [hasSearched, setHasSearched] = useState(false);
   const [selectedTripType, setSelectedTripType] = useState(trip);
   const [pax, setPax] = useState(noGuest);
+
   const handleTripTypeChange = (newTripType) => {
     // for conditional rendering of the return flight info card section
     setSelectedTripType(newTripType);
@@ -122,7 +135,6 @@ function FlightSearch() {
   // for passing into the flight information cards (arrival and departure are not provided as data from fullsearch endpoint)
   const [departureLocation, setDepartureLocation] = useState("");
   const [arrivalLocation, setArrivalLocation] = useState("");
-  
 
   // for expansion control of departure flights collapsable section
   const [isDepartureAccordionExpanded, setDepartureAccordionExpanded] =
@@ -168,12 +180,10 @@ function FlightSearch() {
       setSelectedReturnFlight(null); // Reset the selected return flight
       setRecentReturnDate(returnDate); // Update the recent date
     }
-    
   };
 
   // pax printing
   console.log("number of passengers: " + pax);
-
 
   // constants for the selected departure and arrival flights that will render when the "Select" button is clicked
   const [selectedDepartureFlight, setSelectedDepartureFlight] = useState(null);
@@ -213,56 +223,126 @@ function FlightSearch() {
   };
 
   // function for actions upon click of proceed to next screen button
+  // everything only executes on click of proceed to next screen IF the user is signed in.
   const handleProceedClick = () => {
-
-    var bookingId;
-    var startTime;
-    console.log(selectedDepartureFlight.departureDatetime.replace(/"/g, ""))
-    const payload = (selectedReturnFlight === null) ? {
-    "bookingId": "-1",
-        "username": getCurrentUser().username,
-        "outboundRouteId": selectedDepartureFlight.routeId,
-        "outboundPlaneId": selectedDepartureFlight.planeId,
-        "outboundDepartureDatetime": selectedDepartureFlight.departureDatetime.replace(/"/g, ""),
-        "partySize": noGuest
-  } : {
-      "bookingId": "-1",
-      "username": getCurrentUser().username,
-      "outboundRouteId": selectedDepartureFlight.routeId,
-      "outboundPlaneId": selectedDepartureFlight.planeId,
-      "outboundDepartureDatetime": selectedDepartureFlight.departureDatetime.replace(/"/g, ""),
-      "partySize": noGuest,
-      "inboundRouteId": selectedReturnFlight.routeId,
-      "inboundPlaneId": selectedReturnFlight.planeId,
-      "inboundDepartureDatetime": selectedReturnFlight.departureDatetime.replace(/"/g, "")
+    if (recentReturnDate !== null && selectedReturnFlight === null) {
+        alert("Please select a return flight");
+        return;
     }
-    try {
-      axios.post(apiUrl + "bookings/new", payload).then((response) => {
-        if (response.status === 201) {
-         bookingId = response.data.bookingId;
-         startTime = response.data.startBookingDatetime;
-         console.log(response.data);
-        } else {
-          console.log(response.status)
-        }
+    if (isAuthenticated()) {
+      axios
+        .get(apiUrl + "users/authTest")
+        .then((response) => {
+          // TODO: This isn't correctly reporting errors. Postman is 403, but here it's still 200.
+          if (response.status === 200) {
+            updateAuthHeadersFromCurrentUser();
+            var bookingId;
+            var startTime;
+            console.log(
+              selectedDepartureFlight.departureDatetime.replace(/"/g, "")
+            );
+            const payload =
+              selectedReturnFlight === null
+                ? {
+                    bookingId: "-1",
+                    username: getCurrentUser().username,
+                    outboundRouteId: selectedDepartureFlight.routeId,
+                    outboundPlaneId: selectedDepartureFlight.planeId,
+                    outboundDepartureDatetime:
+                      selectedDepartureFlight.departureDatetime.replace(
+                        /"/g,
+                        ""
+                      ),
+                    partySize: pax,
+                  }
+                : {
+                    bookingId: "-1",
+                    username: getCurrentUser().username,
+                    outboundRouteId: selectedDepartureFlight.routeId,
+                    outboundPlaneId: selectedDepartureFlight.planeId,
+                    outboundDepartureDatetime:
+                      selectedDepartureFlight.departureDatetime.replace(
+                        /"/g,
+                        ""
+                      ),
+                    partySize: pax,
+                    inboundRouteId: selectedReturnFlight.routeId,
+                    inboundPlaneId: selectedReturnFlight.planeId,
+                    inboundDepartureDatetime:
+                      selectedReturnFlight.departureDatetime.replace(/"/g, ""),
+                  };
+            try {
+              axios.post(apiUrl + "bookings/new", payload).then((response) => {
+                if (response.status === 201) {
+                  bookingId = response.data.bookingId;
+                  startTime = response.data.startBookingDatetime;
+                  console.log(response.data);
+                } else {
+                  console.log(response.status);
+                }
 
-        let seatselectinfo = {
-          bookingId: bookingId,
-          departureFlight: selectedDepartureFlight,
-          returnFlight: selectedReturnFlight ,
-          numGuest: noGuest,
-          startTime: startTime,
-        }
-        sessionStorage.setItem('bookingId', JSON.stringify(seatselectinfo.bookingId));
+                let seatselectinfo = {
+                  bookingId: bookingId,
+                  departureFlight: selectedDepartureFlight,
+                  returnFlight: selectedReturnFlight,
+                  numGuest: pax,
+                  startTime: startTime,
+                };
+                sessionStorage.setItem(
+                  "bookingId",
+                  JSON.stringify(seatselectinfo.bookingId)
+                );
 
-        console.log(seatselectinfo.startTime + " is from search");
-        navigate("/seatselection", {state : seatselectinfo});
-      })
-    } catch (error) {
-      console.log(error);
-      console.log("failed at axios p1")
+                console.log(seatselectinfo.startTime + " is from search");
+                navigate("/seatselection", { state: seatselectinfo });
+              });
+            } catch (error) {
+              console.log(error);
+              console.log("failed at axios p1");
+            }
+          } else {
+            removeAuthToken();
+            navigate("/signin");
+            console.log("made an error at flightSearch 51");
+          }
+        })
+        .catch((error) => {
+          removeAuthToken();
+          navigate("/signin");
+          console.log(error);
+        });
+    } else {
+      sessionStorage.setItem("redirectAfterLogin", "/flightsearch");
+      sessionStorage.setItem(
+        "flightSearchState",
+        JSON.stringify({
+          selectedTripType,
+          pax,
+          departureLocation,
+          arrivalLocation,
+          hasSearched,
+          selectedDepartureFlight,
+          selectedReturnFlight,
+          recentDepartureDate,
+          recentReturnDate,
+        })
+      );
+      console.log("p selectedTripType:", selectedTripType);
+      console.log("p pax:", pax);
+      console.log("p departureLocation:", departureLocation);
+      console.log("p arrivalLocation:", arrivalLocation);
+      console.log("p hasSearched:", hasSearched);
+      console.log("p selectedDepartureFlight:", selectedDepartureFlight);
+      console.log("p selectedReturnFlight:", selectedReturnFlight);
+      console.log("p recentDepartureDate:", recentDepartureDate);
+      console.log("p recentReturnDate:", recentReturnDate);
+
+      
+      sessionStorage.setItem("second", true);
+
+      navigate("/signin");
+      console.log("made an error at flightSearch 61");
     }
-
   };
 
   // for use of min and max price set on the filter tile in filtering the flight info cards rendered on click of the search button
@@ -288,7 +368,6 @@ function FlightSearch() {
   console.log("this is low: " + low);
   console.log("this is high: " + high);
 
-
   const selectedData = {
     departureFlight: {
       ...selectedDepartureFlight,
@@ -299,10 +378,9 @@ function FlightSearch() {
       ...selectedReturnFlight,
       departureLocation: arrivalLocation, // because it's the opposite for the return flight
       arrivalLocation: departureLocation, // opposite for the return flight
-    }
+    },
   };
-  sessionStorage.setItem('selectedFlights', JSON.stringify(selectedData));
-  
+  sessionStorage.setItem("selectedFlights", JSON.stringify(selectedData));
 
   return (
     <div>
@@ -483,8 +561,13 @@ function FlightSearch() {
                       } hr ${flight.flightDuration.match(/(\d+)M/)[1]} min`}
                       price={flight.basePrice.toFixed(2)}
                       flightNumber={flight.planeId}
-                      onSelect={() => pax <= flight.availableSeats && handleDepartureFlightSelection(flight)}
-                      bookNowLabel={pax <= flight.availableSeats ? "Select" : "Unavailable"}
+                      onSelect={() =>
+                        pax <= flight.availableSeats &&
+                        handleDepartureFlightSelection(flight)
+                      }
+                      bookNowLabel={
+                        pax <= flight.availableSeats ? "Select" : "Unavailable"
+                      }
                       seats={flight.availableSeats}
                       isDisabled={pax > flight.availableSeats}
                     />
@@ -603,8 +686,15 @@ function FlightSearch() {
                         } hr ${flight.flightDuration.match(/(\d+)M/)[1]} min`}
                         price={flight.basePrice.toFixed(2)}
                         flightNumber={flight.planeId}
-                        onSelect={() => pax <= flight.availableSeats && handleReturnFlightSelection(flight)}
-                        bookNowLabel={pax <= flight.availableSeats ? "Select" : "Unavailable"}
+                        onSelect={() =>
+                          pax <= flight.availableSeats &&
+                          handleReturnFlightSelection(flight)
+                        }
+                        bookNowLabel={
+                          pax <= flight.availableSeats
+                            ? "Select"
+                            : "Unavailable"
+                        }
                         seats={flight.availableSeats}
                         isDisabled={pax > flight.availableSeats}
                       />

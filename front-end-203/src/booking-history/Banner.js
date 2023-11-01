@@ -1,19 +1,8 @@
 import React from "react";
-import { Box, Typography, Stepper, StepLabel, Step } from "@mui/material";
-import Timer from "./Timer.js"
+import { Box, Typography} from "@mui/material";
 
-const ProgressBar = ({ currentStep, number, deadline }) => {
-  const steps = [
-    "Flights",
-    "Seat Selection",
-    "Passenger Details",
-    "Review",
-    "Payment",
-    "Confirmation",
-  ];
-
-  console.log(deadline + "from prog")
-
+const Banner = ({ currentStep }) => {
+  
 
     return (
         <>
@@ -51,30 +40,14 @@ const ProgressBar = ({ currentStep, number, deadline }) => {
                             {currentStep}
                         </Typography>
                     </div>
-                    <div>
-                        {(number < 4) ? (
-                        <Timer deadline={deadline} />) : (<Typography></Typography>)
-                    }
-                    </div>
+                    
                 </Box>
             </Box>
-            <Box
-                sx={{ borderBottom: 1, borderColor: "divider", marginBottom: "20px" }}
-            >
-                <Box display="flex" justifyContent="center" sx={{ p: 2 }}>
-                    <Stepper activeStep={number}>
-                        {steps.map((label) => (
-                            <Step key={label} sx={{ px: 5 }}>
-                                <StepLabel>{label}</StepLabel>
-                            </Step>
-                        ))}
-                    </Stepper>
-                </Box>
-            </Box>
+
         </>
     );
 
 
 };
 
-export default ProgressBar;
+export default Banner;

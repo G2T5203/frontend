@@ -59,8 +59,11 @@ const CompactForm = () => {
       departuredt: JSON.stringify(Depdate),
       returndt: JSON.stringify(returnDate),
     };
-
-    if ((data.trip === "Return" && returnDate === "") || Depdate === "") {
+    if (noGuestSelected === "") {
+      alert("Please select number of guests");
+    } else if (tripSelected === "") {
+        alert("Please select trip type");
+    } else if ((data.trip === "Return" && returnDate === "") || Depdate === "") {
       alert("Please select appropriate dates");
     } else if (
       data.flyingFrom === "" ||
