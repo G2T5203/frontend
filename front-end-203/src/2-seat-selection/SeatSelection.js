@@ -558,7 +558,7 @@ console.log(newTime + "\n" + endTime)
                   </Box>
                   <Box>
                     {/*//TODO styling for this*/}
-                    <Typography variant={"body1"}> OutBound Seats Remaining: {depCount}</Typography>
+                    <Typography variant={"body1"}> OutBound Seats Left To Select: {depCount}</Typography>
                   </Box>
                 </>
               ) : (
@@ -640,7 +640,7 @@ console.log(newTime + "\n" + endTime)
                   </Box>
                   <Box>
                     {/*//TODO styling for this*/}
-                    <Typography variant={"body1"}> InBound Seats Remaining: {retCount}</Typography>
+                    <Typography variant={"body1"}> InBound Seats Left To Select: {retCount}</Typography>
                   </Box>
                 </>
               )}

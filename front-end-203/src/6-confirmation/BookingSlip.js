@@ -103,14 +103,15 @@ export default function BookingSlip({
                 Outbound Seat Number: {outboundSeat}
               </Typography>
               {inboundDepartureTime && (
+                  <>
                   <Typography variant="body1" fontFamily={"Noto Sans"}>
                     Inbound Flight Number: {inboundFlightNumber}
                   </Typography>
-                ) && (
                   <Typography variant="body1" fontFamily={"Noto Sans"}>
                     Inbound Seat Number: {inboundSeat}
                   </Typography>
-                )}
+                  </>
+            )}
             </div>
           </Grid>
         </Grid>

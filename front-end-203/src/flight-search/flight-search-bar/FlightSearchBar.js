@@ -120,6 +120,9 @@ const FlightSearchBar = ({
   const handlePassengerCountChange = (event) => {
     // Ensure that the input value is a number
     const inputValue = event.target.value.replace(/\D/g, "");
+    if (inputValue < 1 || inputValue > 5) {
+      return;
+    }
     setPassengerCount(inputValue);
     //set new value if the pax count is changed
     sessionStorage.setItem("noGuestSelected", inputValue);
@@ -136,6 +139,7 @@ const FlightSearchBar = ({
 
   // for handling click of search button on search bar
   const handleSearch = () => {
+
     // calback function to parent component
     if (onSearch) {
       onSearch(
@@ -445,6 +449,7 @@ const FlightSearchBar = ({
         type="number"
         value={passengerCount}
         onChange={handlePassengerCountChange}
+        inputProps={{ min: 1, max: 5 }}
         sx={{
           marginRight: "5px",
           marginLeft: "5px",
