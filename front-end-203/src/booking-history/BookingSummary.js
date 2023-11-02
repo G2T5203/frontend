@@ -50,6 +50,10 @@ const BookingSummary = () => {
                                 year: 'numeric'
                             })
                         }
+                        <br />
+                        {booking.outboundDepartureDestination} →  {booking.outboundArrivalDestination}
+                    </Typography>
+                    <Typography variant="body2">
                     </Typography>
                     <Table size="small">
                         <TableRow>
@@ -79,6 +83,10 @@ const BookingSummary = () => {
                                         year: 'numeric'
                                     })
                                 }
+                                <br />
+                                {booking.inboundDepartureDestination} →  {booking.inboundArrivalDestination}
+                            </Typography>
+                            <Typography variant="body2">
                             </Typography>
                             <Table size="small">
                                 <TableRow>
