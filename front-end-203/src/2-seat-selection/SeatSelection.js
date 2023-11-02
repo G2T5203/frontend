@@ -18,6 +18,7 @@ import {
   updateAuthHeadersFromCurrentUser,
 } from "../auth";
 import { useNavigate } from "react-router-dom";
+import SeatStolenPopUp from "./SeatStolenPopUp";
 
 const SeatSelection = () => {
   const navigate = useNavigate();
@@ -45,8 +46,15 @@ const SeatSelection = () => {
   const [retDisabledSeats, setRetDisabledSeats] = useState([]);
   const depdt = departureFlight.departureDatetime.replace(/"/g, "").replace(/:/g, "x");
 
+  //seat Stolen modal
+    const [openState, setOpenState] = useState(false);
+    const handleModalClose = () => {
+        setOpenState(false);
+    };
 
-  //number of seats left
+
+
+    //number of seats left
   const [depCount, setDepCount] = useState(numGuest);
   const [retCount, setRetCount] = useState(numGuest);
   //selectedSeatsDep
@@ -72,6 +80,7 @@ console.log(newTime + "\n" + endTime)
     try {
       axios.get(urlDep).then((response) => {
         if (response.status === 200) {
+            unColorEverything(depDisabledSeats);
           //first class filters
           const seatListings = response.data;
           // setDepAllSeats(seatListings);
@@ -102,15 +111,15 @@ console.log(newTime + "\n" + endTime)
           );
           // console.log(economySeatNumbers);
           setDepEconomySeats(economySeatNumbers);
-
+          console.log(selectedSeatsDep);
           const disabledSeats = seatListings.filter(
-              (listing) => listing.isBooked === true && !(listing.seatNumber in selectedSeatsDep)
+              (listing) => (listing.isBooked === true && !selectedSeatsDep.includes(listing.seatNumber))
         );
           const disabledSeatNumbers = disabledSeats.map(
               (listing) => listing.seatNumber
           )
           setDepDisabledSeats(disabledSeatNumbers);
-          // console.log(disabledSeatNumbers);
+          console.log(disabledSeatNumbers);
 
           //check bookingid
           console.log(bookingId);
@@ -128,6 +137,7 @@ console.log(newTime + "\n" + endTime)
         axios.get(urlRet).then((response) => {
           if (response.status === 200) {
             //first class filters
+              unColorEverything(retDisabledSeats);
             const seatListings = response.data;
 
             const filteredSeatListings = seatListings.filter(
@@ -181,6 +191,16 @@ console.log(newTime + "\n" + endTime)
       buttonElement.disabled = true;
       buttonElement.id = "selected";
     })
+  }
+
+  const unColorEverything = (jsonObject) => {
+      jsonObject.forEach(seat => {
+          seat = document.getElementsByClassName(seat);
+          const buttonElement = seat[0];
+          buttonElement.disabled = false;
+          buttonElement.id = "NotSelected";
+          buttonElement.backgroundColor = color(buttonElement.width);
+      })
   }
 
 
@@ -256,6 +276,8 @@ console.log(newTime + "\n" + endTime)
 
     }
 
+
+
     const handleToPassengerDetails = (event) => {
       if (depCount !== 0 ) {
           alert("Please select all seats before proceeding")
@@ -300,8 +322,8 @@ console.log(newTime + "\n" + endTime)
                   event.target.id = "NotSelected"
                   event.target.backgroundColor =  color(event.target.width);
                   setDepCount((prevCount) => prevCount + 1);
-                } else {
-                  console.log(response.status)
+                }  else {
+                    console.log(response.status);
                 }
           })
         } catch (error) {
@@ -332,7 +354,13 @@ console.log(newTime + "\n" + endTime)
                 } else {
                   console.log(response.status)
                 }
-              })
+              }).catch((error) => {
+              console.log("seat taken")
+              setOpenState(true);
+              fetchDepSeatListings();
+              colourSelected(selectedSeatsDep);
+                return
+          })
         } catch (error) {
           console.log("failing at outbound seat reservation")
           console.log(error)
@@ -394,7 +422,15 @@ console.log(newTime + "\n" + endTime)
                 } else {
                   console.log(response.status)
                 }
-              })
+              }).catch((error) => {
+              console.log("seat taken")
+              setOpenState(true);
+              const retdt = returnFlight.departureDatetime.replace(/"/g, "").replace(/:/g, "x");
+              const urlRet = apiUrl + `seatListings/matchingRouteListing/${returnFlight.planeId}/${returnFlight.routeId}/${retdt}`;
+              fetchRetSeatListings(urlRet);
+              colourSelected(selectedSeatsRet);
+              return;
+          })
         } catch (error) {
           console.log("failing at outbound seat reservation")
           console.log(error)
@@ -660,6 +696,7 @@ console.log(newTime + "\n" + endTime)
           </Button>
         </Box>
       </Box>
+        <SeatStolenPopUp openState={openState} handleClose={handleModalClose}/>
     </>
   );
 };
