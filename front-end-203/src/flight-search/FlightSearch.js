@@ -226,7 +226,7 @@ function FlightSearch() {
   // function for actions upon click of proceed to next screen button
   // everything only executes on click of proceed to next screen IF the user is signed in.
   const handleProceedClick = () => {
-    if (recentReturnDate !== null && selectedReturnFlight === null) {
+    if (trip === "Round Trip" && selectedReturnFlight === null) {
         alert("Please select a return flight");
         return;
     }

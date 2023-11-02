@@ -22,11 +22,11 @@ const style = {
 
 };
 
-export default function BasicModal({openState}) {
+export default function BasicModal({openState, handleClose}) {
 
 
-    const handleClose = () => {
-        openState = false;
+    const handleModalClose = () => {
+        handleClose();
         }
 
     return (
@@ -58,7 +58,7 @@ export default function BasicModal({openState}) {
                         </Grid>
                     </Grid>
                     <Box sx={{alignItems: "center", justifyContent: "center", direction: "column", display: "flex", paddingTop: "100px"}}>
-                    <Button sx={{backgroundColor: "#FF9900", color: "white"}} onClick={handleClose}> Return to HomePage</Button>
+                    <Button sx={{backgroundColor: "#FF9900", color: "white"}} onClick={handleModalClose}> Okay</Button>
                     </Box>
                 </Box>
             </Modal>

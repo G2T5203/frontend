@@ -48,8 +48,13 @@ const SeatSelection = () => {
 
   //seat Stolen modal
     const [openState, setOpenState] = useState(false);
+    const handleModalClose = () => {
+        setOpenState(false);
+    };
 
-  //number of seats left
+
+
+    //number of seats left
   const [depCount, setDepCount] = useState(numGuest);
   const [retCount, setRetCount] = useState(numGuest);
   //selectedSeatsDep
@@ -332,15 +337,15 @@ console.log(newTime + "\n" + endTime)
                   setSelectedSeatsDep([...selectedSeatsDep, event.target.innerText]);
                   event.target.id = "chosen-by-user";
                   setDepCount((prevCount) => prevCount - 1);
-                } else if (response.status === 400) {
-                    console.log("seat taken")
-                    setOpenState(true);
-                    event.target.id = "selected";
-
-                }else {
+                } else {
                   console.log(response.status)
                 }
-              })
+              }).catch((error) => {
+              console.log("seat taken")
+              setOpenState(true);
+             fetchDepSeatListings();
+                return
+          })
         } catch (error) {
           console.log("failing at outbound seat reservation")
           console.log(error)
@@ -672,7 +677,7 @@ console.log(newTime + "\n" + endTime)
           </Button>
         </Box>
       </Box>
-        <SeatStolenPopUp openState={openState}/>
+        <SeatStolenPopUp openState={openState} handleClose={handleModalClose}/>
     </>
   );
 };
