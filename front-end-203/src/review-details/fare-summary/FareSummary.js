@@ -26,6 +26,8 @@ const FareSummary = ({ passengers, tripType, bookingId }) => {
   console.log(passengerData);
 
   const [totalChargedPrice, setTotalChargedPrice] = useState(0);
+  const [seatPrices, setSeatPrices] = useState({});
+
   const apiUrl = process.env.REACT_APP_API_BASE_URL;
   const navigate = useNavigate();
 
@@ -52,52 +54,67 @@ const FareSummary = ({ passengers, tripType, bookingId }) => {
 
             fetchChargedPrice();
 
+            const fetchSeatPrices = async () => {
+              try {
+                const response = await axios.get(apiUrl + `bookings/getPriceBreakdown/${bookingId}`);
+                setSeatPrices(response.data);
+                console.log("seat prices lol")
+                console.log("Response from backend:", response.data);
+              } catch (error) {
+                console.error("Failed to fetch seat prices:", error);
+              }
+            };
+
+            fetchSeatPrices();
+
+
             // Set occupant to reserved seat for each passenger
             async function updateSeatsSequentially() {
-            passengers.forEach((passenger) => {
-              const payload1 = {
-                planeId: retrievedData.departureFlight.planeId,
-                routeId: retrievedData.departureFlight.routeId,
-                departureDatetime:
-                  retrievedData.departureFlight.departureDatetime,
-                seatNumber: passenger.outboundSeat,
-                bookingId: bookingId,
-                occupantName: `${passenger.firstName} ${passenger.lastName}`,
-              };
-              axios
-                .put(
-                  apiUrl + `seatListings/bookSeat/setOccupant/${bookingId}`,
-                  payload1
-                )
-                .then((res) => {
-                  console.log("Set occupant dep success:", res.data);
-                })
-                .catch((error) => {
-                  console.error("Failed to set dep occupant:", error);
-                });
-              if (tripType === "Return") {
-                const payload2 = {
-                  planeId: retrievedData.returnFlight.planeId,
-                  routeId: retrievedData.returnFlight.routeId,
+              passengers.forEach((passenger) => {
+                const payload1 = {
+                  planeId: retrievedData.departureFlight.planeId,
+                  routeId: retrievedData.departureFlight.routeId,
                   departureDatetime:
-                    retrievedData.returnFlight.departureDatetime,
-                  seatNumber: passenger.returnSeat,
+                    retrievedData.departureFlight.departureDatetime,
+                  seatNumber: passenger.outboundSeat,
                   bookingId: bookingId,
                   occupantName: `${passenger.firstName} ${passenger.lastName}`,
                 };
                 axios
                   .put(
                     apiUrl + `seatListings/bookSeat/setOccupant/${bookingId}`,
-                    payload2
+                    payload1
                   )
                   .then((res) => {
-                    console.log("Set occupant ret success:", res.data);
+                    console.log("Set occupant dep success:", res.data);
                   })
                   .catch((error) => {
-                    console.error("Failed to set ret occupant:", error);
+                    console.error("Failed to set dep occupant:", error);
                   });
-              }
-            });}
+                if (tripType === "Return") {
+                  const payload2 = {
+                    planeId: retrievedData.returnFlight.planeId,
+                    routeId: retrievedData.returnFlight.routeId,
+                    departureDatetime:
+                      retrievedData.returnFlight.departureDatetime,
+                    seatNumber: passenger.returnSeat,
+                    bookingId: bookingId,
+                    occupantName: `${passenger.firstName} ${passenger.lastName}`,
+                  };
+                  axios
+                    .put(
+                      apiUrl + `seatListings/bookSeat/setOccupant/${bookingId}`,
+                      payload2
+                    )
+                    .then((res) => {
+                      console.log("Set occupant ret success:", res.data);
+                    })
+                    .catch((error) => {
+                      console.error("Failed to set ret occupant:", error);
+                    });
+                }
+              });
+            }
             updateSeatsSequentially();
           } else {
             removeAuthToken();
@@ -157,10 +174,16 @@ const FareSummary = ({ passengers, tripType, bookingId }) => {
                   {`Outbound: ${passenger.outboundSeat}`}
                   {tripType === "Return" && `, Return: ${passenger.returnSeat}`}
                 </td>
-                <td>{`$${totalChargedPrice.toFixed(2)}`}</td>
+                <td>
+                  {`Outbound: $${(seatPrices[`OUTBOUND-${passenger.outboundSeat}`]?.SeatPrice || 0).toFixed(2)}`}
+                  {tripType === "Return" && `, Return: $${(seatPrices[`INBOUND-${passenger.returnSeat}`]?.SeatPrice || 0).toFixed(2)}`}
+                </td>
+
+
               </tr>
             ))}
         </tbody>
+
       </table>
 
       <div className="subtotal">
