@@ -2,7 +2,6 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-import {useNavigate} from "react-router-dom";
 import WarningIcon from '@mui/icons-material/Warning';
 import Grid from '@mui/material/Grid'
 import {Button} from "@mui/material";
@@ -24,7 +23,6 @@ const style = {
 };
 
 export default function BasicModal({openState}) {
-    const navigate = useNavigate();
 
 
     const handleClose = () => {

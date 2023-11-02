@@ -18,6 +18,7 @@ import {
   updateAuthHeadersFromCurrentUser,
 } from "../auth";
 import { useNavigate } from "react-router-dom";
+import SeatStolenPopUp from "./SeatStolenPopUp";
 
 const SeatSelection = () => {
   const navigate = useNavigate();
@@ -45,6 +46,8 @@ const SeatSelection = () => {
   const [retDisabledSeats, setRetDisabledSeats] = useState([]);
   const depdt = departureFlight.departureDatetime.replace(/"/g, "").replace(/:/g, "x");
 
+  //seat Stolen modal
+    const [openState, setOpenState] = useState(false);
 
   //number of seats left
   const [depCount, setDepCount] = useState(numGuest);
@@ -300,8 +303,8 @@ console.log(newTime + "\n" + endTime)
                   event.target.id = "NotSelected"
                   event.target.backgroundColor =  color(event.target.width);
                   setDepCount((prevCount) => prevCount + 1);
-                } else {
-                  console.log(response.status)
+                }  else {
+                    console.log(response.status);
                 }
           })
         } catch (error) {
@@ -329,7 +332,12 @@ console.log(newTime + "\n" + endTime)
                   setSelectedSeatsDep([...selectedSeatsDep, event.target.innerText]);
                   event.target.id = "chosen-by-user";
                   setDepCount((prevCount) => prevCount - 1);
-                } else {
+                } else if (response.status === 400) {
+                    console.log("seat taken")
+                    setOpenState(true);
+                    event.target.id = "selected";
+
+                }else {
                   console.log(response.status)
                 }
               })
@@ -391,7 +399,11 @@ console.log(newTime + "\n" + endTime)
                   event.target.id = "chosen-by-user";
 
                   setRetCount((prevCount) => prevCount - 1);
-                } else {
+                } else if (response.status === 400) {
+                    console.log("seat taken")
+                    setOpenState(true);
+                    event.target.id = "selected";
+                }else {
                   console.log(response.status)
                 }
               })
@@ -660,6 +672,7 @@ console.log(newTime + "\n" + endTime)
           </Button>
         </Box>
       </Box>
+        <SeatStolenPopUp openState={openState}/>
     </>
   );
 };
