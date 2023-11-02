@@ -26,6 +26,7 @@ export default function BasicModal({openState, handleClose}) {
 
 
     const handleModalClose = () => {
+
         handleClose();
         }
 
