@@ -41,9 +41,6 @@ function FlightSearch() {
   const location = useLocation();
   const data = location.state;
 
-  
-
-
   // //authentication
   // useEffect(() => {
   //   if (isAuthenticated()) {
@@ -227,8 +224,8 @@ function FlightSearch() {
   // everything only executes on click of proceed to next screen IF the user is signed in.
   const handleProceedClick = () => {
     if (recentReturnDate !== null && selectedReturnFlight === null) {
-        alert("Please select a return flight");
-        return;
+      alert("Please select a return flight");
+      return;
     }
     if (isAuthenticated()) {
       axios
@@ -338,7 +335,6 @@ function FlightSearch() {
       console.log("p recentDepartureDate:", recentDepartureDate);
       console.log("p recentReturnDate:", recentReturnDate);
 
-      
       sessionStorage.setItem("second", true);
 
       navigate("/signin");
@@ -382,6 +378,39 @@ function FlightSearch() {
     },
   };
   sessionStorage.setItem("selectedFlights", JSON.stringify(selectedData));
+
+
+  // function to calculate arrival date time from departure date time and flight duration
+  function calculateArrivalDateTime(departureDatetimeStr, flightDurationStr) {
+    // Extracting year, month, day, hour, minute, and second from the departure date string
+    const [year, month, day, hour, minute, second] = departureDatetimeStr.split(/[-T:]/).map(num => parseInt(num, 10));
+  
+    // Extracting the duration hours and minutes from the flight duration string
+    const hoursMatch = flightDurationStr.match(/(\d+)H/);
+    const minutesMatch = flightDurationStr.match(/(\d+)M/);
+    
+    let hoursToAdd = hoursMatch ? parseInt(hoursMatch[1], 10) : 0;
+    let minutesToAdd = minutesMatch ? parseInt(minutesMatch[1], 10) : 0;
+  
+    // Calculating the total minutes and hours after adding the flight duration
+    const totalMinutes = minute + minutesToAdd;
+    const carryOverHours = Math.floor(totalMinutes / 60);
+  
+    const totalHours = hour + hoursToAdd + carryOverHours;
+  
+    // Constructing the new date using Date.UTC
+    const arrivalDate = new Date(Date.UTC(year, month - 1, day, totalHours, totalMinutes % 60, second));
+  
+    const isoString = arrivalDate.toISOString();
+    return isoString.slice(0, 19).replace('T', 'T');
+  }
+  
+  // Testing the function
+  console.log(calculateArrivalDateTime("2023-12-13T07:00:00", "PT7H15M"));
+  // Expected result: "2023-12-13T14:15:00"
+  
+  
+  
 
   return (
     <div>
@@ -505,10 +534,16 @@ function FlightSearch() {
                     .substring(0, 5)}
                   arrivalAirport={arrivalLocation}
                   arrivalDate={
-                    selectedDepartureFlight?.departureDatetime?.split("T")[0]
+                    calculateArrivalDateTime(
+                      selectedDepartureFlight?.departureDatetime,
+                      selectedDepartureFlight?.flightDuration
+                    ).split("T")[0]
                   }
-                  arrivalTime={selectedDepartureFlight?.departureDatetime
-                    ?.split("T")[1]
+                  arrivalTime={calculateArrivalDateTime(
+                    selectedDepartureFlight?.departureDatetime,
+                    selectedDepartureFlight?.flightDuration
+                  )
+                    .split("T")[1]
                     .substring(0, 5)}
                   stops="Direct"
                   travelTime={`${
@@ -542,38 +577,50 @@ function FlightSearch() {
                 //         .split(":")[0]
                 //     ) <= high
                 // )
-                .map((flight, index) => (
-                  <div key={index} style={{ marginBottom: "10px" }}>
-                    <FlightInfoCard
-                      imageURL="https://graphic.sg/media/pages/gallery/singapore-airlines-logo-1987/3067018395-1599296800/1987-singapore-airlines-logo-240x.png"
-                      departureAirport={departureLocation}
-                      departureDate={flight.departureDatetime.split("T")[0]}
-                      departureTime={flight.departureDatetime
-                        .split("T")[1]
-                        .substring(0, 5)}
-                      arrivalAirport={arrivalLocation}
-                      arrivalDate={flight.departureDatetime.split("T")[0]}
-                      arrivalTime={flight.departureDatetime
-                        .split("T")[1]
-                        .substring(0, 5)}
-                      stops="Direct"
-                      travelTime={`${
-                        flight.flightDuration.match(/(\d+)H/)[1]
-                      } hr ${flight.flightDuration.match(/(\d+)M/)[1]} min`}
-                      price={flight.basePrice.toFixed(2)}
-                      flightNumber={flight.planeId}
-                      onSelect={() =>
-                        pax <= flight.availableSeats &&
-                        handleDepartureFlightSelection(flight)
-                      }
-                      bookNowLabel={
-                        pax <= flight.availableSeats ? "Select" : "Unavailable"
-                      }
-                      seats={flight.availableSeats}
-                      isDisabled={pax > flight.availableSeats}
-                    />
-                  </div>
-                ))
+                .map((flight, index) => {
+                  
+
+                  return (
+                    <div key={index} style={{ marginBottom: "10px" }}>
+                      <FlightInfoCard
+                        imageURL="https://graphic.sg/media/pages/gallery/singapore-airlines-logo-1987/3067018395-1599296800/1987-singapore-airlines-logo-240x.png"
+                        departureAirport={departureLocation}
+                        departureDate={flight.departureDatetime.split("T")[0]}
+                        departureTime={flight.departureDatetime
+                          .split("T")[1]
+                          .substring(0, 5)}
+                        arrivalAirport={arrivalLocation}
+                        arrivalDate={calculateArrivalDateTime(
+                          flight.departureDatetime,
+                          flight.flightDuration
+                        ).split("T")[0]}
+                        arrivalTime={calculateArrivalDateTime(
+                          flight.departureDatetime,
+                          flight.flightDuration
+                        )
+                          .split("T")[1]
+                          .substring(0, 5)}
+                        stops="Direct"
+                        travelTime={`${
+                          flight.flightDuration.match(/(\d+)H/)[1]
+                        } hr ${flight.flightDuration.match(/(\d+)M/)[1]} min`}
+                        price={flight.basePrice.toFixed(2)}
+                        flightNumber={flight.planeId}
+                        onSelect={() =>
+                          pax <= flight.availableSeats &&
+                          handleDepartureFlightSelection(flight)
+                        }
+                        bookNowLabel={
+                          pax <= flight.availableSeats
+                            ? "Select"
+                            : "Unavailable"
+                        }
+                        seats={flight.availableSeats}
+                        isDisabled={pax > flight.availableSeats}
+                      />
+                    </div>
+                  );
+                })
             )}
           </AccordionDetails>
         </Accordion>
@@ -630,10 +677,16 @@ function FlightSearch() {
                       .substring(0, 5)}
                     arrivalAirport={departureLocation}
                     arrivalDate={
-                      selectedReturnFlight?.departureDatetime?.split("T")[0]
+                      calculateArrivalDateTime(
+                        selectedReturnFlight?.departureDatetime,
+                        selectedReturnFlight?.flightDuration
+                      ).split("T")[0]
                     }
-                    arrivalTime={selectedReturnFlight?.departureDatetime
-                      ?.split("T")[1]
+                    arrivalTime={calculateArrivalDateTime(
+                      selectedReturnFlight?.departureDatetime,
+                      selectedReturnFlight?.flightDuration
+                    )
+                      .split("T")[1]
                       .substring(0, 5)}
                     stops="Direct"
                     travelTime={`${
@@ -677,8 +730,16 @@ function FlightSearch() {
                           .split("T")[1]
                           .substring(0, 5)}
                         arrivalAirport={departureLocation}
-                        arrivalDate={flight.departureDatetime.split("T")[0]}
-                        arrivalTime={flight.departureDatetime
+                        arrivalDate={
+                          calculateArrivalDateTime(
+                            flight.departureDatetime,
+                            flight.flightDuration
+                          ).split("T")[0]
+                        }
+                        arrivalTime={calculateArrivalDateTime(
+                          flight.departureDatetime,
+                          flight.flightDuration
+                        )
                           .split("T")[1]
                           .substring(0, 5)}
                         stops="Direct"
