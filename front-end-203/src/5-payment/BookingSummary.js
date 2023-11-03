@@ -12,7 +12,7 @@ const ImageWrapper = styled.div`
   flex-shrink: 0;
   width: 150px;
   height: 150px;
-  background-image: url('https://wallpapers.com/images/hd/sunset-emirates-airplane-gleunp0ia3hud96b.jpg');
+  background-image: url('https://onecms-res.cloudinary.com/image/upload/s--B5z7MCsf--/c_crop,h_576,w_1024,x_0,y_3/fl_relative,g_south_east,l_one-cms:core:watermark:afp_watermark,w_0.1/f_auto,q_auto/c_fill,g_auto,h_676,w_1200/v1/mediacorp/cna/image/2021-10/000_8tq9fy.jpg?itok=FYJO1wOm');
   background-size: cover;
   background-position: center;
   margin-right: 16px;
@@ -56,6 +56,8 @@ const BookingSummary = () => {
   const passengerData = JSON.parse(sessionStorage.getItem('passengerData'));
   const totalFare = Array.isArray(passengerData) ? passengerData.length * fixedFare : 0;
   const [totalChargedPrice, setTotalChargedPrice] = useState(0);
+  const [seatPrices, setSeatPrices] = useState({});
+
   const apiUrl = process.env.REACT_APP_API_BASE_URL;
 
   const bookingId = sessionStorage.getItem('bookingId')
@@ -84,6 +86,20 @@ const BookingSummary = () => {
             };
     
             fetchChargedPrice();
+
+            const fetchSeatPrices = async () => {
+              try {
+                const response = await axios.get(apiUrl + `bookings/getPriceBreakdown/${bookingId}`);
+                setSeatPrices(response.data);
+                console.log("seat prices lol")
+                console.log("Response from backend:", response.data);
+              } catch (error) {
+                console.error("Failed to fetch seat prices:", error);
+              }
+            };
+
+            fetchSeatPrices();
+
             } else {
               removeAuthToken();
               navigate("/signin");
@@ -111,9 +127,8 @@ const BookingSummary = () => {
         <Box display="flex" alignItems="center">
           <ImageWrapper />
           <Box>
-            <Typography variant="h6" sx={{color: 'white', fontFamily: "Merriweather Sans"}}>Economy</Typography>
             <Typography variant="h5" gutterBottom sx={{color: 'white', fontFamily: "Merriweather Sans", marginTop: "1rem", marginBottom: "1rem"}}>
-              Emirates A380 Airbus
+              Singapore Airlines A380 Airbus
             </Typography>
             <Box display="flex" alignItems="center">
             <CustomRating name="read-only" value={4.2} readOnly size="small" />
@@ -143,7 +158,8 @@ const BookingSummary = () => {
                 {`Outbound: ${passenger.outboundSeat}`}
                 {tripType === "Return" && `, Return: ${passenger.returnSeat}`}
               </TableCell>
-              <TableCell sx={{ color: 'white' }}>{`$${fixedFare}`}</TableCell>
+              <TableCell sx={{ color: 'white' }}>{`Outbound: $${(seatPrices[`OUTBOUND-${passenger.outboundSeat}`]?.SeatPrice || 0).toFixed(2)}`}
+                  {tripType === "Return" && `, Return: $${(seatPrices[`INBOUND-${passenger.returnSeat}`]?.SeatPrice || 0).toFixed(2)}`}</TableCell>
             </TableRow>
           ))}
         </TableBody>
