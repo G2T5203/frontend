@@ -317,17 +317,21 @@ function FlightSearch() {
                 );
                 //*********************************************************************************** */
                 // Retrieve the flightSearchState from sessionStorage
-                let storedFlightSearchState = sessionStorage.getItem("flightSearchState");
+                // let storedFlightSearchState = sessionStorage.getItem("flightSearchState");
 
                 // to store and manipulate departure date value and return date value
                 let currDepDate = dayjs(recentDepartureDate);
                 let currRetDate = dayjs(recentReturnDate);
 
-                if (storedFlightSearchState) {
-                  let { recentDepartureDate, recentReturnDate } = JSON.parse(
-                    storedFlightSearchState
-                  );
-                }
+                // recentDepartureDate and recentReturnDate are not used.
+                // We copied this code from FlightSearchBar, desperate attempt to get things to work. Needs to refactor out this function
+                // but not doing so due to the risk of breaking more stuff. Hence commenting this out as I believe this part is not needed
+                // seeing how the search here is triggered directly in FlightSearch. - Rayner 4th Nov 2023, 3am
+                // if (storedFlightSearchState) {
+                //   let { recentDepartureDate, recentReturnDate } = JSON.parse(
+                //     storedFlightSearchState
+                //   );
+                // }
 
                 let year1 = null;
                 let month1 = null;
