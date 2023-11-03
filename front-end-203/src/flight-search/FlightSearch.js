@@ -306,6 +306,84 @@ function FlightSearch() {
                 console.log("Flight taken")
                 setOpenState(true);
                 // TODO: we need to refresh the flight search results here
+                resetSelectedDepartureFlight();
+                resetSelectedReturnFlight();
+                handleSearch(
+                  departureLocation,
+                  arrivalLocation,
+                  recentDepartureDate,
+                  recentReturnDate,
+                  pax
+                );
+                //*********************************************************************************** */
+                // Retrieve the flightSearchState from sessionStorage
+                let storedFlightSearchState = sessionStorage.getItem("flightSearchState");
+
+                // to store and manipulate departure date value and return date value
+                let currDepDate = dayjs(recentDepartureDate);
+                let currRetDate = dayjs(recentReturnDate);
+
+                if (storedFlightSearchState) {
+                  let { recentDepartureDate, recentReturnDate } = JSON.parse(
+                    storedFlightSearchState
+                  );
+                }
+
+                let year1 = null;
+                let month1 = null;
+                let day1 = null;
+                if (currDepDate != null) {
+                year1 = currDepDate.$y;
+                month1 = currDepDate.$M + 1;
+                day1 = currDepDate.$D;
+                console.log(year1);
+                console.log(month1);
+                console.log(day1);
+                }
+
+                let year2 = null;
+                let month2 = null;
+                let day2 = null;
+
+                // if null, dont do returnDate.$y, it throws error.
+                if (currRetDate != null) {
+                  year2 = currRetDate.$y;
+                  month2 = currRetDate.$M + 1;
+                  day2 = currRetDate.$D;
+                }
+
+                // Construct the URLs with departure and arrival locations
+                const baseURL = process.env.REACT_APP_API_BASE_URL;
+                const url1 = `${baseURL}routeListings/fullSearch/${departureLocation}/${arrivalLocation}/${year1}/${month1}/${day1}`;
+                const url2 = `${baseURL}routeListings/fullSearch/${arrivalLocation}/${departureLocation}/${year2}/${month2}/${day2}`;
+
+                axios
+                  .get(url1)
+                  .then((response1) => {
+                    handleDepartureFlightData(response1.data);
+                    console.log("This is response from backend:");
+                    console.log(response1.data);
+                    console.log(response1.status);
+
+                    // If selectedTripType is "Return", fetch the return data, otherwise send null
+                    if (selectedTripType === "Return") {
+                      return axios.get(url2);
+                    } else {
+                      handleReturnFlightData(null);
+                      return Promise.resolve(); // Resolve the promise chain
+                    }
+                  })
+                  .then((response2) => {
+                    if (response2) {
+                      // This check is to ensure we only call the callback if we have the data
+                      handleReturnFlightData(response2.data);
+                    }
+                  })
+                  .catch((error) => {
+                    console.error("Error fetching data:", error);
+                  });
+
+                  //*********************************************************************************** */
                 return
               });
             } catch (error) {
