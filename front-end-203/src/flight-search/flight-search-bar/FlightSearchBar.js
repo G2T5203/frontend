@@ -86,8 +86,11 @@ const FlightSearchBar = ({
   const [departureLocation, setDepartureLocation] = useState(flyingFrom ? flyingFrom : storedDepartureLocation);
   const [arrivalLocation, setArrivalLocation] = useState(flyingTo ? flyingTo : storedArrivalLocation);
   const [tripType, setTripType] = useState(trip ? trip : storedSelectedTripType);
-  const [departureDate, setDepartureDate] = useState(departuredt ? departuredt :  dayjs(storedRecentDepartureDate?.replace(/"/g, "")));
-  const [returnDate, setReturnDate] = useState(returndt ? returndt : dayjs(storedRecentReturnDate?.replace(/"/g, "")));
+  const [departureDate, setDepartureDate] = useState(departuredt ? departuredt : dayjs(storedRecentDepartureDate?.replace(/"/g, "")));
+  // const [returnDate, setReturnDate] = useState(returndt ? returndt : dayjs(storedRecentReturnDate?.replace(/"/g, "")));
+  const [returnDate, setReturnDate] = useState(
+    returndt ? returndt : (storedRecentReturnDate ? dayjs(storedRecentReturnDate.replace(/"/g, "")) : null)
+  );
   
   const [passengerCount, setPassengerCount] = useState(noGuest ? noGuest : storedPax);
 
