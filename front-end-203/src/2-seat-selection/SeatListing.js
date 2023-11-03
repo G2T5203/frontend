@@ -37,7 +37,7 @@ const SeatListing = ({bookedSeatsDep, bookedSeatsRet}) => {
               Economy
             </Typography>
             <Typography fontFamily={"Merriweather Sans"} color={"white"}>
-              Emirates A380 Airbus
+              Singapore Airlines A380 Airbus
             </Typography>
           </Box>
         </Box>
