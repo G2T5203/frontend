@@ -345,7 +345,9 @@ function FlightSearch() {
   };
 
   // for use of min and max price set on the filter tile in filtering the flight info cards rendered on click of the search button
+  // eslint-disable-next-line
   const [minPrice, setMinPrice] = useState(0); // Assuming 0 as default min value
+  // eslint-disable-next-line
   const [maxPrice, setMaxPrice] = useState(Infinity);
   const [potentialMinPrice, setPotentialMinPrice] = useState(0);
   const [potentialMaxPrice, setPotentialMaxPrice] = useState(Infinity);
