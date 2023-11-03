@@ -15,15 +15,21 @@ body, html {
 
 .banner {
   position: relative;
-  z-index: 2;
+  z-index: 0;
   margin-top: 2rem;
   overflow: hidden;
 }
-
+.filter-container {
+  position: absolute; /* positioned right below the banner */
+  right: 0;          /* Flush to the right */
+  left: auto;       /* Reset any left value */
+  z-index: 1;
+  /* Removed margin-left and margin-top as they are not needed with this setup */
+}
 .text {
   position: absolute;
   z-index: 3;
-  bottom: 8rem;
+  bottom: 9rem;
   left: 2rem;
 }
 
@@ -37,31 +43,21 @@ body, html {
   box-sizing: border-box;
 }
 
-.flight-info-container-scrollable {
-  position: absolute;
-  left: 7rem;
-  max-height: 41rem;
-  overflow-y: scroll;
-  padding: 2rem;
-  width: 50rem;
-  box-sizing: border-box;
+.accordion-container {
+  margin-top: 4rem;
+  position: relative;
+  left: 4rem;  /* Assuming the banner height is around 200px. Adjust as needed. */
+  max-width: 60rem; /* Same width as the flight info containers */
   z-index: 1;
-  margin-top: 2rem;
 }
 
-.filter-container {
-  position: absolute;
-  right: 6rem;
-  /* Position below the banner */
-  margin-top: 4rem; /* Adjust this value as needed */
-  z-index: 2;
 
-  /* You can add more styles for the filter container here */
+
+.proceed-button-container {
+  position:absolute;
+  right: 4rem;
+  top:55rem;
 }
 
-/* Media query for responsive layout */
-@media (max-width: 768px) {
-  .filter-container {
-    margin-right: 20px;
-  }
-}
+
+

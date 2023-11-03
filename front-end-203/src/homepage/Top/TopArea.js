@@ -29,14 +29,10 @@ const HomeTop = () => {
         pt={6}
       >
         <Grid item pt={6} mt={6}>
-          <item>
             <SearchingBox />
-          </item>
         </Grid>
         <Grid item>
-          <item>
             <Bookingad />
-          </item>
         </Grid>
       </Grid>
     </Box>

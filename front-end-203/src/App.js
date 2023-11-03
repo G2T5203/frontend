@@ -5,7 +5,14 @@ import HomePage from "./homepage/HomePage";
 import FlightSearch from "./flight-search/FlightSearch";
 import SignIn from "./signin-screen/SignInPage";
 import SignUp from "./signup-screen/SignUpPage";
+import BookingHistory from "./booking-history/BookingHistory"
 
+//Booking screens
+import ConfirmationPage from "./6-confirmation/ConfirmationPage";
+import PassengerDetails from "./passenger-details/PassengerDetails";
+import SeatSelection from "./2-seat-selection/SeatSelection";
+import PaymentPage from "./5-payment/PaymentPage";
+import ReviewDetails from "./review-details/ReviewDetails";
 
 // Admin Portal
 import AdminPortalLogin from "./admin-portal/AdminPortalLogin";
@@ -24,16 +31,40 @@ function App() {
         <Route path="/flightsearch" element={<FlightSearch />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
+        <Route path="/bookinghistory" element={<BookingHistory />} />
+
+        {/* Booking pages */}
+        <Route path="/confirmation" element={<ConfirmationPage />} />
+        <Route path="/passengerdetails" element={<PassengerDetails />} />
+        <Route path="/seatselection" element={<SeatSelection />} />
+        <Route path="/reviewdetails" element={<ReviewDetails />} />
+        <Route path="/payment" element={<PaymentPage />} />
+
 
 
         {/* ADMIN PORTAL */}
         <Route path="/adminPortal/login" element={<AdminPortalLogin />} />
         <Route path="/adminPortal/home" element={<AdminPortalHomePage />} />
-        <Route path="/adminPortal/editProfile" element={<AdminPortalEditProfile />} />
-        <Route path="/adminPortal/planes" element={<AdminPortalManagePlane />} />
-        <Route path="/adminPortal/planes/edit" element={<AdminPortalEditPlane />} />
-        <Route path="/adminPortal/routes" element={<AdminPortalManageRoute />} />
-        <Route path="/adminPortal/routes/edit" element={<AdminPortalEditRoute />} />
+        <Route
+          path="/adminPortal/editProfile"
+          element={<AdminPortalEditProfile />}
+        />
+        <Route
+          path="/adminPortal/planes"
+          element={<AdminPortalManagePlane />}
+        />
+        <Route
+          path="/adminPortal/planes/edit"
+          element={<AdminPortalEditPlane />}
+        />
+        <Route
+          path="/adminPortal/routes"
+          element={<AdminPortalManageRoute />}
+        />
+        <Route
+          path="/adminPortal/routes/edit"
+          element={<AdminPortalEditRoute />}
+        />
       </Routes>
     </Router>
   );

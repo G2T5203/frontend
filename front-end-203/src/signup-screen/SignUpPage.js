@@ -24,6 +24,31 @@ import axios from "axios";
 
 const defaultTheme = createTheme();
 
+const isValidEmail = (email) => {
+  // Using regex for basic email validation
+  const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+  return regex.test(email);
+};
+
+const isValidPhone = (phone) => {
+  const regex = /^\d{8,8}$/;
+  return regex.test(phone);
+};
+
+const isValidName = (name) => {
+  // Allow only alphabetic characters
+  const regex = /^[a-zA-Z\s]+$/;
+  return regex.test(name);
+};
+
+const isValidDOB = (dob) => {
+  const today = new Date();
+  const birthDate = new Date(dob);
+  return birthDate <= today;
+};
+
+
+
 export default function SignUpPage() {
   const apiUrl = process.env.REACT_APP_API_BASE_URL;
   const [formData, setFormData] = useState({
@@ -40,6 +65,12 @@ export default function SignUpPage() {
   const [signupSuccess, setSignupSuccess] = useState(false);
   const navigate = useNavigate();
 
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+
+
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     const newValue = type === "checkbox" ? checked : value;
@@ -49,11 +80,38 @@ export default function SignUpPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (!isValidEmail(formData.email)) {
+      setErrorMessage("Invalid email format.");
+      return;
+    }
+
+    if (!isValidPhone(formData.phone)) {
+      setErrorMessage("Invalid phone number.");
+      return;
+    }
+
+    if (!isValidName(formData.firstName) || !isValidName(formData.lastName)) {
+      setErrorMessage("Names should only contain alphabetic characters.");
+      return;
+    }
+
+    if (!isValidDOB(formData.dob)) {
+      setErrorMessage("Date of birth cannot be in the future.");
+      return;
+    }
+
+
 
     if (!formData.hasAgreedToTerms) {
-      console.error('Please agree to the terms before signing up.');
+      setErrorMessage('Please agree to the terms before signing up.');
       return; // This will exit the function without proceeding to the sign-up process.
     }
+
+    if (formData.password !== confirmPassword) {
+      setErrorMessage("Passwords do not match.");
+      return;
+  }
+  
 
     try {
       // Send a POST request to your backend API endpoint for sign-up
@@ -63,6 +121,7 @@ export default function SignUpPage() {
         // Sign-up successful
         console.log('Sign-up successful: HTTP 201');
         setSignupSuccess(true);
+        setErrorMessage(""); //to clear away the error msg after signing up is successful
       } else {
         // Handle other possible responses, e.g., display error messages
         console.log("Sign-up failed:", response.status);
@@ -225,6 +284,19 @@ export default function SignUpPage() {
                   <TextField
                     required
                     fullWidth
+                    name="confirmPassword"
+                    label="Confirm Password"
+                    type="password"
+                    id="confirmPassword"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                  />
+                </Grid>
+
+                <Grid item xs={12}>
+                  <TextField
+                    required
+                    fullWidth
                     id="dob"
                     label="Date of Birth"
                     name="dob"
@@ -250,10 +322,18 @@ export default function SignUpPage() {
                   />
                 </Grid>
                 <Grid item xs={12}>
+                  {errorMessage && (
+                    <Alert severity="error" sx={{ mt: 2 }}>
+                      {errorMessage}
+                    </Alert>
+                  )}
+                </Grid>
+
+                <Grid item xs={12}>
                   {signupSuccess ? (
                     <Alert severity="success" fullWidth>
                       <AlertTitle>Success</AlertTitle>
-                      Account created!
+                      Account created! <br />
                       <strong>
                         Click <Link href="/signin">here</Link> to sign in!
                       </strong>
