@@ -15,6 +15,7 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import FlightStolenPopUp from "./FlightStolenPopUp";
 import {
   isAuthenticated,
   removeAuthToken,
@@ -40,6 +41,12 @@ function FlightSearch() {
   //dummy code to check if all the data from homepage is brought to flight search screen
   const location = useLocation();
   const data = location.state;
+
+  //flight Stolen modal
+  const [openState, setOpenState] = useState(false);
+  const handleModalClose = () => {
+      setOpenState(false);
+  };
 
   // //authentication
   // useEffect(() => {
@@ -295,6 +302,11 @@ function FlightSearch() {
 
                 console.log(seatselectinfo.startTime + " is from search");
                 navigate("/seatselection", { state: seatselectinfo });
+              }).catch((error) => {
+                console.log("Flight taken")
+                setOpenState(true);
+                // TODO: we need to refresh the flight search results here
+                return
               });
             } catch (error) {
               console.log(error);
@@ -771,6 +783,7 @@ function FlightSearch() {
           </Accordion>
         )}
       </div>
+      <FlightStolenPopUp openState={openState} handleClose={handleModalClose}/>
     </div>
   );
 }
