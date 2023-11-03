@@ -26,18 +26,19 @@ const PlaneUpdatingForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    const ERR_MSG = "Please check that there are no duplicate Plane IDs.\n\nAlso, plane capacity must be >= 30 and multiple of 6.";
     axios.post(apiUrl + "planes/newWithSeats", formData)
       .then((response) => {
         if (response.status === 201) {
           getAllPlanes();
           alert("Successfully added " + formData.planeId);
         } else {
-          alert("Failed to create " + formData.planeId + ".\nPlease check that there are no duplicate Plane IDs.");
+          alert("Failed to create " + formData.planeId + ".\n" + ERR_MSG);
           console.log("Did not create plane: " + response.status);
         }
       })
       .catch((error) => {
-        alert("Failed to create " + formData.planeId + ".\nPlease check that there are no duplicate Plane IDs.");
+        alert("Failed to create " + formData.planeId + ".\n" + ERR_MSG);
         console.log("Did not create plane: " + error);
       })
 
