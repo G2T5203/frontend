@@ -26,7 +26,7 @@ const PlaneUpdatingForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    axios.post(apiUrl + "planes/new", formData)
+    axios.post(apiUrl + "planes/newWithSeats", formData)
       .then((response) => {
         if (response.status === 201) {
           getAllPlanes();
