@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Button, Paper, Typography, Table, TableRow, TableCell, Divider } from '@mui/material';
+import { Grid, Box, Button, Paper, Typography, Table, TableRow, TableCell, Divider } from '@mui/material';
 import axios from 'axios';
 import {
     getCurrentUser,
@@ -63,18 +63,30 @@ const BookingSummary = () => {
             <Divider />
             {bookings.map((booking, idx) => (
                 <Paper elevation={3} sx={{ mb: idx === bookings.length - 1 ? 0 : 2, p: 2, backgroundColor: '#E0E0E0' }} key={idx}>
-                    <Button
-                        variant={"contained"}
-                        sx={{ mb: 3, color: "white", backgroundColor: "#F9AB55"}}
-                        onClick={() => { downloadCalendarFile(booking.bookingId); }}
+                    <Grid
+                        container
+                        justifyContent="space-between"
+                        alignItems="center"
                     >
-                        Download Calendar File
-                    </Button>
+                        <Grid item>
+                            <Typography variant="h5" align="center" style={{ color: 'black' }}>
+                                Booking ID: {booking.bookingId}
+                            </Typography>
+                        </Grid>
 
-                    <Typography variant="subtitle1" align="center" style={{ color: 'black' }}>
-                        Booking ID: {booking.bookingId}
-                    </Typography>
-                    
+                        <Grid item xs={6} style={{ textAlign: 'center' }}></Grid>
+
+                        <Grid item>
+                            <Button
+                                variant={"contained"}
+                                sx={{ mb: 3, color: "white", backgroundColor: "#F9AB55" }}
+                                onClick={() => { downloadCalendarFile(booking.bookingId); }}
+                            >
+                                Download Calendar File
+                            </Button>
+                        </Grid>
+                    </Grid>
+
                     <Divider style={{ margin: '16px 0' }} />
                     <Typography variant="body2">
                         Outbound Flight
