@@ -14,8 +14,17 @@ const BookingSummary = () => {
 
     function downloadCalendarFile(inBookingId) {
         console.log("Downloading calendar file for booking ID: " + inBookingId)
-        axios.get(apiUrl + "rest/api/generate-calendar/" + inBookingId)
-          .then((response) => response.blob())
+        fetch(apiUrl + "rest/api/generate-calendar/" + inBookingId, {
+            method: 'GET',
+            responseType: 'blob', // This is not a standard option; you might need to handle it differently
+        })
+          .then((response) => {
+            if (response.status === 200) {
+                return response.blob();
+            } else {
+                throw new Error("Something went wrong: " + response.status);
+            }
+          })
           .then((blob) => {
             const blobUrl = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
@@ -29,8 +38,8 @@ const BookingSummary = () => {
           .catch((error) => {
             console.log(error);
             alert("Error downloading calendar file (.ics)");
-          })
-      }
+          });
+    }
 
     useEffect(() => {
         if (isAuthenticated()) {
