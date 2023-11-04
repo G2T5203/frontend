@@ -35,14 +35,17 @@ const ConfirmationPage = () => {
 
     function downloadCalendarFile(inBookingId) {
       console.log("Downloading calendar file for booking ID: " + inBookingId)
-      axios.get(apiUrl + "generate-calendar/" + inBookingId)
-        .then((response) => {
-          if (response.status === 200) {
-            console.log(response);
-            // TODO: Check how we actually get the ics file and download to the user's brower.
-          } else {
-            alert("Something went wrong: " + response.status);
-          }
+      axios.get(apiUrl + "rest/api/generate-calendar/" + inBookingId)
+        .then((response) => response.blob())
+        .then((blob) => {
+          const blobUrl = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.style.display = 'none';
+          a.href = blobUrl;
+          a.download = 'mycalendar.ics';
+          document.body.appendChild(a);
+          a.click();
+          window.URL.revokeObjectURL(blobUrl);
         })
         .catch((error) => {
           console.log(error);
