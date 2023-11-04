@@ -2,7 +2,12 @@ import { Box, Divider, Typography } from "@mui/material";
 import React from "react";
 import img from "./img.jpg";
 
-const SeatListing = ({bookedSeatsDep, bookedSeatsRet}) => {
+const SeatListing = ({
+  bookedSeatsDep,
+  bookedSeatsRet,
+  depSeatMap,
+  retSeatMap,
+}) => {
   return (
     <>
       <Box
@@ -59,37 +64,65 @@ const SeatListing = ({bookedSeatsDep, bookedSeatsRet}) => {
             alignItems: "flex-start",
           }}
         >
-            <Typography variant={"body1"} color={"white"} fontWeight={"bold"} fontFamily={"Noto Sans"}>OutBound Seats</Typography>
-            {bookedSeatsDep.map((item, index) => (
-                <Box
-                    key={index}
-                    sx={{
-                        display: "flex",
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                        width: "100%",
-                    }}
-                >
-                    <Typography color={"white"}> {item}</Typography>
-                </Box>
-            ))}
-            {bookedSeatsRet != null ? (<>
-            <Typography variant={"body1"} color={"white"} fontWeight={"bold"} fontFamily={"Noto Sans"}>Inbound Seats</Typography>
-            {bookedSeatsRet.map((item, index) => (
-                <Box
-                    key={index}
-                    sx={{
-                        display: "flex",
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                        width: "100%",
-                    }}
-                >
-                    <Typography color={"white"}> {item}</Typography>
-                </Box>
-            ))} </>) : (<Typography>No inbound</Typography>)}
+          <Typography
+            variant={"body1"}
+            color={"white"}
+            fontWeight={"bold"}
+            fontFamily={"Noto Sans"}
+          >
+            OutBound Seats
+          </Typography>
+          {bookedSeatsDep.map((seatNumber) => (
+            <Box
+              key={seatNumber}
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                width: "100%",
+              }}
+            >
+              <Typography color={"white"} sx={{ marginRight: 2 }}>
+                {seatNumber}
+              </Typography>
+              <Typography color={"white"}>
+                ${depSeatMap[seatNumber].toFixed(2)}
+              </Typography>
+            </Box>
+          ))}
 
-
+          {bookedSeatsRet != null ? (
+            <>
+             		<Typography
+            variant={"body1"}
+            color={"white"}
+            fontWeight={"bold"}
+            fontFamily={"Noto Sans"}
+          >
+            InBound Seats
+          </Typography>	
+{bookedSeatsRet.map((seatNumber) => (
+            <Box
+              key={seatNumber}
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                width: "100%",
+              }}
+            >
+              <Typography color={"white"} sx={{ marginRight: 2 }}>
+                {seatNumber}
+              </Typography>
+              <Typography color={"white"}>
+                ${retSeatMap[seatNumber].toFixed(2)}
+              </Typography>
+            </Box>
+          ))} 
+            </>
+          ) : (
+            <Typography>No inbound</Typography>
+          )}
         </Box>
 
         <Divider color={"grey"} sx={{ marginY: 2 }} />
@@ -103,9 +136,7 @@ const SeatListing = ({bookedSeatsDep, bookedSeatsRet}) => {
               width: "100%",
               height: "50px",
             }}
-          >
-
-          </Box>
+          ></Box>
         </Box>
       </Box>
     </>
