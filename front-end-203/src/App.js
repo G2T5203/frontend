@@ -22,6 +22,7 @@ import AdminPortalManagePlane from "./admin-portal/AdminManagePlane";
 import AdminPortalEditPlane from "./admin-portal/AdminEditPlane";
 import AdminPortalManageRoute from "./admin-portal/AdminManageRoute";
 import AdminPortalEditRoute from "./admin-portal/AdminEditRoute";
+import AdminPortalManageRouteListings from "./admin-portal/AdminManageRouteListing";
 
 function App() {
   return (
@@ -45,26 +46,12 @@ function App() {
         {/* ADMIN PORTAL */}
         <Route path="/adminPortal/login" element={<AdminPortalLogin />} />
         <Route path="/adminPortal/home" element={<AdminPortalHomePage />} />
-        <Route
-          path="/adminPortal/editProfile"
-          element={<AdminPortalEditProfile />}
-        />
-        <Route
-          path="/adminPortal/planes"
-          element={<AdminPortalManagePlane />}
-        />
-        <Route
-          path="/adminPortal/planes/edit"
-          element={<AdminPortalEditPlane />}
-        />
-        <Route
-          path="/adminPortal/routes"
-          element={<AdminPortalManageRoute />}
-        />
-        <Route
-          path="/adminPortal/routes/edit"
-          element={<AdminPortalEditRoute />}
-        />
+        <Route path="/adminPortal/editProfile" element={<AdminPortalEditProfile />} />
+        <Route path="/adminPortal/planes" element={<AdminPortalManagePlane />} />
+        <Route path="/adminPortal/planes/edit" element={<AdminPortalEditPlane />} />
+        <Route path="/adminPortal/routes" element={<AdminPortalManageRoute />} />
+        <Route path="/adminPortal/routes/edit" element={<AdminPortalEditRoute />} />
+        <Route path="/adminPortal/routeListings" element={<AdminPortalManageRouteListings />} />
       </Routes>
     </Router>
   );
