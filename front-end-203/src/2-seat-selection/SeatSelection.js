@@ -134,10 +134,10 @@ const SeatSelection = () => {
             (listing) => listing.seatNumber
           );
           setDepDisabledSeats(disabledSeatNumbers);
-          console.log(disabledSeatNumbers);
+          //console.log(disabledSeatNumbers);
 
           //check bookingid
-          console.log(bookingId);
+          //console.log(bookingId);
         }
       });
     } catch (error) {
@@ -178,7 +178,7 @@ const SeatMap = seatListings.reduce((result, item) => {
             (listing) => listing.seatNumber
           );
           setRetBusinessSeats(businessSeatNumbers);
-          console.log(businessSeatNumbers);
+          //console.log(businessSeatNumbers);
           //economy class filters
           const filteredEconomySeatListings = seatListings.filter(
             (listing) => listing.seatClass === "Economy"
@@ -187,7 +187,7 @@ const SeatMap = seatListings.reduce((result, item) => {
             (listing) => listing.seatNumber
           );
           setRetEconomySeats(economySeatNumbers);
-          console.log(economySeatNumbers);
+          //console.log(economySeatNumbers);
 
         const disabledSeats = seatListings.filter(
             (listing) =>
@@ -198,7 +198,6 @@ const SeatMap = seatListings.reduce((result, item) => {
             (listing) => listing.seatNumber
           );
           setRetDisabledSeats(disabledSeatNumbers);
-          console.log(disabledSeatNumbers);
         }
       });
     } catch (error) {
