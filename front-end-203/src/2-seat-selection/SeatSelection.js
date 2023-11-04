@@ -189,16 +189,16 @@ const SeatMap = seatListings.reduce((result, item) => {
           setRetEconomySeats(economySeatNumbers);
           console.log(economySeatNumbers);
 
-          const disabledSeats = seatListings.filter(
+        const disabledSeats = seatListings.filter(
             (listing) =>
               listing.isBooked === true &&
-              !(listing.seatNumber in selectedSeatsRet)
-          );
+              !selectedSeatsRet.includes(listing.seatNumber)
+          ); 
           const disabledSeatNumbers = disabledSeats.map(
             (listing) => listing.seatNumber
           );
           setRetDisabledSeats(disabledSeatNumbers);
-          // console.log(disabledSeatNumbers);
+          console.log(disabledSeatNumbers);
         }
       });
     } catch (error) {
@@ -270,6 +270,7 @@ const SeatMap = seatListings.reduce((result, item) => {
       seat = document.getElementsByClassName(seat);
       const buttonElement = seat[0];
       buttonElement.id = "chosen-by-user";
+       
     });
   };
 
