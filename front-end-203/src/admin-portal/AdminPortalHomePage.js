@@ -35,6 +35,37 @@ const AdminPortalHomePage = () => {
             })
     }
 
+    function resetBookings() {
+        axios.put(apiUrl + "adminUtils/forceCancelNonInitBookings")
+            .then((response) => {
+                if (response.status === 200) {
+                    alert("Cleared all non-sample bookings.\nResetted to demo state with new users retained.")
+                } else {
+                    alert("Something went wrong: " + response.status)
+                    console.log(response)
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+    }
+
+    function resetBookingsAndUsers() {
+        axios.put(apiUrl + "adminUtils/resetBookingsAndUsers")
+            .then((response) => {
+                if (response.status === 200) {
+                    alert("Cleared all non-sample bookings and users.\nRessetted to demo state.")
+                } else {
+                    alert("Something went wrong: " + response.status)
+                    console.log(response)
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+
+    }
+
 
     // Calls immediately upon page load
     useEffect(() => {
@@ -131,8 +162,42 @@ const AdminPortalHomePage = () => {
 
                             <Button fullWidth variant="contained" onClick={() => { navigate("/adminPortal/routes") }}
                             style={{margin: 10}}>Manage Routes</Button>
+
+                            <Button fullWidth variant="contained" onClick={() => { navigate("/adminPortal/routeListings") }}
+                            style={{margin: 10}}>Manage RouteListings</Button>
                         </Box>
                     </Paper>
+
+
+                    <Paper elevation={3}>
+                        <Box columnGap={2} style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            padding: 20,
+                            marginTop: 20,
+                            alignItems: 'center',
+                        }}>
+                            <Box sx={{
+                                bgcolor: 'error.main',
+                                borderRadius: '8px',
+                                paddingTop: '10px',
+                                paddingBottom: '10px',
+                                marginLeft: '20px',
+                                marginRight: '20px',
+                                width: '100%',
+                                textAlign: 'center'
+                            }}>
+                                <Typography sx={{color: 'white'}}> DANGER ZONE </Typography>
+                            </Box>
+
+                            <Button fullWidth variant="contained" color="error" onClick={() => { resetBookings(); }}
+                            style={{margin: 10}}>Reset Bookings</Button>
+
+                            <Button fullWidth variant="contained" color="error" onClick={() => { resetBookingsAndUsers(); }}
+                            style={{margin: 10}}>Reset Users & Bookings</Button>
+                        </Box>
+                    </Paper>
+
                 </Grid>
             </Grid>
         </Container>

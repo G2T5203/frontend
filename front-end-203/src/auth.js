@@ -1,7 +1,7 @@
 import Cookies from "js-cookie";
 import axios from "axios";
 
-const TOKEN_COOKIE_NAME = "jwt";
+const TOKEN_COOKIE_NAME = "PlaneSilly";
 
 // Function to set JWT token in cookies or headers with additional payload data
 export const setAuthToken = (token, userData) => {
@@ -31,7 +31,6 @@ export const setAuthToken = (token, userData) => {
 };
 
 
-
 // Function to remove JWT token from cookies or headers
 export const removeAuthToken = () => {
   Cookies.remove(TOKEN_COOKIE_NAME);
@@ -46,7 +45,7 @@ export const isAuthenticated = () => {
 
 // Function to get the current user from JWT stored in a cookie
 export const getCurrentUser = () => {
-  const token = Cookies.get('jwt'); // Replace 'jwt' with your actual cookie name
+  const token = Cookies.get(TOKEN_COOKIE_NAME);
   if (token) {
     // Decode the JWT token (assuming it's a base64-encoded JWT)
     const tokenPayload = token.split('.')[1];

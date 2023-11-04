@@ -6,6 +6,24 @@ import FlightInfoCard from "./flight-info-card/FlightInfoCard";
 import FareSummary from "./fare-summary/FareSummary";
 import { useNavigate, useLocation } from "react-router-dom";
 
+const calculateArrivalTime = (departureTime, flightDuration) => {
+  let [hours, minutes] = departureTime.split(":").map(Number);
+  let durationHours = parseInt(flightDuration.match(/(\d+)H/)[1], 10);
+  let durationMinutes = parseInt(flightDuration.match(/(\d+)M/)[1], 10);
+
+  minutes += durationMinutes;
+  if (minutes >= 60) {
+    hours += Math.floor(minutes / 60);
+    minutes %= 60;
+  }
+
+  hours += durationHours;
+  if (hours >= 24) hours -= 24; // Reset if it exceeds a day
+
+  return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
+};
+
+
 const ReviewDetails = () => {
 
   const retrievedData = JSON.parse(sessionStorage.getItem('selectedFlights'));
@@ -52,7 +70,7 @@ const ReviewDetails = () => {
             departureTime={departureFlight.departureDatetime?.split("T")[1].substring(0, 5)}
             arrivalAirport={departureFlight.arrivalLocation}
             arrivalDate={departureFlight.departureDatetime?.split("T")[0]}
-            arrivalTime={departureFlight.departureDatetime?.split("T")[1].substring(0, 5)}
+            arrivalTime={calculateArrivalTime(departureFlight.departureDatetime?.split("T")[1].substring(0, 5), departureFlight.flightDuration)}
             stops="Direct"
             travelTime={departureFlight.flightDuration && typeof departureFlight.flightDuration === "string" ? `${departureFlight.flightDuration.match(/(\d+)H/)[1]} hr ${departureFlight.flightDuration.match(/(\d+)M/)[1]} min` : ''}
             flightNumber={departureFlight.planeId}
@@ -67,7 +85,7 @@ const ReviewDetails = () => {
             departureTime={returnFlight.departureDatetime?.split("T")[1].substring(0, 5)}
             arrivalAirport={returnFlight.arrivalLocation}
             arrivalDate={returnFlight.departureDatetime?.split("T")[0]}
-            arrivalTime={returnFlight.departureDatetime?.split("T")[1].substring(0, 5)}
+            arrivalTime={calculateArrivalTime(returnFlight.departureDatetime?.split("T")[1].substring(0, 5), returnFlight.flightDuration)}
             stops="Direct"
             travelTime={returnFlight.flightDuration && typeof returnFlight.flightDuration === "string" ? `${returnFlight.flightDuration.match(/(\d+)H/)[1]} hr ${returnFlight.flightDuration.match(/(\d+)M/)[1]} min` : ''}
             flightNumber={returnFlight.planeId}

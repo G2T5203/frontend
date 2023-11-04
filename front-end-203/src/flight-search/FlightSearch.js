@@ -15,6 +15,7 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import FlightStolenPopUp from "./FlightStolenPopUp";
 import {
   isAuthenticated,
   removeAuthToken,
@@ -41,8 +42,11 @@ function FlightSearch() {
   const location = useLocation();
   const data = location.state;
 
-  
-
+  //flight Stolen modal
+  const [openState, setOpenState] = useState(false);
+  const handleModalClose = () => {
+      setOpenState(false);
+  };
 
   // //authentication
   // useEffect(() => {
@@ -226,9 +230,11 @@ function FlightSearch() {
   // function for actions upon click of proceed to next screen button
   // everything only executes on click of proceed to next screen IF the user is signed in.
   const handleProceedClick = () => {
-    if (recentReturnDate !== null && selectedReturnFlight === null) {
+
+    if (trip === "Return" && selectedReturnFlight === null) {
         alert("Please select a return flight");
         return;
+
     }
     if (isAuthenticated()) {
       axios
@@ -296,6 +302,93 @@ function FlightSearch() {
 
                 console.log(seatselectinfo.startTime + " is from search");
                 navigate("/seatselection", { state: seatselectinfo });
+              }).catch((error) => {
+                console.log("Flight taken")
+                setOpenState(true);
+                // TODO: we need to refresh the flight search results here
+                resetSelectedDepartureFlight();
+                resetSelectedReturnFlight();
+                handleSearch(
+                  departureLocation,
+                  arrivalLocation,
+                  recentDepartureDate,
+                  recentReturnDate,
+                  pax
+                );
+                //*********************************************************************************** */
+                // Retrieve the flightSearchState from sessionStorage
+                // let storedFlightSearchState = sessionStorage.getItem("flightSearchState");
+
+                // to store and manipulate departure date value and return date value
+                let currDepDate = dayjs(recentDepartureDate);
+                let currRetDate = dayjs(recentReturnDate);
+
+                // recentDepartureDate and recentReturnDate are not used.
+                // We copied this code from FlightSearchBar, desperate attempt to get things to work. Needs to refactor out this function
+                // but not doing so due to the risk of breaking more stuff. Hence commenting this out as I believe this part is not needed
+                // seeing how the search here is triggered directly in FlightSearch. - Rayner 4th Nov 2023, 3am
+                // if (storedFlightSearchState) {
+                //   let { recentDepartureDate, recentReturnDate } = JSON.parse(
+                //     storedFlightSearchState
+                //   );
+                // }
+
+                let year1 = null;
+                let month1 = null;
+                let day1 = null;
+                if (currDepDate != null) {
+                year1 = currDepDate.$y;
+                month1 = currDepDate.$M + 1;
+                day1 = currDepDate.$D;
+                console.log(year1);
+                console.log(month1);
+                console.log(day1);
+                }
+
+                let year2 = null;
+                let month2 = null;
+                let day2 = null;
+
+                // if null, dont do returnDate.$y, it throws error.
+                if (currRetDate != null) {
+                  year2 = currRetDate.$y;
+                  month2 = currRetDate.$M + 1;
+                  day2 = currRetDate.$D;
+                }
+
+                // Construct the URLs with departure and arrival locations
+                const baseURL = process.env.REACT_APP_API_BASE_URL;
+                const url1 = `${baseURL}routeListings/fullSearch/${departureLocation}/${arrivalLocation}/${year1}/${month1}/${day1}`;
+                const url2 = `${baseURL}routeListings/fullSearch/${arrivalLocation}/${departureLocation}/${year2}/${month2}/${day2}`;
+
+                axios
+                  .get(url1)
+                  .then((response1) => {
+                    handleDepartureFlightData(response1.data);
+                    console.log("This is response from backend:");
+                    console.log(response1.data);
+                    console.log(response1.status);
+
+                    // If selectedTripType is "Return", fetch the return data, otherwise send null
+                    if (selectedTripType === "Return") {
+                      return axios.get(url2);
+                    } else {
+                      handleReturnFlightData(null);
+                      return Promise.resolve(); // Resolve the promise chain
+                    }
+                  })
+                  .then((response2) => {
+                    if (response2) {
+                      // This check is to ensure we only call the callback if we have the data
+                      handleReturnFlightData(response2.data);
+                    }
+                  })
+                  .catch((error) => {
+                    console.error("Error fetching data:", error);
+                  });
+
+                  //*********************************************************************************** */
+                return
               });
             } catch (error) {
               console.log(error);
@@ -338,7 +431,6 @@ function FlightSearch() {
       console.log("p recentDepartureDate:", recentDepartureDate);
       console.log("p recentReturnDate:", recentReturnDate);
 
-      
       sessionStorage.setItem("second", true);
 
       navigate("/signin");
@@ -347,7 +439,9 @@ function FlightSearch() {
   };
 
   // for use of min and max price set on the filter tile in filtering the flight info cards rendered on click of the search button
+  // eslint-disable-next-line
   const [minPrice, setMinPrice] = useState(0); // Assuming 0 as default min value
+  // eslint-disable-next-line
   const [maxPrice, setMaxPrice] = useState(Infinity);
   const [potentialMinPrice, setPotentialMinPrice] = useState(0);
   const [potentialMaxPrice, setPotentialMaxPrice] = useState(Infinity);
@@ -382,6 +476,39 @@ function FlightSearch() {
     },
   };
   sessionStorage.setItem("selectedFlights", JSON.stringify(selectedData));
+
+
+  // function to calculate arrival date time from departure date time and flight duration
+  function calculateArrivalDateTime(departureDatetimeStr, flightDurationStr) {
+    // Extracting year, month, day, hour, minute, and second from the departure date string
+    const [year, month, day, hour, minute, second] = departureDatetimeStr.split(/[-T:]/).map(num => parseInt(num, 10));
+  
+    // Extracting the duration hours and minutes from the flight duration string
+    const hoursMatch = flightDurationStr.match(/(\d+)H/);
+    const minutesMatch = flightDurationStr.match(/(\d+)M/);
+    
+    let hoursToAdd = hoursMatch ? parseInt(hoursMatch[1], 10) : 0;
+    let minutesToAdd = minutesMatch ? parseInt(minutesMatch[1], 10) : 0;
+  
+    // Calculating the total minutes and hours after adding the flight duration
+    const totalMinutes = minute + minutesToAdd;
+    const carryOverHours = Math.floor(totalMinutes / 60);
+  
+    const totalHours = hour + hoursToAdd + carryOverHours;
+  
+    // Constructing the new date using Date.UTC
+    const arrivalDate = new Date(Date.UTC(year, month - 1, day, totalHours, totalMinutes % 60, second));
+  
+    const isoString = arrivalDate.toISOString();
+    return isoString.slice(0, 19).replace('T', 'T');
+  }
+  
+  // Testing the function
+  console.log(calculateArrivalDateTime("2023-12-13T07:00:00", "PT7H15M"));
+  // Expected result: "2023-12-13T14:15:00"
+  
+  
+  
 
   return (
     <div>
@@ -505,10 +632,16 @@ function FlightSearch() {
                     .substring(0, 5)}
                   arrivalAirport={arrivalLocation}
                   arrivalDate={
-                    selectedDepartureFlight?.departureDatetime?.split("T")[0]
+                    calculateArrivalDateTime(
+                      selectedDepartureFlight?.departureDatetime,
+                      selectedDepartureFlight?.flightDuration
+                    ).split("T")[0]
                   }
-                  arrivalTime={selectedDepartureFlight?.departureDatetime
-                    ?.split("T")[1]
+                  arrivalTime={calculateArrivalDateTime(
+                    selectedDepartureFlight?.departureDatetime,
+                    selectedDepartureFlight?.flightDuration
+                  )
+                    .split("T")[1]
                     .substring(0, 5)}
                   stops="Direct"
                   travelTime={`${
@@ -525,55 +658,67 @@ function FlightSearch() {
               </div>
             ) : (
               departureFlightData
-                .filter(
-                  (flight) =>
-                    flight.basePrice >= minPrice &&
-                    flight.basePrice <= maxPrice &&
-                    parseInt(
-                      flight.departureDatetime
-                        .split("T")[1]
-                        .substring(0, 5)
-                        .split(":")[0]
-                    ) >= low &&
-                    parseInt(
-                      flight.departureDatetime
-                        .split("T")[1]
-                        .substring(0, 5)
-                        .split(":")[0]
-                    ) <= high
-                )
-                .map((flight, index) => (
-                  <div key={index} style={{ marginBottom: "10px" }}>
-                    <FlightInfoCard
-                      imageURL="https://graphic.sg/media/pages/gallery/singapore-airlines-logo-1987/3067018395-1599296800/1987-singapore-airlines-logo-240x.png"
-                      departureAirport={departureLocation}
-                      departureDate={flight.departureDatetime.split("T")[0]}
-                      departureTime={flight.departureDatetime
-                        .split("T")[1]
-                        .substring(0, 5)}
-                      arrivalAirport={arrivalLocation}
-                      arrivalDate={flight.departureDatetime.split("T")[0]}
-                      arrivalTime={flight.departureDatetime
-                        .split("T")[1]
-                        .substring(0, 5)}
-                      stops="Direct"
-                      travelTime={`${
-                        flight.flightDuration.match(/(\d+)H/)[1]
-                      } hr ${flight.flightDuration.match(/(\d+)M/)[1]} min`}
-                      price={flight.basePrice.toFixed(2)}
-                      flightNumber={flight.planeId}
-                      onSelect={() =>
-                        pax <= flight.availableSeats &&
-                        handleDepartureFlightSelection(flight)
-                      }
-                      bookNowLabel={
-                        pax <= flight.availableSeats ? "Select" : "Unavailable"
-                      }
-                      seats={flight.availableSeats}
-                      isDisabled={pax > flight.availableSeats}
-                    />
-                  </div>
-                ))
+                // .filter(
+                //   (flight) =>
+                //     flight.basePrice >= minPrice &&
+                //     flight.basePrice <= maxPrice &&
+                //     parseInt(
+                //       flight.departureDatetime
+                //         .split("T")[1]
+                //         .substring(0, 5)
+                //         .split(":")[0]
+                //     ) >= low &&
+                //     parseInt(
+                //       flight.departureDatetime
+                //         .split("T")[1]
+                //         .substring(0, 5)
+                //         .split(":")[0]
+                //     ) <= high
+                // )
+                .map((flight, index) => {
+                  
+
+                  return (
+                    <div key={index} style={{ marginBottom: "10px" }}>
+                      <FlightInfoCard
+                        imageURL="https://graphic.sg/media/pages/gallery/singapore-airlines-logo-1987/3067018395-1599296800/1987-singapore-airlines-logo-240x.png"
+                        departureAirport={departureLocation}
+                        departureDate={flight.departureDatetime.split("T")[0]}
+                        departureTime={flight.departureDatetime
+                          .split("T")[1]
+                          .substring(0, 5)}
+                        arrivalAirport={arrivalLocation}
+                        arrivalDate={calculateArrivalDateTime(
+                          flight.departureDatetime,
+                          flight.flightDuration
+                        ).split("T")[0]}
+                        arrivalTime={calculateArrivalDateTime(
+                          flight.departureDatetime,
+                          flight.flightDuration
+                        )
+                          .split("T")[1]
+                          .substring(0, 5)}
+                        stops="Direct"
+                        travelTime={`${
+                          flight.flightDuration.match(/(\d+)H/)[1]
+                        } hr ${flight.flightDuration.match(/(\d+)M/)[1]} min`}
+                        price={flight.basePrice.toFixed(2)}
+                        flightNumber={flight.planeId}
+                        onSelect={() =>
+                          pax <= flight.availableSeats &&
+                          handleDepartureFlightSelection(flight)
+                        }
+                        bookNowLabel={
+                          pax <= flight.availableSeats
+                            ? "Select"
+                            : "Unavailable"
+                        }
+                        seats={flight.availableSeats}
+                        isDisabled={pax > flight.availableSeats}
+                      />
+                    </div>
+                  );
+                })
             )}
           </AccordionDetails>
         </Accordion>
@@ -630,10 +775,16 @@ function FlightSearch() {
                       .substring(0, 5)}
                     arrivalAirport={departureLocation}
                     arrivalDate={
-                      selectedReturnFlight?.departureDatetime?.split("T")[0]
+                      calculateArrivalDateTime(
+                        selectedReturnFlight?.departureDatetime,
+                        selectedReturnFlight?.flightDuration
+                      ).split("T")[0]
                     }
-                    arrivalTime={selectedReturnFlight?.departureDatetime
-                      ?.split("T")[1]
+                    arrivalTime={calculateArrivalDateTime(
+                      selectedReturnFlight?.departureDatetime,
+                      selectedReturnFlight?.flightDuration
+                    )
+                      .split("T")[1]
                       .substring(0, 5)}
                     stops="Direct"
                     travelTime={`${
@@ -650,23 +801,23 @@ function FlightSearch() {
                 </div>
               ) : (
                 returnFlightData
-                  .filter(
-                    (flight) =>
-                      flight.basePrice >= minPrice &&
-                      flight.basePrice <= maxPrice &&
-                      parseInt(
-                        flight.departureDatetime
-                          .split("T")[1]
-                          .substring(0, 5)
-                          .split(":")[0]
-                      ) >= low &&
-                      parseInt(
-                        flight.departureDatetime
-                          .split("T")[1]
-                          .substring(0, 5)
-                          .split(":")[0]
-                      ) <= high
-                  )
+                  // .filter(
+                  //   (flight) =>
+                  //     flight.basePrice >= minPrice &&
+                  //     flight.basePrice <= maxPrice &&
+                  //     parseInt(
+                  //       flight.departureDatetime
+                  //         .split("T")[1]
+                  //         .substring(0, 5)
+                  //         .split(":")[0]
+                  //     ) >= low &&
+                  //     parseInt(
+                  //       flight.departureDatetime
+                  //         .split("T")[1]
+                  //         .substring(0, 5)
+                  //         .split(":")[0]
+                  //     ) <= high
+                  // )
                   .map((flight, index) => (
                     <div key={index} style={{ marginBottom: "10px" }}>
                       <FlightInfoCard
@@ -677,8 +828,16 @@ function FlightSearch() {
                           .split("T")[1]
                           .substring(0, 5)}
                         arrivalAirport={departureLocation}
-                        arrivalDate={flight.departureDatetime.split("T")[0]}
-                        arrivalTime={flight.departureDatetime
+                        arrivalDate={
+                          calculateArrivalDateTime(
+                            flight.departureDatetime,
+                            flight.flightDuration
+                          ).split("T")[0]
+                        }
+                        arrivalTime={calculateArrivalDateTime(
+                          flight.departureDatetime,
+                          flight.flightDuration
+                        )
                           .split("T")[1]
                           .substring(0, 5)}
                         stops="Direct"
@@ -706,6 +865,7 @@ function FlightSearch() {
           </Accordion>
         )}
       </div>
+      <FlightStolenPopUp openState={openState} handleClose={handleModalClose}/>
     </div>
   );
 }

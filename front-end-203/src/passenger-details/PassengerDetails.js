@@ -17,18 +17,18 @@ const PassengerDetails = () => {
 
   const navigate = useNavigate();
   const [passengers, setPassengers] = React.useState([]);
+  const [isFormValid, setFormValid] = React.useState(false);
 
-  const handlePassengerDataChange = (passengerData) => {
+
+  const handlePassengerDataChange = (passengerData, isValid) => {
     console.log(passengerData); 
     setPassengers(passengerData);
+    setFormValid(isValid);
+
 }
 const handleProceedToReview = () => {
       console.log(passengers)
   // Save to sessionStorage
-   if (containsEmptyString(passengers) || passengers.length === 0) {
-       alert("Please fill in all fields");
-       return;
-   }
   sessionStorage.setItem('passengerData', JSON.stringify(passengers));
   console.log("navigating to review details");
 
@@ -41,22 +41,6 @@ const handleProceedToReview = () => {
     navigate("/reviewdetails", {state: data});
 }
 
-    function containsEmptyString(obj) {
-        for (const key in obj) {
-            if (obj.hasOwnProperty(key)) {
-                const value = obj[key];
-                if (typeof value === 'string' && value === "") {
-                    if (returnFlight === "" && key === "returnSeat") continue;
-                    return true; // Found an empty string
-                } else if (typeof value === 'object') {
-                    if (containsEmptyString(value)) {
-                        return true; // Recursively check the nested object
-                    }
-                }
-            }
-        }
-        return false; // No empty strings found
-    }
   
   return (
     <div>
@@ -76,7 +60,7 @@ const handleProceedToReview = () => {
           height: "25vh",
         }}
       >
-        <Button variant="contained" color="primary" onClick={handleProceedToReview}>
+        <Button variant="contained" color="primary" onClick={handleProceedToReview} disabled={!isFormValid}>
           Proceed to Review
         </Button>
       </div>

@@ -21,6 +21,16 @@ const PassengerForm = ({ numGuests, tripType, outboundSeats, inboundSeats, onPas
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    const areFieldsValid = () => {
+        for (let passenger of passengers) {
+          if (!passenger.salutation || !passenger.firstName || !passenger.lastName || !passenger.outboundSeat || (tripType === "Return" && !passenger.returnSeat)) {
+            return false;
+          }
+        }
+        return true;
+      };
+      
+
     const handleInputChange = (index, field, value) => {
         const updatedPassengers = [...passengers];
         updatedPassengers[index][field] = value;
@@ -43,7 +53,7 @@ const PassengerForm = ({ numGuests, tripType, outboundSeats, inboundSeats, onPas
         }
 
         // inform parent component
-        if (onPassengerDataChange) onPassengerDataChange(updatedPassengers);
+        if (onPassengerDataChange) onPassengerDataChange(updatedPassengers, areFieldsValid());
     };
     
     const renderPassengerFields = (index) => (

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Paper, Typography, Table, TableRow, TableCell, Divider } from '@mui/material';
+import { Grid, Box, Button, Paper, Typography, Table, TableRow, TableCell, Divider } from '@mui/material';
 import axios from 'axios';
 import {
     getCurrentUser,
@@ -11,6 +11,34 @@ const BookingSummary = () => {
     const [bookings, setBookings] = useState([]);
     const apiUrl = process.env.REACT_APP_API_BASE_URL;
     const username = getCurrentUser().username;
+
+    function downloadCalendarFile(inBookingId) {
+        console.log("Downloading calendar file for booking ID: " + inBookingId)
+        axios.get(apiUrl + "rest/api/generate-calendar/" + inBookingId, {
+            responseType: 'blob'
+        })
+            .then((response) => {
+                if (response.status === 200) {
+                    // return response.blob();
+                    const blobData = response.data;
+
+                    const blobUrl = window.URL.createObjectURL(blobData);
+                    const a = document.createElement('a');
+                    a.style.display = 'none';
+                    a.href = blobUrl;
+                    a.download = 'mycalendar.ics';
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(blobUrl);
+                } else {
+                    throw new Error("Something went wrong: " + response.status);
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+                alert("Error downloading calendar file (.ics)");
+            });
+    }
 
     useEffect(() => {
         if (isAuthenticated()) {
@@ -35,9 +63,30 @@ const BookingSummary = () => {
             <Divider />
             {bookings.map((booking, idx) => (
                 <Paper elevation={3} sx={{ mb: idx === bookings.length - 1 ? 0 : 2, p: 2, backgroundColor: '#E0E0E0' }} key={idx}>
-                    <Typography variant="subtitle1" align="center" style={{ color: 'black' }}>
-                        Booking ID: {booking.bookingId}
-                    </Typography>
+                    <Grid
+                        container
+                        justifyContent="space-between"
+                        alignItems="center"
+                    >
+                        <Grid item>
+                            <Typography variant="h5" align="center" style={{ color: 'black' }}>
+                                Booking ID: {booking.bookingId}
+                            </Typography>
+                        </Grid>
+
+                        <Grid item xs={6} style={{ textAlign: 'center' }}></Grid>
+
+                        <Grid item>
+                            <Button
+                                variant={"contained"}
+                                sx={{ mb: 3, color: "white", backgroundColor: "#F9AB55" }}
+                                onClick={() => { downloadCalendarFile(booking.bookingId); }}
+                            >
+                                Download Calendar File
+                            </Button>
+                        </Grid>
+                    </Grid>
+
                     <Divider style={{ margin: '16px 0' }} />
                     <Typography variant="body2">
                         Outbound Flight
@@ -50,6 +99,10 @@ const BookingSummary = () => {
                                 year: 'numeric'
                             })
                         }
+                        <br />
+                        {booking.outboundDepartureDestination} →  {booking.outboundArrivalDestination}
+                    </Typography>
+                    <Typography variant="body2">
                     </Typography>
                     <Table size="small">
                         <TableRow>
@@ -66,7 +119,6 @@ const BookingSummary = () => {
 
                     {booking.inboundSeatNumbers && Object.keys(booking.inboundSeatNumbers).length > 0 && (
                         <>
-
                             <Divider style={{ margin: '16px 0' }} />
                             <Typography variant="body2" style={{ marginTop: '16px' }}>
                                 Return Flight
@@ -79,6 +131,10 @@ const BookingSummary = () => {
                                         year: 'numeric'
                                     })
                                 }
+                                <br />
+                                {booking.inboundDepartureDestination} →  {booking.inboundArrivalDestination}
+                            </Typography>
+                            <Typography variant="body2">
                             </Typography>
                             <Table size="small">
                                 <TableRow>
