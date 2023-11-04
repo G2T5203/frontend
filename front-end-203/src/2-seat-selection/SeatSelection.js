@@ -67,7 +67,10 @@ const SeatSelection = () => {
   const [selectedSeatsRet, setSelectedSeatsRet] = useState([]);
 
   //put deadline
-  const newTime = new Date(startTime);
+  // NOTE: TIMEZONE ISSUES. WE IGNORE THE SERVER VALUE FOR NOW. AND JUST GET THE CURRENT DATETIME OF THE SERVER.
+  // const newTime = new Date(startTime);
+  const newTime = new Date();
+  console.log("SpringBoot Start Time: " + new Date(startTime) + ", FrontEnd Start Time: " + newTime);
   const endTime = new Date(newTime.getTime() + 15 * 60000);
 
   // for transfer of time to other screens
