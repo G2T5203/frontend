@@ -24,15 +24,16 @@ const SeatSelection = () => {
   const navigate = useNavigate();
   const apiUrl = process.env.REACT_APP_API_BASE_URL;
   const location = useLocation();
-  let { bookingId, departureFlight, returnFlight, numGuest, startTime } = location.state;
+  let { bookingId, departureFlight, returnFlight, numGuest, startTime } =
+    location.state;
   //create seats array
   // const [depAllSeats, setDepAllSeats] = useState([null]); //array of json object
   const [depFirstSeats, setDepFirstSeats] = useState([]);
   const [depBusinessSeats, setDepBusinessSeats] = useState([]);
   const [depEconomySeats, setDepEconomySeats] = useState([]);
-    const [retFirstSeats, setRetFirstSeats] = useState([]);
-    const [retBusinessSeats, setRetBusinessSeats] = useState([]);
-    const [retEconomySeats, setRetEconomySeats] = useState([]);
+  const [retFirstSeats, setRetFirstSeats] = useState([]);
+  const [retBusinessSeats, setRetBusinessSeats] = useState([]);
+  const [retEconomySeats, setRetEconomySeats] = useState([]);
 
   //math for number of rows
   const firstNumRows = Math.ceil(depFirstSeats.length / 2);
@@ -44,17 +45,20 @@ const SeatSelection = () => {
   const [option, setOption] = useState("outbound");
   const [depDisabledSeats, setDepDisabledSeats] = useState([]);
   const [retDisabledSeats, setRetDisabledSeats] = useState([]);
-  const depdt = departureFlight.departureDatetime.replace(/"/g, "").replace(/:/g, "x");
+  const depdt = departureFlight.departureDatetime
+    .replace(/"/g, "")
+    .replace(/:/g, "x");
 
   //seat Stolen modal
-    const [openState, setOpenState] = useState(false);
-    const handleModalClose = () => {
-        setOpenState(false);
-    };
+  const [openState, setOpenState] = useState(false);
+  const handleModalClose = () => {
+    setOpenState(false);
+  };
 
+  const [depSeatMap, setDepSeatMap] = useState({});
+  const [retSeatMap, setRetSeatMap] = useState({});
 
-
-    //number of seats left
+  //number of seats left
   const [depCount, setDepCount] = useState(numGuest);
   const [retCount, setRetCount] = useState(numGuest);
   //selectedSeatsDep
@@ -63,28 +67,37 @@ const SeatSelection = () => {
   const [selectedSeatsRet, setSelectedSeatsRet] = useState([]);
 
   //put deadline
-    const newTime = new Date(startTime);
-    const endTime =  new Date(newTime.getTime() + 15*60000);
+  const newTime = new Date(startTime);
+  const endTime = new Date(newTime.getTime() + 15 * 60000);
 
-    // for transfer of time to other screens
-    sessionStorage.setItem('endTime', endTime.toString());
+  // for transfer of time to other screens
+  sessionStorage.setItem("endTime", endTime.toString());
 
-console.log(newTime + "\n" + endTime)
+  console.log(newTime + "\n" + endTime);
   const urlDep =
     apiUrl +
     `seatListings/matchingRouteListing/${departureFlight.planeId}/${departureFlight.routeId}/${depdt}`;
 
   //create booking departure flight
   const fetchDepSeatListings = () => {
-    console.log("called fetch dep")
+    console.log("called fetch dep");
     try {
       axios.get(urlDep).then((response) => {
         if (response.status === 200) {
-            unColorEverything(depDisabledSeats);
+          unColorEverything(depDisabledSeats);
           //first class filters
           const seatListings = response.data;
           // setDepAllSeats(seatListings);
           // console.log(typeof seatListings);
+          //get a seat and price mapping
+          const SeatMap = seatListings.reduce((result, item) => {
+            // Extract seat number and seat price
+            const { seatNumber, seatPrice } = item;
+            // Assign the seatPrice to the seatNumber key in the hashmap
+            result[seatNumber] = seatPrice;
+            return result;
+          }, {});
+          setDepSeatMap(SeatMap);
           const filteredSeatListings = seatListings.filter(
             (listing) => listing.seatClass === "First"
           );
@@ -113,18 +126,18 @@ console.log(newTime + "\n" + endTime)
           setDepEconomySeats(economySeatNumbers);
           console.log(selectedSeatsDep);
           const disabledSeats = seatListings.filter(
-              (listing) => (listing.isBooked === true && !selectedSeatsDep.includes(listing.seatNumber))
-        );
+            (listing) =>
+              listing.isBooked === true &&
+              !selectedSeatsDep.includes(listing.seatNumber)
+          );
           const disabledSeatNumbers = disabledSeats.map(
-              (listing) => listing.seatNumber
-          )
+            (listing) => listing.seatNumber
+          );
           setDepDisabledSeats(disabledSeatNumbers);
-          console.log(disabledSeatNumbers);
+          //console.log(disabledSeatNumbers);
 
           //check bookingid
-          console.log(bookingId);
-
-
+          //console.log(bookingId);
         }
       });
     } catch (error) {
@@ -133,78 +146,85 @@ console.log(newTime + "\n" + endTime)
   };
 
   const fetchRetSeatListings = (urlRet) => {
-      try {
-        axios.get(urlRet).then((response) => {
-          if (response.status === 200) {
-            //first class filters
-              unColorEverything(retDisabledSeats);
-            const seatListings = response.data;
+    try {
+      axios.get(urlRet).then((response) => {
+        if (response.status === 200) {
+          //first class filters
+          unColorEverything(retDisabledSeats);
+          const seatListings = response.data;
+          //create a seat and price mapping
+const SeatMap = seatListings.reduce((result, item) => {
+            // Extract seat number and seat price
+            const { seatNumber, seatPrice } = item;
 
-            const filteredSeatListings = seatListings.filter(
-                (listing) => listing.seatClass === "First"
-            );
-            const seatNumbers = filteredSeatListings.map(
-                (listing) => listing.seatNumber
-            );
-            setRetFirstSeats(seatNumbers);
-            console.log(seatNumbers);
-            //business class filters
-            const filteredBusinessSeatListings = seatListings.filter(
-                (listing) => listing.seatClass === "Business"
-            );
-            const businessSeatNumbers = filteredBusinessSeatListings.map(
-                (listing) => listing.seatNumber
-            );
-            setRetBusinessSeats(businessSeatNumbers);
-            console.log(businessSeatNumbers);
-            //economy class filters
-            const filteredEconomySeatListings = seatListings.filter(
-                (listing) => listing.seatClass === "Economy"
-            );
-            const economySeatNumbers = filteredEconomySeatListings.map(
-                (listing) => listing.seatNumber
-            );
-            setRetEconomySeats(economySeatNumbers);
-            console.log(economySeatNumbers);
+            // Assign the seatPrice to the seatNumber key in the hashmap
+            result[seatNumber] = seatPrice;
+            return result;
+          }, {});
+          setRetSeatMap(SeatMap);
+          const filteredSeatListings = seatListings.filter(
+            (listing) => listing.seatClass === "First"
+          );
+          const seatNumbers = filteredSeatListings.map(
+            (listing) => listing.seatNumber
+          );
+          setRetFirstSeats(seatNumbers);
+          console.log(seatNumbers);
+          //business class filters
+          const filteredBusinessSeatListings = seatListings.filter(
+            (listing) => listing.seatClass === "Business"
+          );
+          const businessSeatNumbers = filteredBusinessSeatListings.map(
+            (listing) => listing.seatNumber
+          );
+          setRetBusinessSeats(businessSeatNumbers);
+          //console.log(businessSeatNumbers);
+          //economy class filters
+          const filteredEconomySeatListings = seatListings.filter(
+            (listing) => listing.seatClass === "Economy"
+          );
+          const economySeatNumbers = filteredEconomySeatListings.map(
+            (listing) => listing.seatNumber
+          );
+          setRetEconomySeats(economySeatNumbers);
+          //console.log(economySeatNumbers);
 
-            const disabledSeats = seatListings.filter(
-                (listing) => listing.isBooked === true && !(listing.seatNumber in selectedSeatsRet)
-            );
-            const disabledSeatNumbers = disabledSeats.map(
-                (listing) => listing.seatNumber
-            )
-            setRetDisabledSeats(disabledSeatNumbers);
-            // console.log(disabledSeatNumbers);
-
-          }
-        });
-      } catch (error) {
-        console.log(error);
-      }
-
+        const disabledSeats = seatListings.filter(
+            (listing) =>
+              listing.isBooked === true &&
+              !selectedSeatsRet.includes(listing.seatNumber)
+          ); 
+          const disabledSeatNumbers = disabledSeats.map(
+            (listing) => listing.seatNumber
+          );
+          setRetDisabledSeats(disabledSeatNumbers);
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const disableSeats = (jsonObject) => {
-    jsonObject.forEach(seat => {
+    jsonObject.forEach((seat) => {
       seat = document.getElementsByClassName(seat);
       const buttonElement = seat[0];
       buttonElement.disabled = true;
       buttonElement.id = "selected";
-    })
-  }
+    });
+  };
 
   const unColorEverything = (jsonObject) => {
-      jsonObject.forEach(seat => {
-          seat = document.getElementsByClassName(seat);
-          const buttonElement = seat[0];
-          buttonElement.disabled = false;
-          buttonElement.id = "NotSelected";
-          buttonElement.backgroundColor = color(buttonElement.width);
-      })
-  }
+    jsonObject.forEach((seat) => {
+      seat = document.getElementsByClassName(seat);
+      const buttonElement = seat[0];
+      buttonElement.disabled = false;
+      buttonElement.id = "NotSelected";
+      buttonElement.backgroundColor = color(buttonElement.width);
+    });
+  };
 
-
-//api calls
+  //api calls
   useEffect(() => {
     if (isAuthenticated()) {
       axios
@@ -213,15 +233,17 @@ console.log(newTime + "\n" + endTime)
           // TODO: This isn't correctly reporting errors. Postman is 403, but here it's still 200.
           if (response.status === 200) {
             updateAuthHeadersFromCurrentUser();
-              fetchDepSeatListings();
-              if (returnFlight != null) {
-                const retdt = returnFlight.departureDatetime.replace(/"/g, "").replace(/:/g, "x");
-                const urlRet = apiUrl + `seatListings/matchingRouteListing/${returnFlight.planeId}/${returnFlight.routeId}/${retdt}`;
-                fetchRetSeatListings(urlRet);
-              }
+            fetchDepSeatListings();
+            if (returnFlight != null) {
+              const retdt = returnFlight.departureDatetime
+                .replace(/"/g, "")
+                .replace(/:/g, "x");
+              const urlRet =
+                apiUrl +
+                `seatListings/matchingRouteListing/${returnFlight.planeId}/${returnFlight.routeId}/${retdt}`;
+              fetchRetSeatListings(urlRet);
             }
-            
-           else {
+          } else {
             removeAuthToken();
             navigate("/signin");
           }
@@ -243,12 +265,13 @@ console.log(newTime + "\n" + endTime)
   }, []);
 
   const colourSelected = (jsonObject) => {
-      jsonObject.forEach(seat => {
-          seat = document.getElementsByClassName(seat);
-          const buttonElement = seat[0];
-          buttonElement.id = "chosen-by-user";
-      })
-  }
+    jsonObject.forEach((seat) => {
+      seat = document.getElementsByClassName(seat);
+      const buttonElement = seat[0];
+      buttonElement.id = "chosen-by-user";
+       
+    });
+  };
 
   //changing of stuff
   useEffect(() => {
@@ -259,187 +282,207 @@ console.log(newTime + "\n" + endTime)
       disableSeats(retDisabledSeats);
       colourSelected(selectedSeatsRet);
     }
-
-  }, [depDisabledSeats, option, retDisabledSeats, selectedSeatsRet, selectedSeatsDep]);
+  }, [
+    depDisabledSeats,
+    option,
+    retDisabledSeats,
+    selectedSeatsRet,
+    selectedSeatsDep,
+  ]);
 
   function color(size) {
-      switch (size) {
-        case "200px":
-          return "green"
-        case "80px":
-          return "orange"
-        case "64px":
-          return "blue"
-        default:
-          return "white"
-      }
-
+    switch (size) {
+      case "200px":
+        return "green";
+      case "80px":
+        return "orange";
+      case "64px":
+        return "blue";
+      default:
+        return "white";
     }
+  }
 
-
-
-    const handleToPassengerDetails = (event) => {
-      if (depCount !== 0 ) {
-          alert("Please select all seats before proceeding")
-          return;
-      } else if (returnFlight != null && retCount !== 0) {
-          alert("Please select all seats before proceeding")
-          return;
-      }
-      console.log("navigating to passenger details");
-      const data = {
-          "outboundSeats": selectedSeatsDep,
-          "inboundSeats": selectedSeatsRet,
-          "numGuest": numGuest,
-          "departureFlight": departureFlight,
-          "returnFlight": returnFlight,
-          "bookingId": bookingId
-      }
-      navigate("/passengerdetails", {state: data});
+  const handleToPassengerDetails = (event) => {
+    if (depCount !== 0) {
+      alert("Please select all seats before proceeding");
+      return;
+    } else if (returnFlight != null && retCount !== 0) {
+      alert("Please select all seats before proceeding");
+      return;
     }
+    console.log("navigating to passenger details");
+    const data = {
+      outboundSeats: selectedSeatsDep,
+      inboundSeats: selectedSeatsRet,
+      numGuest: numGuest,
+      departureFlight: departureFlight,
+      returnFlight: returnFlight,
+      bookingId: bookingId,
+    };
+    navigate("/passengerdetails", { state: data });
+  };
 
-    //TODO: stop seats from changing back to black
-    const handleClick = (event) => {
+  //TODO: stop seats from changing back to black
+  const handleClick = (event) => {
     if (option === "outbound") {
-        if ((event.target.id !== "chosen-by-user") && depCount === 0) {
-            alert("You have selected Maximum Outbound Seats");
-            return;
-        }
+      if (event.target.id !== "chosen-by-user" && depCount === 0) {
+        alert("You have selected Maximum Outbound Seats");
+        return;
+      }
       if (selectedSeatsDep.includes(event.target.innerText)) {
-
         //cancel reservation
-        try{
-          axios.put(apiUrl + `seatListings/cancelSeatBooking/${bookingId}`,
-              {
-                "planeId": departureFlight.planeId,
-                "routeId": departureFlight.routeId,
-                "departureDatetime": departureFlight.departureDatetime.replace(/"/g, ""),
-                "seatNumber": event.target.innerText
-              }).then((response) => {
-                if (response.status === 200) {
-                  console.log("successful cancelation")
-                  setSelectedSeatsDep((prevSeats) => prevSeats.filter((seat) => seat !== event.target.innerText));
-                  event.target.id = "NotSelected"
-                  event.target.backgroundColor =  color(event.target.width);
-                  setDepCount((prevCount) => prevCount + 1);
-                }  else {
-                    console.log(response.status);
-                }
-          })
+        try {
+          axios
+            .put(apiUrl + `seatListings/cancelSeatBooking/${bookingId}`, {
+              planeId: departureFlight.planeId,
+              routeId: departureFlight.routeId,
+              departureDatetime: departureFlight.departureDatetime.replace(
+                /"/g,
+                ""
+              ),
+              seatNumber: event.target.innerText,
+            })
+            .then((response) => {
+              if (response.status === 200) {
+                console.log("successful cancelation");
+                setSelectedSeatsDep((prevSeats) =>
+                  prevSeats.filter((seat) => seat !== event.target.innerText)
+                );
+                event.target.id = "NotSelected";
+                event.target.backgroundColor = color(event.target.width);
+                setDepCount((prevCount) => prevCount + 1);
+              } else {
+                console.log(response.status);
+              }
+            });
         } catch (error) {
-          console.log(error)
-          console.log("failed to cancel")
+          console.log(error);
+          console.log("failed to cancel");
         }
-
-
       } else {
         //axios call goes below
-        const payload =
-            {
-              "planeId": departureFlight.planeId,
-              "routeId": departureFlight.routeId,
-              "departureDatetime": departureFlight.departureDatetime.replace(/"/g, ""),
-              "seatNumber": event.target.innerText,
-              "bookingId": bookingId
-            };
+        const payload = {
+          planeId: departureFlight.planeId,
+          routeId: departureFlight.routeId,
+          departureDatetime: departureFlight.departureDatetime.replace(
+            /"/g,
+            ""
+          ),
+          seatNumber: event.target.innerText,
+          bookingId: bookingId,
+        };
         // console.log(JSON.stringify(payload))
         try {
-          axios.put(apiUrl + "seatListings/bookSeat/reserve", payload)
-              .then((response) => {
-                if (response.status === 200) {
-                  console.log("successful reservation")
-                  setSelectedSeatsDep([...selectedSeatsDep, event.target.innerText]);
-                  event.target.id = "chosen-by-user";
-                  setDepCount((prevCount) => prevCount - 1);
-                } else {
-                  console.log(response.status)
-                }
-              }).catch((error) => {
-              console.log("seat taken")
+          axios
+            .put(apiUrl + "seatListings/bookSeat/reserve", payload)
+            .then((response) => {
+              if (response.status === 200) {
+                console.log("successful reservation");
+                setSelectedSeatsDep([
+                  ...selectedSeatsDep,
+                  event.target.innerText,
+                ]);
+                event.target.id = "chosen-by-user";
+                setDepCount((prevCount) => prevCount - 1);
+              } else {
+                console.log(response.status);
+              }
+              })
+            .catch((error) => {
+              console.log("seat taken");
               setOpenState(true);
               fetchDepSeatListings();
               colourSelected(selectedSeatsDep);
-                return
-          })
+              return;
+            });
         } catch (error) {
-          console.log("failing at outbound seat reservation")
-          console.log(error)
+          console.log("failing at outbound seat reservation");
+          console.log(error);
         }
-
       }
     } else {
-        if (retCount === 0 && (event.target.id !== "chosen-by-user")) {
-            alert("You have selected Maximum Inbound Seats");
-            return;
-        }
+      if (retCount === 0 && event.target.id !== "chosen-by-user") {
+        alert("You have selected Maximum Inbound Seats");
+        return;
+      }
       if (selectedSeatsRet.includes(event.target.innerText)) {
-
         //cancel reservation
-        try{
-          axios.put(apiUrl + `seatListings/cancelSeatBooking/${bookingId}`,
-              {
-                "planeId": returnFlight.planeId,
-                "routeId": returnFlight.routeId,
-                "departureDatetime": returnFlight.departureDatetime.replace(/"/g, ""),
-                "seatNumber": event.target.innerText
-              }).then((response) => {
-            if (response.status === 200) {
-              console.log("successful cancelation")
-              event.target.id = "NotSelected"
-              event.target.backgroundColor =  color(event.target.width);
-              setSelectedSeatsRet((prevSeats) => prevSeats.filter((seat) => seat !== event.target.innerText));
-              setRetCount((prevCount) => prevCount + 1);
-            } else {
-              console.log(response.status)
-            }
-          })
+        try {
+          axios
+            .put(apiUrl + `seatListings/cancelSeatBooking/${bookingId}`, {
+              planeId: returnFlight.planeId,
+              routeId: returnFlight.routeId,
+              departureDatetime: returnFlight.departureDatetime.replace(
+                /"/g,
+                ""
+              ),
+              seatNumber: event.target.innerText,
+            })
+            .then((response) => {
+              if (response.status === 200) {
+                console.log("successful cancelation");
+                event.target.id = "NotSelected";
+                event.target.backgroundColor = color(event.target.width);
+                setSelectedSeatsRet((prevSeats) =>
+                  prevSeats.filter((seat) => seat !== event.target.innerText)
+                );
+                setRetCount((prevCount) => prevCount + 1);
+              } else {
+                console.log(response.status);
+              }
+            });
         } catch (error) {
-          console.log(error)
-          console.log("failed to cancel")
+          console.log(error);
+          console.log("failed to cancel");
         }
-
-
       } else {
         //axios call goes below
-        const payload =
-            {
-              "planeId": returnFlight.planeId,
-              "routeId": returnFlight.routeId,
-              "departureDatetime": returnFlight.departureDatetime.replace(/"/g, ""),
-              "seatNumber": event.target.innerText,
-              "bookingId": bookingId
-            };
+        const payload = {
+          planeId: returnFlight.planeId,
+          routeId: returnFlight.routeId,
+          departureDatetime: returnFlight.departureDatetime.replace(/"/g, ""),
+          seatNumber: event.target.innerText,
+          bookingId: bookingId,
+        };
         // console.log(JSON.stringify(payload))
         try {
-          axios.put(apiUrl + "seatListings/bookSeat/reserve", payload)
-              .then((response) => {
-                if (response.status === 200) {
-                  console.log("successful reservation")
-                  setSelectedSeatsRet([...selectedSeatsRet, event.target.innerText]);
-                  event.target.id = "chosen-by-user";
+          axios
+            .put(apiUrl + "seatListings/bookSeat/reserve", payload)
+            .then((response) => {
+              if (response.status === 200) {
+                console.log("successful reservation");
+                setSelectedSeatsRet([
+                  ...selectedSeatsRet,
+                  event.target.innerText,
+                ]);
+                event.target.id = "chosen-by-user";
 
-                  setRetCount((prevCount) => prevCount - 1);
-                } else {
-                  console.log(response.status)
-                }
-              }).catch((error) => {
-              console.log("seat taken")
+                setRetCount((prevCount) => prevCount - 1);
+              } else {
+                console.log(response.status);
+              }
+            })
+            .catch((error) => {
+              console.log("seat taken");
               setOpenState(true);
-              const retdt = returnFlight.departureDatetime.replace(/"/g, "").replace(/:/g, "x");
-              const urlRet = apiUrl + `seatListings/matchingRouteListing/${returnFlight.planeId}/${returnFlight.routeId}/${retdt}`;
+              const retdt = returnFlight.departureDatetime
+                .replace(/"/g, "")
+                .replace(/:/g, "x");
+              const urlRet =
+                apiUrl +
+                `seatListings/matchingRouteListing/${returnFlight.planeId}/${returnFlight.routeId}/${retdt}`;
               fetchRetSeatListings(urlRet);
               colourSelected(selectedSeatsRet);
               return;
-          })
+            });
         } catch (error) {
-          console.log("failing at outbound seat reservation")
-          console.log(error)
+          console.log("failing at outbound seat reservation");
+          console.log(error);
         }
-
       }
     }
-
-  }
+  };
 
   const handleChange = (event, newOption) => {
     setOption(newOption);
@@ -450,7 +493,11 @@ console.log(newTime + "\n" + endTime)
         <NavigationBar />
       </div>
 
-      <ProgressBar currentStep={"Seat Selection"} number={1} deadline={endTime} />
+      <ProgressBar
+        currentStep={"Seat Selection"}
+        number={1}
+        deadline={endTime}
+      />
 
       <Box
         sx={{
@@ -462,36 +509,42 @@ console.log(newTime + "\n" + endTime)
       >
         <Typography variant={"h5"} textAlign={"center"} p={2}>
           Selecting For
-        </Typography> {returnFlight != null ? (
-        <ToggleButtonGroup
-          color="primary"
-          value={option}
-          exclusive
-          onChange={handleChange}
-          sx={{
-            marginX: 3,
-          }}
-
-        >
-          <ToggleButton
-            value="outbound"
-            fullWidth
+        </Typography>{" "}
+        {returnFlight != null ? (
+          <ToggleButtonGroup
+            color="primary"
+            value={option}
+            exclusive
+            onChange={handleChange}
             sx={{
-              paddingX: "60px",
+              marginX: 3,
             }}
           >
-            Outbound
-          </ToggleButton>
-          <ToggleButton
-            value="inbound"
-            fullWidth
-            sx={{
-              paddingX: "60px",
-            }}
-          >
-            Inbound
-          </ToggleButton>
-        </ToggleButtonGroup> ): (<Typography variant={"h4"} textAlign={"center"} p={2}> Outbound </Typography>)}
+            <ToggleButton
+              value="outbound"
+              fullWidth
+              sx={{
+                paddingX: "60px",
+              }}
+            >
+              Outbound
+            </ToggleButton>
+            <ToggleButton
+              value="inbound"
+              fullWidth
+              sx={{
+                paddingX: "60px",
+              }}
+            >
+              Inbound
+            </ToggleButton>
+          </ToggleButtonGroup>
+        ) : (
+          <Typography variant={"h4"} textAlign={"center"} p={2}>
+            {" "}
+            Outbound{" "}
+          </Typography>
+        )}
       </Box>
 
       <Box
@@ -525,7 +578,7 @@ console.log(newTime + "\n" + endTime)
                   <Box>
                     {Array.from({ length: firstNumRows }, (_, rowIndex) => (
                       <div
-                        key={rowIndex+"_dep"}
+                        key={rowIndex + "_dep"}
                         style={{
                           display: "flex",
                           justifyContent: "space-between",
@@ -547,7 +600,7 @@ console.log(newTime + "\n" + endTime)
                     ))}
                     {Array.from({ length: businessNumRows }, (_, rowIndex) => (
                       <div
-                        key={rowIndex+"_dep"}
+                        key={rowIndex + "_dep"}
                         style={{
                           display: "flex",
                           justifyContent: "space-between",
@@ -570,7 +623,7 @@ console.log(newTime + "\n" + endTime)
                     <Box>
                       {Array.from({ length: economyNumRows }, (_, rowIndex) => (
                         <div
-                          key={rowIndex+"_dep"}
+                          key={rowIndex + "_dep"}
                           style={{
                             display: "flex",
                             justifyContent: "space-between",
@@ -594,7 +647,10 @@ console.log(newTime + "\n" + endTime)
                   </Box>
                   <Box>
                     {/*//TODO styling for this*/}
-                    <Typography variant={"body1"}> OutBound Seats Left To Select: {depCount}</Typography>
+                    <Typography variant={"body1"}>
+                      {" "}
+                      OutBound Seats Left To Select: {depCount}
+                    </Typography>
                   </Box>
                 </>
               ) : (
@@ -602,9 +658,8 @@ console.log(newTime + "\n" + endTime)
                   {/* return flight rows */}
                   <Box>
                     {Array.from({ length: retFirstNumRows }, (_, rowIndex) => (
-
                       <div
-                        key={rowIndex+"_ret"}
+                        key={rowIndex + "_ret"}
                         style={{
                           display: "flex",
                           justifyContent: "space-between",
@@ -618,7 +673,7 @@ console.log(newTime + "\n" + endTime)
                               key={columnIndex}
                               label={item}
                               category={"First Class"}
-                                handleOnClick={handleClick}
+                              handleOnClick={handleClick}
                             />
                           ))}
                       </div>
@@ -627,7 +682,7 @@ console.log(newTime + "\n" + endTime)
                       { length: retBusinessNumRows },
                       (_, rowIndex) => (
                         <div
-                          key={rowIndex+"_ret"}
+                          key={rowIndex + "_ret"}
                           style={{
                             display: "flex",
                             justifyContent: "space-between",
@@ -652,7 +707,7 @@ console.log(newTime + "\n" + endTime)
                         { length: retEconomyNumRows },
                         (_, rowIndex) => (
                           <div
-                            key={rowIndex+"_ret"}
+                            key={rowIndex + "_ret"}
                             style={{
                               display: "flex",
                               justifyContent: "space-between",
@@ -666,7 +721,7 @@ console.log(newTime + "\n" + endTime)
                                   key={columnIndex}
                                   label={item}
                                   category={"Economy Class"}
-                                handleOnClick={handleClick}
+                                  handleOnClick={handleClick}
                                 />
                               ))}
                           </div>
@@ -676,7 +731,10 @@ console.log(newTime + "\n" + endTime)
                   </Box>
                   <Box>
                     {/*//TODO styling for this*/}
-                    <Typography variant={"body1"}> InBound Seats Left To Select: {retCount}</Typography>
+                    <Typography variant={"body1"}>
+                      {" "}
+                      InBound Seats Left To Select: {retCount}
+                    </Typography>
                   </Box>
                 </>
               )}
@@ -685,18 +743,34 @@ console.log(newTime + "\n" + endTime)
         </Box>
         <Box>
           {/*TODO include return seats as well*/}
-            {selectedSeatsRet === null ?
-                (<SeatListing bookedSeatsDep={selectedSeatsDep} bookedSeatsRet={null}/>) : (
-                    <>
-                <SeatListing bookedSeatsDep={selectedSeatsDep} bookedSeatsRet={selectedSeatsRet}/>
-                </>)
-          }
-          <Button fullWidth variant="contained" m={2} onClick={handleToPassengerDetails}>
+          {selectedSeatsRet === null ? (
+            <SeatListing
+              bookedSeatsDep={selectedSeatsDep}
+              bookedSeatsRet={null}
+              depSeatMap={depSeatMap}
+              retSeatMap={null}
+            />
+          ) : (
+            <>
+              <SeatListing
+                bookedSeatsDep={selectedSeatsDep}
+                bookedSeatsRet={selectedSeatsRet}
+                depSeatMap={depSeatMap}
+                retSeatMap={retSeatMap}
+              />
+            </>
+          )}
+          <Button
+            fullWidth
+            variant="contained"
+            m={2}
+            onClick={handleToPassengerDetails}
+          >
             To passenger details
           </Button>
         </Box>
       </Box>
-        <SeatStolenPopUp openState={openState} handleClose={handleModalClose}/>
+      <SeatStolenPopUp openState={openState} handleClose={handleModalClose} />
     </>
   );
 };
