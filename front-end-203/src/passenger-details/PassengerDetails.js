@@ -9,7 +9,7 @@ import {useLocation, useNavigate} from "react-router-dom";
 const PassengerDetails = () => {
     const location = useLocation();
     const {inboundSeats, outboundSeats, numGuest, departureFlight, returnFlight, bookingId} = location.state;
-    console.log(inboundSeats + " " + outboundSeats + ' ' + numGuest);
+    // console.log(inboundSeats + " " + outboundSeats + ' ' + numGuest);
     const numGuestSelected = numGuest;
     const tripType = (returnFlight === null) ? "One way" : "Return";
   // const noGuestSelected = sessionStorage.getItem('noGuestSelected') || "0";
@@ -21,7 +21,7 @@ const PassengerDetails = () => {
 
 
   const handlePassengerDataChange = (passengerData, isValid) => {
-    console.log(passengerData); 
+    // console.log(passengerData); 
     setPassengers(passengerData);
     setFormValid(isValid);
 
