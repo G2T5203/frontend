@@ -131,6 +131,9 @@ const AdminPortalHomePage = () => {
 
                             <Button fullWidth variant="contained" onClick={() => { navigate("/adminPortal/routes") }}
                             style={{margin: 10}}>Manage Routes</Button>
+
+                            <Button fullWidth variant="contained" onClick={() => { navigate("/adminPortal/routeListings") }}
+                            style={{margin: 10}}>Manage RouteListings</Button>
                         </Box>
                     </Paper>
                 </Grid>
