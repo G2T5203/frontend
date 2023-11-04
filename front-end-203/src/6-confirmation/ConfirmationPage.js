@@ -26,19 +26,24 @@ const ConfirmationPage = () => {
   console.log(username);
 
 
-  
-    const navigate = useNavigate();
 
-    const handleClickReturn = (e) => {
-        navigate("/");
-    }
+  const navigate = useNavigate();
 
-    function downloadCalendarFile(inBookingId) {
-      console.log("Downloading calendar file for booking ID: " + inBookingId)
-      axios.get(apiUrl + "rest/api/generate-calendar/" + inBookingId)
-        .then((response) => response.blob())
-        .then((blob) => {
-          const blobUrl = window.URL.createObjectURL(blob);
+  const handleClickReturn = (e) => {
+    navigate("/");
+  }
+
+  function downloadCalendarFile(inBookingId) {
+    console.log("Downloading calendar file for booking ID: " + inBookingId)
+    axios.get(apiUrl + "rest/api/generate-calendar/" + inBookingId, {
+      responseType: 'blob'
+    })
+      .then((response) => {
+        if (response.status === 200) {
+          // return response.blob();
+          const blobData = response.data;
+
+          const blobUrl = window.URL.createObjectURL(blobData);
           const a = document.createElement('a');
           a.style.display = 'none';
           a.href = blobUrl;
@@ -46,12 +51,15 @@ const ConfirmationPage = () => {
           document.body.appendChild(a);
           a.click();
           window.URL.revokeObjectURL(blobUrl);
-        })
-        .catch((error) => {
-          console.log(error);
-          alert("Error downloading calendar file (.ics)");
-        })
-    }
+        } else {
+          throw new Error("Something went wrong: " + response.status);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        alert("Error downloading calendar file (.ics)");
+      });
+  }
 
   return (
     <>

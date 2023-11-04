@@ -14,31 +14,30 @@ const BookingSummary = () => {
 
     function downloadCalendarFile(inBookingId) {
         console.log("Downloading calendar file for booking ID: " + inBookingId)
-        fetch(apiUrl + "rest/api/generate-calendar/" + inBookingId, {
-            method: 'GET',
-            responseType: 'blob', // This is not a standard option; you might need to handle it differently
+        axios.get(apiUrl + "rest/api/generate-calendar/" + inBookingId, {
+            responseType: 'blob'
         })
-          .then((response) => {
-            if (response.status === 200) {
-                return response.blob();
-            } else {
-                throw new Error("Something went wrong: " + response.status);
-            }
-          })
-          .then((blob) => {
-            const blobUrl = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.style.display = 'none';
-            a.href = blobUrl;
-            a.download = 'mycalendar.ics';
-            document.body.appendChild(a);
-            a.click();
-            window.URL.revokeObjectURL(blobUrl);
-          })
-          .catch((error) => {
-            console.log(error);
-            alert("Error downloading calendar file (.ics)");
-          });
+            .then((response) => {
+                if (response.status === 200) {
+                    // return response.blob();
+                    const blobData = response.data;
+
+                    const blobUrl = window.URL.createObjectURL(blobData);
+                    const a = document.createElement('a');
+                    a.style.display = 'none';
+                    a.href = blobUrl;
+                    a.download = 'mycalendar.ics';
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(blobUrl);
+                } else {
+                    throw new Error("Something went wrong: " + response.status);
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+                alert("Error downloading calendar file (.ics)");
+            });
     }
 
     useEffect(() => {
