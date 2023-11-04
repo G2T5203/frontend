@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Grid, Box, Button, Paper, Typography, Table, TableRow, TableCell, Divider } from '@mui/material';
+import { Grid, Box, Button, Paper, Typography, Table, TableBody, TableRow, TableCell, Divider } from '@mui/material';
 import axios from 'axios';
 import {
     getCurrentUser,
@@ -88,10 +88,10 @@ const BookingSummary = () => {
                     </Grid>
 
                     <Divider style={{ margin: '16px 0' }} />
-                    <Typography variant="body2">
-                        Outbound Flight
+                    <Typography variant="h5">
+                        Outbound Flight &nbsp;&nbsp; ({booking.outboundDepartureDestination} →  {booking.outboundArrivalDestination})
                     </Typography>
-                    <Typography variant="body2" style={{ marginBottom: '8px', color: 'black' }}>
+                    <Typography variant="h6" style={{ marginBottom: '8px', color: 'black' }}>
                         Date: {
                             new Date(booking.outboundDepartureDatetime).toLocaleDateString('en-GB', {
                                 day: '2-digit',
@@ -99,31 +99,43 @@ const BookingSummary = () => {
                                 year: 'numeric'
                             })
                         }
+                        &nbsp;
+                        &nbsp;
+                        &nbsp;
+                        &nbsp;
+                        Time: {
+                            new Date(booking.outboundDepartureDatetime).toLocaleTimeString('en-GB', {
+                                hour: '2-digit',
+                                minute: '2-digit'
+                            })
+                        }
                         <br />
-                        {booking.outboundDepartureDestination} →  {booking.outboundArrivalDestination}
+                        
                     </Typography>
                     <Typography variant="body2">
                     </Typography>
                     <Table size="small">
-                        <TableRow>
-                            <TableCell>Passenger Name</TableCell>
-                            <TableCell>Seat Number</TableCell>
-                        </TableRow>
-                        {Object.entries(booking.outboundSeatNumbers || {}).map(([name, seat]) => (
-                            <TableRow key={seat}>
-                                <TableCell>{seat}</TableCell>
-                                <TableCell>{name}</TableCell>
+                        <TableBody>
+                            <TableRow>
+                                <TableCell sx={{fontWeight: 'bold'}}>Passenger Name</TableCell>
+                                <TableCell sx={{fontWeight: 'bold'}}>Seat Number</TableCell>
                             </TableRow>
-                        ))}
+                            {Object.entries(booking.outboundSeatNumbers || {}).map(([name, seat]) => (
+                                <TableRow key={seat}>
+                                    <TableCell>{seat}</TableCell>
+                                    <TableCell>{name}</TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
                     </Table>
 
                     {booking.inboundSeatNumbers && Object.keys(booking.inboundSeatNumbers).length > 0 && (
                         <>
                             <Divider style={{ margin: '16px 0' }} />
-                            <Typography variant="body2" style={{ marginTop: '16px' }}>
-                                Return Flight
+                            <Typography variant="h5" style={{ marginTop: '16px' }}>
+                                Return Flight &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ({booking.inboundDepartureDestination} →  {booking.inboundArrivalDestination})
                             </Typography>
-                            <Typography variant="body2" style={{ marginBottom: '8px', color: 'black' }}>
+                            <Typography variant="h6" style={{ marginBottom: '8px', color: 'black' }}>
                                 Date: {
                                     new Date(booking.inboundDepartureDatetime).toLocaleDateString('en-GB', {
                                         day: '2-digit',
@@ -131,22 +143,33 @@ const BookingSummary = () => {
                                         year: 'numeric'
                                     })
                                 }
+                                &nbsp;
+                                &nbsp;
+                                &nbsp;
+                                &nbsp;
+                                Time: {
+                                    new Date(booking.inboundDepartureDatetime).toLocaleTimeString('en-GB', {
+                                        hour: '2-digit',
+                                        minute: '2-digit'
+                                    })
+                                }
                                 <br />
-                                {booking.inboundDepartureDestination} →  {booking.inboundArrivalDestination}
                             </Typography>
                             <Typography variant="body2">
                             </Typography>
                             <Table size="small">
-                                <TableRow>
-                                    <TableCell>Passenger Name</TableCell>
-                                    <TableCell>Seat Number</TableCell>
-                                </TableRow>
-                                {Object.entries(booking.inboundSeatNumbers).map(([name, seat]) => (
-                                    <TableRow key={seat}>
-                                        <TableCell>{seat}</TableCell>
-                                        <TableCell>{name}</TableCell>
+                                <TableBody>
+                                    <TableRow>
+                                        <TableCell sx={{fontWeight: 'bold'}}>Passenger Name</TableCell>
+                                        <TableCell sx={{fontWeight: 'bold'}}>Seat Number</TableCell>
                                     </TableRow>
-                                ))}
+                                    {Object.entries(booking.inboundSeatNumbers).map(([name, seat]) => (
+                                        <TableRow key={seat}>
+                                            <TableCell>{seat}</TableCell>
+                                            <TableCell>{name}</TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
                             </Table>
                         </>
                     )}

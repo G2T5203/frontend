@@ -12,7 +12,7 @@ const ProgressBar = ({ currentStep, number, deadline }) => {
     "Confirmation",
   ];
 
-  console.log(deadline + "from prog")
+//   console.log(deadline + "from prog")
 
 
     return (
