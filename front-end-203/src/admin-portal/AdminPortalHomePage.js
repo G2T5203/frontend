@@ -136,6 +136,43 @@ const AdminPortalHomePage = () => {
                             style={{margin: 10}}>Manage RouteListings</Button>
                         </Box>
                     </Paper>
+
+
+                    <Paper elevation={3}>
+                        <Box columnGap={2} style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            padding: 20,
+                            marginTop: 20,
+                            alignItems: 'center',
+                        }}>
+                            <Box sx={{
+                                bgcolor: 'error.main',
+                                borderRadius: '8px',
+                                paddingTop: '10px',
+                                paddingBottom: '10px',
+                                marginLeft: '20px',
+                                marginRight: '20px',
+                                width: '100%',
+                                textAlign: 'center'
+                            }}>
+                                <Typography sx={{color: 'white'}}> DANGER ZONE </Typography>
+                            </Box>
+
+                            <Button fullWidth variant="contained" color="error" onClick={() => { 
+                                alert("Cleared all non-sample bookings. Resetted to demo state with new users retained.")
+                                // TODO: Implement this.
+                            }}
+                            style={{margin: 10}}>Reset Bookings</Button>
+
+                            <Button fullWidth variant="contained" color="error" onClick={() => {
+                                alert("Cleared all non-sample bookings and users. Ressetted to demo state.")
+                                // TODO: Implement this.
+                            }}
+                            style={{margin: 10}}>Reset Users & Bookings</Button>
+                        </Box>
+                    </Paper>
+
                 </Grid>
             </Grid>
         </Container>
