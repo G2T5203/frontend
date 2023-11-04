@@ -35,6 +35,37 @@ const AdminPortalHomePage = () => {
             })
     }
 
+    function resetBookings() {
+        axios.put(apiUrl + "adminUtils/forceCancelNonInitBookings")
+            .then((response) => {
+                if (response.status === 200) {
+                    alert("Cleared all non-sample bookings.\nResetted to demo state with new users retained.")
+                } else {
+                    alert("Something went wrong: " + response.status)
+                    console.log(response)
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+    }
+
+    function resetBookingsAndUsers() {
+        axios.put(apiUrl + "adminUtils/resetBookingsAndUsers")
+            .then((response) => {
+                if (response.status === 200) {
+                    alert("Cleared all non-sample bookings and users.\nRessetted to demo state.")
+                } else {
+                    alert("Something went wrong: " + response.status)
+                    console.log(response)
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+
+    }
+
 
     // Calls immediately upon page load
     useEffect(() => {
@@ -159,16 +190,10 @@ const AdminPortalHomePage = () => {
                                 <Typography sx={{color: 'white'}}> DANGER ZONE </Typography>
                             </Box>
 
-                            <Button fullWidth variant="contained" color="error" onClick={() => { 
-                                alert("Cleared all non-sample bookings. Resetted to demo state with new users retained.")
-                                // TODO: Implement this.
-                            }}
+                            <Button fullWidth variant="contained" color="error" onClick={() => { resetBookings(); }}
                             style={{margin: 10}}>Reset Bookings</Button>
 
-                            <Button fullWidth variant="contained" color="error" onClick={() => {
-                                alert("Cleared all non-sample bookings and users. Ressetted to demo state.")
-                                // TODO: Implement this.
-                            }}
+                            <Button fullWidth variant="contained" color="error" onClick={() => { resetBookingsAndUsers(); }}
                             style={{margin: 10}}>Reset Users & Bookings</Button>
                         </Box>
                     </Paper>
